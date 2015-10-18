@@ -7,6 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#E8E8E8"
     tools:context=".MainActivity">
     <LinearLayout
         android:id="@+id/control_panel"
@@ -23,7 +24,11 @@
             android:maxWidth="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/startbutton"/>
+            android:src="@drawable/startbutton"
+            android:baselineAlignBottom="false"
+            android:clickable="false"
+            android:cropToPadding="false"
+            android:background="#00000000" />
         <TextView
             android:id="@+id/record_status"
             android:layout_width="wrap_content"
@@ -35,30 +40,23 @@
             android:id="@+id/tempo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tempo"/>
+            android:text="@string/tempo"
+            android:background="#C8C8C8C8" />
         <Button
             android:id="@+id/time_signature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time_signature"
-            android:onClick="changeTempo"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/upoctave"
-            android:text="Up"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/loweroctave"
-            android:text="Down"/>
+            android:onClick="changeTempo"
+            android:background="#C8C8C8C8" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button"
-            android:onClick="startMetronome"/>
+            android:onClick="startMetronome"
+            android:background="#C8C8C8C8" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/score"
@@ -82,19 +80,22 @@
     <RelativeLayout
         android:id="@+id/keyboard"
         android:layout_width="wrap_content"
-        android:layout_height="157dp"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="false">
 
         <LinearLayout
             android:id="@+id/white_keys"
-            android:layout_width="match_parent"
-            android:layout_height="157dp"
-            android:layout_alignParentTop="true">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true">
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -104,8 +105,8 @@
                 android:src="@drawable/whitekey1"/>
 
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -115,8 +116,8 @@
                 android:src="@drawable/whitekey2" />
 
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -126,8 +127,8 @@
                 android:src="@drawable/whitekey3" />
 
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -137,8 +138,8 @@
                 android:src="@drawable/whitekey1" />
 
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -148,8 +149,8 @@
                 android:src="@drawable/whitekey2" />
 
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -159,8 +160,8 @@
                 android:src="@drawable/whitekey2"/>
 
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -169,8 +170,8 @@
                 android:id="@+id/bnatural"
                 android:src="@drawable/whitekey3" />
             <ImageButton
-                android:layout_width="66dp"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="120dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginStart="2dp"
@@ -186,8 +187,8 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp">
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
                 android:text="@string/noteCs"
                 android:id="@+id/csharp"
                 android:layout_marginLeft="38dp"
@@ -195,8 +196,8 @@
                 android:src="@drawable/blackkey"/>
 
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
                 android:layout_marginLeft="22dp"
                 android:layout_marginStart="22dp"
                 android:text="@string/noteEb"
@@ -204,8 +205,8 @@
                 android:src="@drawable/blackkey" />
 
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
                 android:text="@string/noteFs"
                 android:id="@+id/fsharp"
                 android:layout_marginLeft="70dp"
@@ -213,8 +214,8 @@
                 android:src="@drawable/blackkey"/>
 
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginStart="24dp"
                 android:text="@string/noteGs"
@@ -222,8 +223,8 @@
                 android:src="@drawable/blackkey" />
 
             <ImageButton
-                android:layout_width="56dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="80dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginStart="24dp"
                 android:text="@string/noteBb"
@@ -231,4 +232,35 @@
                 android:src="@drawable/blackkey" />
         </LinearLayout>
     </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loweroctave"
+        android:text="Down"
+        android:src="@drawable/downbutton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/keyboard"
+        android:layout_toEndOf="@+id/keyboard"
+        android:background="#00000000"
+        android:scaleType="fitCenter"
+        android:layout_below="@+id/score"
+        android:layout_above="@+id/upoctave"
+        android:layout_alignParentTop="false" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upoctave"
+        android:text="UP"
+        android:src="@drawable/upbutton"
+        android:layout_alignRight="@+id/score"
+        android:layout_alignEnd="@+id/score"
+        android:layout_toRightOf="@+id/keyboard"
+        android:layout_toEndOf="@+id/keyboard"
+        android:background="#0000000"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
