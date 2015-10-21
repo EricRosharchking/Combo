@@ -2,9 +2,11 @@ package com.example.liyuan.projectcombo;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener {
@@ -32,8 +35,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             R.id.fnatural, R.id.fsharp, R.id.gnatural, R.id.gsharp, R.id.anatural, R.id.bflat,
             R.id.bnatural, R.id.highcnatural};
     final String[] notes = {"C", "Cs", "D", "Eb", "E", "F", "Fs", "G", "Gs", "A", "Bb", "B", "HighC"};
+    final int[] numNotes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     final Note[] Notes = new Note[13];
-    private HashMap<Integer, String> keyNoteMap;
+    private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
     boolean onRecord;
@@ -52,6 +56,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double startRecordTime;
     double stopRecordTime;
     double recordTime;
+    DateFormat df;
+    Date now;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -83,11 +89,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 keyboard.setOnClickListener(this);
             }
 
-            keyNoteMap = new HashMap<Integer, String>();
+            keyNoteMap = new HashMap<Integer, Integer>();
             for(int i = 0; i < keys.length; i ++) {
-                keyNoteMap.put(keys[i], notes[i]);
+                keyNoteMap.put(keys[i], numNotes[i]);
                 Log.d("KeyNoteMap Log", "The Key is " + keys[i]);
-                Log.d("KeyNoteMap Log", "The Note is " + notes[i]);
+                Log.d("KeyNoteMap Log", "The Note is " + numNotes[i]);
             }
 
             Log.d("HashMap Log", "The size of KeyNoteMap is " + keyNoteMap.size());
@@ -132,10 +138,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             timeSignatureButton = (Button) findViewById(R.id.time_signature);
             timeSignature = Integer.parseInt((String) getText(R.string.time_signature));
             Log.d("TimeSignatureLog", "" + timeSignature);
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-            Date now = new Date();
-            notesAndRest = df.format(now);
+            df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            now = new Date();
+            notesAndRest = "";
             lengthOfNotesAndRest = notesAndRest;
+            metronomeRunning = false;
             metronome = new Metronome();
         }
         catch (NumberFormatException e) {
@@ -202,7 +209,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 textView.setText(R.string.main_score);
                 startRecordTime = System.currentTimeMillis();
                 restStartTime = startRecordTime;
+                now  = new Date();
                 notesAndRest = "";
+                lengthOfNotesAndRest = notesAndRest;
             } else {
                 recordButton.setImageResource(R.drawable.startbutton);
                 onRecord = false;
@@ -213,10 +222,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 recordTime = stopRecordTime - startRecordTime;
                 restEndTime = stopRecordTime;
                 rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
-                notesAndRest = notesAndRest + "\t" + "Rest";
-                lengthOfNotesAndRest = lengthOfNotesAndRest + "\t" + rest;
+                notesAndRest = notesAndRest + " " + "0";
+                lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
                 Log.d("RecordingLog", "The Record Time is " + recordTime);
-                textView.setText(notesAndRest + "\n" + lengthOfNotesAndRest);
+                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
             }
         }
 
@@ -229,7 +238,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.d("KeyNoteMap Log", "KeyNoteMap State is " + (keyNoteMap == null));
             Log.d("KeyNoteMap Log", "KeyNoteMap.get State is " + keyNoteMap.containsKey(v.getId()));
             if (keyNoteMap != null && keyNoteMap.get(v.getId()) != null) {
-                textView.append( "Rest " + keyNoteMap.get(v.getId()) + " ");
+                textView.append( "0 " + keyNoteMap.get(v.getId()) + " ");
             }
         } else {
             Log.d("Log", "This is not a button you clicked");
@@ -300,8 +309,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     restEndTime = noteStartTime;                                                    //start count the time
                     rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
                     Log.d("RestLog", "Rest is " + rest + " beats long");
-                    notesAndRest = notesAndRest + "\t" + "Rest";
-                    lengthOfNotesAndRest = lengthOfNotesAndRest + "\t" + rest;
+                    notesAndRest = notesAndRest + " " + "0";
+                    lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
                 } else {
                     //                                                                              //play the sound only
                 }
@@ -320,8 +329,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     //Log.d("TouchLog", "The elapse is " + elapse);
                     noteBeats = elapse/secondsPerBeat;
                     Log.d("BeatsLog", "There are " + noteBeats + " beats in the note");
-                    notesAndRest = notesAndRest + "\t" + keyNoteMap.get((v).getId());
-                    lengthOfNotesAndRest = lengthOfNotesAndRest + "\t" + noteBeats;
+                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    lengthOfNotesAndRest = lengthOfNotesAndRest + " " + noteBeats;
                 }
             }
         }
@@ -358,7 +367,67 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    boolean metronomeRunning;
+
     public void startMetronome(View view) {
-        metronome.start();
+        if(metronomeRunning == false) {
+            metronome.start();
+            metronomeRunning = true;
+        } else {
+            metronome.stop();
+            metronomeRunning = false;
+        }
+
     }
+
+    public void playBack(View view) {
+        //// TODO: 10/18/2015 HashMap Key must be unique. . .
+        Log.d("PlayBack Log", "PlayBack Entered");
+        Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
+
+        notesAndRest = notesAndRest.trim();
+        lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
+
+        Log.d("PlayBack Log", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
+        for (int i = 0; i < notesAndRest.split(" ").length; i ++) {
+            Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
+        }
+        //// TODO: 10/18/2015 Trim the two Strings before split
+        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i ++) {
+            Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+        }
+
+        if (notesAndRest.length() != 0 && notesAndRest.split(" ").length == lengthOfNotesAndRest.split(" ").length ) {
+            String[] scoreNotes = notesAndRest.split(" ");
+            String[] scoreLength = lengthOfNotesAndRest.split(" ");
+            int[] numericNotes = new int[scoreNotes.length];
+            for (int i = 0; i < scoreNotes.length; i ++) {
+                numericNotes[i] = Integer.parseInt(scoreNotes[i]);
+            }
+            //写一下吧write到audioTrack里面 stream
+
+/*            numericNotes = new int[4];
+            numericNotes[0] = 1;
+            numericNotes[1] = 3;
+            numericNotes[2] = 0;
+            numericNotes[3] = 5;
+
+            scoreLength = new String[4];
+            scoreLength[0] = "1.000";
+            scoreLength[1] = "1.000";
+            scoreLength[2] = "1.000";
+            scoreLength[3] = "1.000";*/
+
+
+            PlayBack playBack = new PlayBack(numericNotes, scoreLength);
+            Log.d("PlayBack Log", "PlayBack initialised");
+            playBack.start();
+            try {
+                playBack.join();
+            } catch (Exception e ) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

@@ -86,7 +86,7 @@ public class Metronome {
         }
     }
 
-    public void stop(View v) {
+    public void stop() {
         isRunning = false;
         if (t != null) {
             try{
