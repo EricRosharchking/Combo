@@ -195,7 +195,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            Log.d("ButtonLog","This is the record button");
 //            Log.d("Log","OnRecord is " + onRecord);
             if (onRecord == false) {
-                recordButton.setImageResource(R.drawable.recbutton);
+                recordButton.setImageResource(R.drawable.stopbutton);
                 onRecord = true;
                 recordStatus.setText("Recording");
                 resetScore = true;
