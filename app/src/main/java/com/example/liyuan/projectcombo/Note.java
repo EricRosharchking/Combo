@@ -12,6 +12,9 @@ public class Note {
     public Note(int noteNO) {
         number = noteNO;
         switch (noteNO) {
+            case 0:
+                name = "Rest";      frequency = 0.0f;
+                break;
             case 1:
                 name = "CNatural";  frequency = 261.6f;
                 break;

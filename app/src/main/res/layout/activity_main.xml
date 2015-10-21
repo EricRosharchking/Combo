@@ -31,34 +31,53 @@
             android:gravity="top"
             android:layout_gravity="top"
             android:text="@string/record_status"/>
-        <Button
-            android:id="@+id/tempo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tempo"/>
-        <Button
-            android:id="@+id/time_signature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/time_signature"
-            android:onClick="changeTempo"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/upoctave"
-            android:text="Up"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/loweroctave"
-            android:text="Down"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button"
-            android:onClick="startMetronome"/>
+            <Button
+                android:id="@+id/playBack"
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Play"
+                android:onClick="playBack"/>
+            <Button
+                android:layout_weight="0"
+                android:id="@+id/tempo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tempo"/>
+            <Button
+                android:layout_weight="0"
+                android:id="@+id/time_signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time_signature"
+                android:onClick="changeTempo"/>
+            <Button
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/upoctave"
+                android:text="Up"/>
+            <Button
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loweroctave"
+                android:text="Down"/>
+
+            <Button
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:id="@+id/button"
+                android:onClick="startMetronome"/>
+
+        </LinearLayout>
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/score"
