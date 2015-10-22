@@ -46,8 +46,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     boolean onHold;
     Button tempoButton;
     Button timeSignatureButton;
-    Button UpperOctave;
-    Button LowerOctave;
+    ImageButton UpperOctave;
+    ImageButton LowerOctave;
     int timeSignature;
     double secondsPerBeat;
     boolean onRest;
@@ -78,8 +78,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             setContentView(R.layout.activity_main);
-            UpperOctave = (Button) findViewById(R.id.upoctave);
-            LowerOctave = (Button) findViewById(R.id.loweroctave);
+            UpperOctave = (ImageButton) findViewById(R.id.upoctave);
+            LowerOctave = (ImageButton) findViewById(R.id.loweroctave);
             UpperOctave.setOnClickListener(this);
             LowerOctave.setOnClickListener(this);
 
@@ -202,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            Log.d("ButtonLog","This is the record button");
 //            Log.d("Log","OnRecord is " + onRecord);
             if (onRecord == false) {
-                recordButton.setImageResource(R.drawable.recbutton);
+                recordButton.setImageResource(R.drawable.stopbutton);
                 onRecord = true;
                 recordStatus.setText("Recording");
                 resetScore = true;
@@ -215,7 +215,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 recordButton.setImageResource(R.drawable.startbutton);
                 onRecord = false;
-                recordStatus.setText("Not Recording");
+                recordStatus.setText("Click to start");
                 //textView.setText((String)getText(R.string.main_score));
                 resetScore = false;
                 stopRecordTime = System.currentTimeMillis();
