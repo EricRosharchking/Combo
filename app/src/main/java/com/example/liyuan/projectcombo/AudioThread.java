@@ -50,7 +50,7 @@ public class AudioThread extends Thread {
             }
         } catch (IllegalStateException e) {
             e.printStackTrace();
-            Log.d("AuidioTrack Log", "The audiotrack pointer is " + e.toString());
+            Log.d("AudioTrack Log", "The audiotrack pointer is " + e.toString());
         }
 
 /*
