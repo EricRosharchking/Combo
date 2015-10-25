@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener {
 
 
+    SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
     Metronome metronome;
     private AudioThread[] audioThreads = new AudioThread[14];
     boolean isRunning;
@@ -243,6 +245,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } else {
             Log.d("Log", "This is not a button you clicked");
         }
+
+        if(v.getId() == R.id.time_signature) {
+
+        }
     }
 
     double noteStartTime;
@@ -313,6 +319,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
                 } else {
                     //                                                                              //play the sound only
+
+                    if (Notes[noteID - 1] != null) {
+                        Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
+                    }
+                    //Play Part Start
+                    if (audioThreads[noteID].getState() == Thread.State.NEW) {
+                        audioThreads[noteID].start();
+                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
+                    } else {
+                        audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
+                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
+                        audioThreads[noteID].start();
+                    }
                 }
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
