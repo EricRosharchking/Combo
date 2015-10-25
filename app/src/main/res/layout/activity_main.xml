@@ -11,6 +11,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/control_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +39,6 @@
             android:layout_gravity="bottom"
             android:paddingLeft="3dp"
             android:paddingTop="15dp"
-<<<<<<< HEAD
             android:text="@string/record_status"
             android:textColor="#FFFFFF" />
 
@@ -54,45 +54,22 @@
                 android:onClick="playBack"
                 android:text="Play" />
 
+
             <Button
                 android:id="@+id/tempo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="@string/tempo" />
-
+                android:text="@string/tempo"
+                android:background="#C8C8C8C8" />
             <Button
                 android:id="@+id/time_signature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
+                android:text="@string/time_signature"
                 android:onClick="changeTempo"
-                android:text="@string/time_signature" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:onClick="startMetronome"
-                android:text="metro" />
+                android:background="#C8C8C8C8" />
         </LinearLayout>
 
-=======
-            android:paddingLeft="3dp"/>
-        <Button
-            android:id="@+id/tempo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tempo"
-            android:background="#C8C8C8C8" />
-        <Button
-            android:id="@+id/time_signature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/time_signature"
-            android:onClick="changeTempo"
-            android:background="#C8C8C8C8" />
 <!--need to rename this botton-->
         <ImageButton
             android:layout_width="50dp"
@@ -115,10 +92,6 @@
             android:progress="1"
             android:max="60"
             />
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
     </LinearLayout>
 
     <LinearLayout
