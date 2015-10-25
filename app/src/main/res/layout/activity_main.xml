@@ -1,15 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222222"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#222222"
     tools:context=".MainActivity">
-
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/control_panel"
@@ -17,59 +16,135 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-
         <ImageButton
             android:id="@+id/record_button"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:maxHeight="70dp"
+            android:maxWidth="70dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            android:background="#00FFFFFF"
+            android:src="@drawable/startbutton"
             android:baselineAlignBottom="false"
             android:clickable="false"
             android:cropToPadding="false"
-            android:maxHeight="70dp"
-            android:maxWidth="70dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/startbutton" />
-
+            android:background="#00FFFFFF" />
         <TextView
             android:id="@+id/record_status"
+<<<<<<< Updated upstream
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:text="@string/record_status"
+            android:textColor="#FFFFFF"
             android:layout_gravity="bottom"
-            android:paddingLeft="3dp"
             android:paddingTop="15dp"
+<<<<<<< Updated upstream
             android:text="@string/record_status"
             android:textColor="#FFFFFF" />
 
+=======
+            android:paddingLeft="3dp"/>
+        <Button
+            android:id="@+id/tempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+=======
+<<<<<<< HEAD
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:layout_gravity="top"
+            android:text="@string/record_status"/>
+>>>>>>> Stashed changes
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
             <Button
                 android:id="@+id/playBack"
+                android:layout_weight="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< Updated upstream
                 android:layout_weight="0"
                 android:onClick="playBack"
                 android:text="Play" />
 
 
+=======
+                android:text="Play"
+                android:onClick="playBack"/>
+>>>>>>> Stashed changes
             <Button
+                android:layout_weight="0"
                 android:id="@+id/tempo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< Updated upstream
                 android:text="@string/tempo"
                 android:background="#C8C8C8C8" />
+=======
+                android:text="@string/tempo"/>
+>>>>>>> Stashed changes
             <Button
+                android:layout_weight="0"
                 android:id="@+id/time_signature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time_signature"
+<<<<<<< Updated upstream
                 android:onClick="changeTempo"
                 android:background="#C8C8C8C8" />
         </LinearLayout>
 
+=======
+                android:onClick="changeTempo"/>
+            <Button
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/upoctave"
+                android:text="Up"/>
+            <Button
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loweroctave"
+                android:text="Down"/>
+
+            <Button
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:id="@+id/button"
+                android:onClick="startMetronome"/>
+
+        </LinearLayout>
+
+=======
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="@string/record_status"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="bottom"
+            android:paddingTop="15dp"
+            android:paddingLeft="3dp"/>
+        <Button
+            android:id="@+id/tempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+>>>>>>> Stashed changes
+            android:text="@string/tempo"
+            android:background="#C8C8C8C8" />
+        <Button
+            android:id="@+id/time_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_signature"
+            android:onClick="changeTempo"
+            android:background="#C8C8C8C8" />
+>>>>>>> Stashed changes
 <!--need to rename this botton-->
         <ImageButton
             android:layout_width="50dp"
@@ -84,6 +159,7 @@
             android:clickable="false"
             android:cropToPadding="false"
             android:background="#00FFFFFF" />
+<<<<<<< HEAD
         <SeekBar
             android:id="@+id/tempoSeekBar"
             android:layout_width="wrap_content"
@@ -92,8 +168,20 @@
             android:progress="1"
             android:max="60"
             />
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> TJWANG_branch
+>>>>>>> Stashed changes
+>>>>>>> parent of 60288db... Merge remote-tracking branch 'origin/master'
+>>>>>>> Stashed changes
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/score"
         android:layout_width="fill_parent"
@@ -101,52 +189,49 @@
 
         <TextView
             android:id="@+id/main_score"
+            android:text="@string/main_score"
             android:layout_width="match_parent"
             android:layout_height="81dp"
             android:layout_marginTop="40dp"
+            android:paddingTop="10dp"
             android:paddingLeft="55dp"
             android:paddingRight="55dp"
-            android:paddingTop="10dp"
-            android:text="@string/main_score"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            />
 
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/octave"
-        android:layout_width="720dp"
+        android:layout_width="600dp"
         android:layout_height="100dp"
         android:layout_marginBottom="190dp"
         android:layout_marginTop="50dp">
 
         <ImageButton
-            android:id="@+id/loweroctave"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="250dp"
+            android:id="@+id/loweroctave"
+            android:src="@drawable/downbutton"
             android:background="#00FFFFFF"
-            android:contentDescription="@string/downoctave"
             android:scaleType="fitXY"
-            android:src="@drawable/downbutton"/>
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="250dp">
+        </ImageButton>
 
         <ImageButton
-            android:id="@+id/upoctave"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="360dp"
-            android:layout_marginRight="0dp"
-            android:background="#00FFFFFF"
-            android:contentDescription="@string/upoctave"
-            android:scaleType="fitXY"
+            android:id="@+id/upoctave"
             android:src="@drawable/upbutton"
-            android:layout_gravity="right" />
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="250dp"/>
 
     </LinearLayout>
-
     <RelativeLayout
         android:id="@+id/keyboard"
-        android:layout_width="720dp"
+        android:layout_width="650dp"
         android:layout_height="190dp"
         android:layout_marginTop="120dp">
 
@@ -154,213 +239,212 @@
             android:id="@+id/white_keys"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true"
             android:weightSum="1">
 
             <ImageButton
-                android:id="@+id/cnatural"
-                android:layout_width="90dp"
+                android:layout_width="75dp"
                 android:layout_height="190dp"
-                android:layout_gravity="bottom|left|right|top"
-                android:layout_margin="0dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:background="#00FFFFFF"
-                android:cropToPadding="false"
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteC"
+                android:id="@+id/cnatural"
+                android:src="@drawable/whitekey1"
                 android:padding="0dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/whitekey1"
-                android:text="@string/noteC" />
+                android:background="#00FFFFFF"
+                android:layout_margin="0dp"
+                android:layout_gravity="bottom|left|right|top"
+                android:layout_marginTop="0dp"
+                android:cropToPadding="false" />
 
             <ImageButton
-                android:id="@+id/dnatural"
-                android:layout_width="90dp"
+                android:layout_width="75dp"
                 android:layout_height="190dp"
-                android:layout_gravity="bottom"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteD"
+                android:id="@+id/dnatural"
+                android:src="@drawable/whitekey2"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:background="#00FFFFFF"
                 android:layout_margin="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
-                android:background="#00FFFFFF"
-                android:padding="0dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/whitekey2"
-                android:text="@string/noteD" />
+                android:layout_gravity="bottom" />
 
             <ImageButton
+                android:layout_width="75dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteE"
                 android:id="@+id/enatural"
-                android:layout_width="90dp"
+                android:src="@drawable/whitekey3"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:background="#00FFFFFF"/>
+
+            <ImageButton
+                android:layout_width="75dp"
                 android:layout_height="200dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="0dp"
-                android:background="#00FFFFFF"
-                android:padding="0dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/whitekey3"
-                android:text="@string/noteE" />
-
-            <ImageButton
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteF"
                 android:id="@+id/fnatural"
-                android:layout_width="90dp"
-                android:layout_height="200dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="0dp"
-                android:background="#00FFFFFF"
-                android:padding="0dp"
-                android:scaleType="fitXY"
                 android:src="@drawable/whitekey1"
-                android:text="@string/noteF" />
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:background="#00FFFFFF"/>
 
             <ImageButton
+                android:layout_width="75dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteG"
                 android:id="@+id/gnatural"
-                android:layout_width="90dp"
+                android:src="@drawable/whitekey2"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:background="#00FFFFFF"/>
+
+            <ImageButton
+                android:layout_width="75dp"
                 android:layout_height="200dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="0dp"
-                android:background="#00FFFFFF"
-                android:padding="0dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/whitekey2"
-                android:text="@string/noteG" />
-
-            <ImageButton
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteA"
                 android:id="@+id/anatural"
-                android:layout_width="90dp"
-                android:layout_height="200dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="0dp"
-                android:background="#00FFFFFF"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/whitekey2"
-                android:text="@string/noteA" />
+                android:background="#00FFFFFF"/>
 
             <ImageButton
-                android:id="@+id/bnatural"
-                android:layout_width="90dp"
+                android:layout_width="75dp"
                 android:layout_height="200dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="0dp"
-                android:background="#00FFFFFF"
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteB"
+                android:id="@+id/bnatural"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/whitekey3"
-                android:text="@string/noteB" />
-
+                android:background="#00FFFFFF" />
             <ImageButton
-                android:id="@+id/highcnatural"
-                android:layout_width="90dp"
+                android:layout_width="75dp"
                 android:layout_height="200dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="0dp"
-                android:background="#00FFFFFF"
+                android:layout_marginEnd="0dp"
+                android:text="@string/noteC"
+                android:id="@+id/highcnatural"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/whitekey1"
-                android:text="@string/noteC" />
+                android:background="#00FFFFFF"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/black_keys"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
             android:layout_alignParentRight="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignTop="@+id/white_keys">
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/white_keys"
+            android:layout_alignParentTop="false">
 
             <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="120dp"
+                android:text="@string/noteCs"
                 android:id="@+id/csharp"
-                android:layout_width="72dp"
-                android:layout_height="120dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="42dp"
                 android:layout_gravity="bottom|left|right|top"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="51dp"
-                android:background="#00FFFFFF"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/blackkey"
-                android:text="@string/noteCs" />
+                android:background="#00FFFFFF"/>
 
             <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="20dp"
+                android:text="@string/noteEb"
                 android:id="@+id/eflat"
-                android:layout_width="72dp"
-                android:layout_height="120dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="20dp"
-                android:background="#00FFFFFF"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/blackkey"
-                android:text="@string/noteEb" />
+                android:background="#00FFFFFF"/>
 
             <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="120dp"
+                android:text="@string/noteFs"
                 android:id="@+id/fsharp"
-                android:layout_width="72dp"
-                android:layout_height="120dp"
                 android:layout_marginLeft="0dp"
-                android:layout_marginStart="107dp"
-                android:background="#00FFFFFF"
+                android:layout_marginStart="87dp"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/blackkey"
-                android:text="@string/noteFs" />
+                android:background="#00FFFFFF"/>
 
             <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="16dp"
+                android:text="@string/noteGs"
                 android:id="@+id/gsharp"
-                android:layout_width="72dp"
-                android:layout_height="120dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="18dp"
-                android:background="#00FFFFFF"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/blackkey"
-                android:text="@string/noteGs" />
+                android:background="#00FFFFFF"/>
 
             <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="16dp"
+                android:text="@string/noteBb"
                 android:id="@+id/bflat"
-                android:layout_width="72dp"
-                android:layout_height="120dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="20dp"
-                android:background="#00FFFFFF"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/blackkey"
-                android:text="@string/noteBb" />
-
+                android:background="#00FFFFFF"/>
             <ImageButton
-                android:id="@+id/highcsharp"
-                android:layout_width="72dp"
+                android:layout_width="60dp"
                 android:layout_height="120dp"
                 android:layout_marginLeft="0dp"
-                android:layout_marginStart="105dp"
-                android:background="#00FFFFFF"
+                android:layout_marginStart="87dp"
+                android:text="@string/noteBb"
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/blackkey"
-                android:text="@string/noteBb" />
+                android:background="#00FFFFFF"
+                android:id="@+id/highcsharp" />
+            <!-- what the id for above blackkey:csharp?-->
         </LinearLayout>
     </RelativeLayout>
 

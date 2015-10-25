@@ -1,6 +1,28 @@
 <resources>
     <string name="app_name">ProjectCombo</string>
     <string name="action_settings">Settings</string>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        <string name="noteC">C </string>
+        <string name="noteCs">Cs</string>
+        <string name="noteD">D </string>
+        <string name="noteEb">Eb</string>
+        <string name="noteE">E </string>
+        <string name="noteF">F </string>
+        <string name="noteFs">Fs</string>
+        <string name="noteG">G </string>
+        <string name="noteGs">Gs</string>
+        <string name="noteA">A </string>
+        <string name="noteBb">Bb</string>
+        <string name="noteB">B </string>
+        <string name="main_score">Here is the notes you played</string>
+        <string name="record_status">Not Recording</string>
+        <string name="tempo">4/4</string>
+        <string name="time_signature">60</string>
+    <string name="playBack">PlayBack</string>
+=======
+>>>>>>> Stashed changes
     <string name="noteC">C </string>
     <string name="noteCs">Cs</string>
     <string name="noteD">D </string>
@@ -29,6 +51,10 @@
     <string name="confirm_password">confirm password</string>
     <string name="signup">signup</string>
     <string name="already_have_an_account"><u>Already have an account? Signin now</u></string>
-    <string name="upoctave">upoctave</string>
-    <string name="downoctave">downoctave</string>
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> TJWANG_branch
+>>>>>>> Stashed changes
+
 </resources>
