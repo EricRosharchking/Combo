@@ -64,6 +64,14 @@
             android:clickable="false"
             android:cropToPadding="false"
             android:background="#00FFFFFF" />
+        <SeekBar
+            android:id="@+id/tempoSeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:progress="1"
+            android:max="60"
+            />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/score"
