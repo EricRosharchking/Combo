@@ -136,8 +136,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             resetScore = false;
             onHold = false;
             onRest = true;
-            tempoButton = (Button) findViewById(R.id.tempo);
-            timeSignatureButton = (Button) findViewById(R.id.time_signature);
+//            tempoButton = (Button) findViewById(R.id.tempo);
+//            timeSignatureButton = (Button) findViewById(R.id.time_signature);
             timeSignature = Integer.parseInt((String) getText(R.string.time_signature));
             Log.d("TimeSignatureLog", "" + timeSignature);
             df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");

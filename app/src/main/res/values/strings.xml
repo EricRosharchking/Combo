@@ -29,6 +29,6 @@
     <string name="confirm_password">confirm password</string>
     <string name="signup">signup</string>
     <string name="already_have_an_account"><u>Already have an account? Signin now</u></string>
-    <string name="upoctave">upoctave</string>
-    <string name="downoctave">downoctave</string>
+    <string name="play"><u>PLAY</u></string>
+    <string name="startmetro"><u>START METRONOME</u></string>
 </resources>
