@@ -19,7 +19,6 @@
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#3A393A"
             android:layout_weight="0.90">
  
             <ImageButton
@@ -41,7 +40,7 @@
             <TextView
                 android:id="@+id/record_status"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:padding="7dp"
                 android:text="@string/record_status"
                 android:textColor="#FFFFFF"
@@ -75,8 +74,7 @@
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/tempoSeekBar"
+                android:id="@+id/seekBar"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical" />
  
