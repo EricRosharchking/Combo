@@ -91,9 +91,11 @@ public class AudioThread extends Thread {
 
 
     public void stopPlaying() {
-        audioTrack.stop();
-        audioTrack.release();
-        isRunning = false;
+        isRunning = false;/*
+        if (audioTrack != null) {
+            audioTrack.stop();
+            audioTrack.release();
+        }*/
     }
 
 /*    public void upOctave() {

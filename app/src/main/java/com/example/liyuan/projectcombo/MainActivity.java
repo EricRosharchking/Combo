@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener {
 
 
-    SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+    //SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.seekBar);
     Metronome metronome;
     private AudioThread[] audioThreads = new AudioThread[14];
     boolean isRunning;
@@ -245,10 +245,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } else {
             Log.d("Log", "This is not a button you clicked");
         }
-
+/*
         if(v.getId() == R.id.time_signature) {
 
-        }
+        }*/
     }
 
     double noteStartTime;
@@ -335,6 +335,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                audioThreads[noteID].stopPlaying();
                 if (onRecord == true) {
 
 
