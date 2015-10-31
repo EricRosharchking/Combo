@@ -57,24 +57,33 @@ public class PlayBack extends Thread{
     public void run() {
         if (audioTrack != null) {
             audioTrack.play();
-            double amplitude = 32768.0;
 
             Log.d("PlayBack Log", "audioTrack is not Null");
             try {
                 while (isRunning) {
-                    for (int j = 0; j < size; j++) {
 
+                    for (int j = 0; j < size; j ++) {
+
+                        double amplitude = 32768.0;
                         Log.d("PlayBack Log", "The integer j is " + j);
                         int sampleSize = (int) (44100 * notesLength[j]) * 2;
                         samples = new short[sampleSize];
                         double phase_Index = 0.0;
-                        Log.d("PlayBack Log", "The element in notesScore is " + notesScore[j]);
-                        double frequency = musicScore.get(notesScore[j]);
-                        for (int i = 0; i < sampleSize; i++) {
+                        double  frequency = musicScore.get(notesScore[j]);
+                        for (int i = 0; i < sampleSize; i ++) {
                             samples[i] = (short) (amplitude * Math.sin(phase_Index));
                             phase_Index += TWO_PI * frequency / SAMPLE_RATE;
                         }
                         audioTrack.write(samples, 0, sampleSize);
+                        Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
+
+                        samples = new short[22050];
+                        for (int i = 0; i < 22050 && amplitude > 0; i ++) { // 这个Decay的长度要改成跟tempo有关的，八分之一的beat长度
+                            samples[i] = (short) (amplitude * Math.sin(phase_Index));
+                            phase_Index += TWO_PI * frequency / SAMPLE_RATE;
+                            amplitude -= 2;
+                        }
+                        audioTrack.write(samples, 0, 22050);
                         Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
                     }
                     isRunning = false;
