@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -125,6 +126,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             textView = (TextView) findViewById(R.id.main_score);
+            textView.setMovementMethod(new ScrollingMovementMethod());
             recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
             recordButton = (ImageButton) findViewById(R.id.record_button);

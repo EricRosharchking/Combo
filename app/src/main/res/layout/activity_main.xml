@@ -19,7 +19,7 @@
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:background="#3A393A">
 
             <ImageButton
@@ -74,41 +74,45 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:layout_weight="0.15">
+
                 <RadioGroup
                     android:id="@+id/timeSigRadioGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:checkedButton="@+id/sound">
 
                     <RadioButton
                         android:id="@+id/tempo3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:checked="true"
                         android:text="@string/timesig3"
-                        android:textColor="#FFFFFF"
-                        android:checked="true" />
+                        android:textColor="#FFFFFF" />
+
                     <RadioButton
+
                         android:id="@+id/tempo4"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:text="@string/timesig4"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#FFFFFF" />
 
                 </RadioGroup>
             </LinearLayout>
 
             <SeekBar
                 android:id="@+id/tempoSeekBar"
-                android:progress="1"
-                android:max="60"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="5" />
+                android:layout_weight="5"
+                android:max="60"
+                android:progress="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -135,6 +139,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="0dp"
+                android:scrollbars="vertical"
                 android:text="@string/main_score"
                 android:textColor="#FFFFFF" />
 
