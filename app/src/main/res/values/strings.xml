@@ -31,5 +31,7 @@
     <string name="already_have_an_account"><u>Already have an account? Signin now</u></string>
     <string name="play"><u>PLAY</u></string>
     <string name="startmetro"><u>START METRONOME</u></string>
- 
+    <string name="timesig3"><u>3/4</u></string>
+    <string name="timesig4"><u>4/4</u></string>
+
 </resources>
