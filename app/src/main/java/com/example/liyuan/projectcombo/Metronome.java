@@ -8,20 +8,43 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 /**
  * Created by Liyuan on 10/17/2015.
  */
-public class Metronome {
+public class Metronome extends Activity {
+
     private final int SAMPLE_RATE = 44100;
     boolean isRunning = true;
     int size = 22050;
     private final double frequency1 = 659.3f;
     private final double frequency2 = 261.1f;
     Thread t;
+    double sliderval;
+    int metronomeTempo;
 
 
     public Metronome() {
+
+        Log.d("Metronome Log", "The activity_main id is " + R.layout.activity_main);
+        /*setContentView(R.layout.activity_main);
+        Log.d("Metronome Log", "The SeekBar id is " + R.id.tempoSeekBar);
+        SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+
+
+        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onProgressChanged(SeekBar seekBar,
+                                          int progress,
+                                          boolean fromUser) {
+                if(fromUser) sliderval = progress / (double)seekBar.getMax();
+            }
+        };
+
+        // set the listener on the slider
+        tempoSeekBar.setOnSeekBarChangeListener(listener);*/
         t = new Thread() {
             public void run() {
                 // set process priority
@@ -36,7 +59,7 @@ public class Metronome {
                         AudioTrack.MODE_STREAM);
 
                 short samples[];
-                int amp = 10000;
+                int amp = 20000;
                 double twopi = 2 * Math.PI;
                 double ph = 0.0;
 
@@ -58,6 +81,8 @@ public class Metronome {
                             ph += twopi * frequency2 / SAMPLE_RATE;
                         }
                         audioTrack.write(samples, 0, samples.length);
+                        metronomeTempo = metronomeTempo + (int)(60 *sliderval);
+                        size = 44100 * 60 / metronomeTempo / 2;
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.d("Size Log", "The current size is " + size);

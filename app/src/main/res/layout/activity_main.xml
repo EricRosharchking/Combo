@@ -73,10 +73,12 @@
                 android:layout_gravity="center_vertical" />
  
             <SeekBar
+                android:id="@+id/tempoSeekBar"
+                android:progress="1"
+                android:max="60"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/tempoSeekBar"
                 android:layout_weight="5"
                 android:layout_gravity="center_vertical" />
  

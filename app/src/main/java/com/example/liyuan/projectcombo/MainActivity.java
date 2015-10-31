@@ -2,11 +2,9 @@ package com.example.liyuan.projectcombo;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.os.Debug;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,19 +12,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener {
 
 
-    //SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.seekBar);
     Metronome metronome;
     private AudioThread[] audioThreads = new AudioThread[14];
     boolean isRunning;
@@ -146,6 +141,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
             metronome = new Metronome();
+
         }
         catch (NumberFormatException e) {
             timeSignature = 60;
@@ -392,6 +388,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void startMetronome(View view) {
         if(metronomeRunning == false) {
+            metronome = new Metronome();
             metronome.start();
             metronomeRunning = true;
         } else {
