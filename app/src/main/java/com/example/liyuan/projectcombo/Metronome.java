@@ -23,28 +23,11 @@ public class Metronome extends Activity {
     Thread t;
     double sliderval;
     int metronomeTempo;
+    SeekBar tempoSeekBar;
 
 
     public Metronome() {
 
-        Log.d("Metronome Log", "The activity_main id is " + R.layout.activity_main);
-        /*setContentView(R.layout.activity_main);
-        Log.d("Metronome Log", "The SeekBar id is " + R.id.tempoSeekBar);
-        SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-
-
-        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
-            public void onStopTrackingTouch(SeekBar seekBar) { }
-            public void onStartTrackingTouch(SeekBar seekBar) { }
-            public void onProgressChanged(SeekBar seekBar,
-                                          int progress,
-                                          boolean fromUser) {
-                if(fromUser) sliderval = progress / (double)seekBar.getMax();
-            }
-        };
-
-        // set the listener on the slider
-        tempoSeekBar.setOnSeekBarChangeListener(listener);*/
         t = new Thread() {
             public void run() {
                 // set process priority
@@ -81,8 +64,6 @@ public class Metronome extends Activity {
                             ph += twopi * frequency2 / SAMPLE_RATE;
                         }
                         audioTrack.write(samples, 0, samples.length);
-                        metronomeTempo = metronomeTempo + (int)(60 *sliderval);
-                        size = 44100 * 60 / metronomeTempo / 2;
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.d("Size Log", "The current size is " + size);
@@ -171,14 +152,9 @@ public class Metronome extends Activity {
         }
     }
 
-    public void changeTempo() {
-        if (size == 22050) {
-            size = 14700;
-        } else if (size == 14700) {
-            size = 11025;
-        } else if (size == 11025) {
-            size = 22050;
-        }
+    public void changeTempo(int newSize) {
+        metronomeTempo = newSize;
+        size = 44100 * 60 / metronomeTempo / 2;
     }
 
 }

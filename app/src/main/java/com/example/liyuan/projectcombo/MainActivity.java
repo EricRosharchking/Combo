@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -19,15 +20,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
 
 
     Metronome metronome;
-    private AudioThread[] audioThreads = new AudioThread[14];
-    boolean isRunning;
+    Button tempoButton;
+    Button timeSignatureButton;
+    ImageButton UpperOctave;
+    ImageButton LowerOctave;
     ImageButton keyboard;
+    ImageButton recordButton;
     TextView textView;
     TextView recordStatus;
+    private AudioThread[] audioThreads = new AudioThread[14];
+    boolean isRunning;
     final int[] keys = {R.id.cnatural, R.id.csharp, R.id.dnatural, R.id.eflat, R.id.enatural,
             R.id.fnatural, R.id.fsharp, R.id.gnatural, R.id.gsharp, R.id.anatural, R.id.bflat,
             R.id.bnatural, R.id.highcnatural};
@@ -38,13 +44,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
     boolean onRecord;
-    ImageButton recordButton;
     boolean resetScore;
     boolean onHold;
-    Button tempoButton;
-    Button timeSignatureButton;
-    ImageButton UpperOctave;
-    ImageButton LowerOctave;
     int timeSignature;
     double secondsPerBeat;
     boolean onRest;
@@ -141,6 +142,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
             metronome = new Metronome();
+
+            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+            tempoSeekBar.setOnSeekBarChangeListener(this);
 
         }
         catch (NumberFormatException e) {
@@ -357,19 +361,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onTouchEvent(event);
     }
 
-    public void changeTempo(View view) {
-
-        if (timeSignatureButton.getText().equals("60")) {
-            timeSignatureButton.setText("90");
-        } else if (timeSignatureButton.getText().equals("90")) {
-            timeSignatureButton.setText("120");
-        } else if (timeSignatureButton.getText().equals("120")) {
-            timeSignatureButton.setText("60");
-        }
-
-        metronome.changeTempo();
-        Log.d("Tempo Log", "The current Tempo is " + timeSignatureButton.getText());
-    }
+    int progress;
 
     @Override
     protected void onDestroy() {
@@ -391,9 +383,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronome = new Metronome();
             metronome.start();
             metronomeRunning = true;
+            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+            imageButton.setImageResource(R.drawable.stopmetro);
         } else {
             metronome.stop();
             metronomeRunning = false;
+            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+            imageButton.setImageResource(R.drawable.metronome);
         }
 
     }
@@ -448,4 +444,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+            Log.d("SeekBar Log", "The progress is " + progress);
+            this.progress = progress + 60;
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        metronome.changeTempo(this.progress);
+    }
 }
