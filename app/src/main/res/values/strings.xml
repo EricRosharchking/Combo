@@ -33,5 +33,9 @@
     <string name="startmetro"><u>START METRONOME</u></string>
     <string name="timesig3"><u>3/4</u></string>
     <string name="timesig4"><u>4/4</u></string>
-
+    <string name="title_activity_user_main_page">user_mainPage</string>
+    <string name="title_activity_user_main_page">UserMainPage</string>
+    <string name="logout">LOG OUT</string>
+    <string name="createNewSong">CREATE NEW SONG</string>
+    <string name="viewHistory">VIEW HISTORY</string>
 </resources>
