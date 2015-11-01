@@ -91,6 +91,7 @@ public class Note {
     }
 
     public String toString() {
-        return ("Name of the Note is: " + name + ", at Octave "+ octave + ", with Frequency: " + frequency);
+        return (" " + name + octave + " ");
     }
+
 }
