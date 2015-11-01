@@ -111,6 +111,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="5"
                 android:max="60"
+                android:layout_gravity="center_vertical"
                 android:progress="1"/>
 
             <TextView
