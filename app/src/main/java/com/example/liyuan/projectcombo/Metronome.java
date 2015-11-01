@@ -53,7 +53,6 @@ public class Metronome extends Activity {
                 while(isRunning){
                     samples = new short[size];
                     try {
-                        long startTime = System.currentTimeMillis();
                         for (int i = 0; i < samples.length; i++) {
                             samples[i] = (short) (amp * Math.sin(ph));
                             ph += twopi * frequency2 / SAMPLE_RATE;
