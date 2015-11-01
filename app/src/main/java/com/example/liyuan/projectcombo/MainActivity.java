@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,6 +58,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double recordTime;
     DateFormat df;
     Date now;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -82,14 +84,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             UpperOctave.setOnClickListener(this);
             LowerOctave.setOnClickListener(this);
 
-            for(int i :keys) {
+            for (int i : keys) {
                 keyboard = (ImageButton) findViewById(i);
                 keyboard.setOnTouchListener(this);
                 keyboard.setOnClickListener(this);
             }
 
             keyNoteMap = new HashMap<Integer, Integer>();
-            for(int i = 0; i < keys.length; i ++) {
+            for (int i = 0; i < keys.length; i++) {
                 keyNoteMap.put(keys[i], numNotes[i]);
                 Log.d("KeyNoteMap Log", "The Key is " + keys[i]);
                 Log.d("KeyNoteMap Log", "The Note is " + numNotes[i]);
@@ -97,12 +99,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             Log.d("HashMap Log", "The size of KeyNoteMap is " + keyNoteMap.size());
 
-            for (int i = 0; i < Notes.length; i ++) {
+            for (int i = 0; i < Notes.length; i++) {
                 Notes[i] = new Note(i + 1);
                 Log.d("Notes Log", "The note is " + Notes[i].toString());
             }
 
-            AudioManager audioManager = (AudioManager)this.getSystemService(Context.AUDIO_SERVICE);
+            AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
             String buffer = null;
             String rate = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -112,7 +114,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             Log.d("AudioManager Log", "System Output Sample Rate is " + rate);
             Log.d("AudioManager Log", "System Output Frames per Buffer is " + buffer);
-            try{
+            try {
                 Method method = audioManager.getClass().getMethod("getOutputLatency", int.class);
                 Log.d("AudioManager Log", "System Latency is " + method.invoke(audioManager, AudioManager.STREAM_MUSIC));
             } catch (Exception e) {
@@ -121,7 +123,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             isRunning = true;
 
-            for (int i = 1; i < audioThreads.length; i ++) {
+            for (int i = 1; i < audioThreads.length; i++) {
                 audioThreads[i] = new AudioThread(Notes[i - 1]);
             }
 
@@ -148,12 +150,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
 
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
-        }
-        finally {
+        } finally {
             secondsPerBeat = 60.0 / timeSignature;
         }
     }
@@ -202,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
 
-        if ( v.getId() == recordButton.getId()) {
+        if (v.getId() == recordButton.getId()) {
 //            Log.d("ButtonLog","This is the record button");
 //            Log.d("Log","OnRecord is " + onRecord);
             if (onRecord == false) {
@@ -213,7 +213,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 textView.setText(R.string.main_score);
                 startRecordTime = System.currentTimeMillis();
                 restStartTime = startRecordTime;
-                now  = new Date();
+                now = new Date();
                 notesAndRest = "";
                 lengthOfNotesAndRest = notesAndRest;
             } else {
@@ -242,7 +242,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.d("KeyNoteMap Log", "KeyNoteMap State is " + (keyNoteMap == null));
             Log.d("KeyNoteMap Log", "KeyNoteMap.get State is " + keyNoteMap.containsKey(v.getId()));
             if (keyNoteMap != null && keyNoteMap.get(v.getId()) != null) {
-                textView.append( "0 " + keyNoteMap.get(v.getId()) + " ");
+                textView.append("0 " + keyNoteMap.get(v.getId()) + " ");
             }
         } else {
             Log.d("Log", "This is not a button you clicked");
@@ -259,38 +259,52 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double restStartTime;
     double restEndTime;
     double elapse;
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if(v instanceof ImageButton) {
+        if (v instanceof ImageButton) {
 
             int noteID = 1;
             switch (v.getId()) {
                 case R.id.cnatural:
-                    noteID = 1;                break;
+                    noteID = 1;
+                    break;
                 case R.id.csharp:
-                    noteID = 2;                break;
+                    noteID = 2;
+                    break;
                 case R.id.dnatural:
-                    noteID = 3;                break;
+                    noteID = 3;
+                    break;
                 case R.id.eflat:
-                    noteID = 4;                break;
+                    noteID = 4;
+                    break;
                 case R.id.enatural:
-                    noteID = 5;                break;
+                    noteID = 5;
+                    break;
                 case R.id.fnatural:
-                    noteID = 6;                break;
+                    noteID = 6;
+                    break;
                 case R.id.fsharp:
-                    noteID = 7;                break;
+                    noteID = 7;
+                    break;
                 case R.id.gnatural:
-                    noteID = 8;                break;
+                    noteID = 8;
+                    break;
                 case R.id.gsharp:
-                    noteID = 9;                break;
+                    noteID = 9;
+                    break;
                 case R.id.anatural:
-                    noteID = 10;                break;
+                    noteID = 10;
+                    break;
                 case R.id.bflat:
-                    noteID = 11;                break;
+                    noteID = 11;
+                    break;
                 case R.id.bnatural:
-                    noteID = 12;                break;
+                    noteID = 12;
+                    break;
                 case R.id.highcnatural:
-                    noteID = 13;                break;
+                    noteID = 13;
+                    break;
                 default:
                     break;
             }
@@ -350,7 +364,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     elapse = noteEndTime - noteStartTime;
                     elapse /= 1000;
                     //Log.d("TouchLog", "The elapse is " + elapse);
-                    noteBeats = elapse/secondsPerBeat;
+                    noteBeats = elapse / secondsPerBeat;
                     Log.d("BeatsLog", "There are " + noteBeats + " beats in the note");
                     notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + noteBeats;
@@ -368,7 +382,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (AudioThread thread: audioThreads) {
+        for (AudioThread thread : audioThreads) {
             try {
                 thread.join();
             } catch (Exception e) {
@@ -381,7 +395,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     boolean metronomeRunning;
 
     public void startMetronome(View view) {
-        if(metronomeRunning == false) {
+        if (metronomeRunning == false) {
             metronome = new Metronome();
             metronome.start();
             metronomeRunning = true;
@@ -405,19 +419,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
         Log.d("PlayBack Log", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
-        for (int i = 0; i < notesAndRest.split(" ").length; i ++) {
+        for (int i = 0; i < notesAndRest.split(" ").length; i++) {
             Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
         }
         //// TODO: 10/18/2015 Trim the two Strings before split
-        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i ++) {
+        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
             Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
         }
 
-        if (notesAndRest.length() != 0 && notesAndRest.split(" ").length == lengthOfNotesAndRest.split(" ").length ) {
+        if (notesAndRest.length() != 0 && notesAndRest.split(" ").length == lengthOfNotesAndRest.split(" ").length) {
             String[] scoreNotes = notesAndRest.split(" ");
             String[] scoreLength = lengthOfNotesAndRest.split(" ");
             int[] numericNotes = new int[scoreNotes.length];
-            for (int i = 0; i < scoreNotes.length; i ++) {
+            for (int i = 0; i < scoreNotes.length; i++) {
                 numericNotes[i] = Integer.parseInt(scoreNotes[i]);
             }
             //写一下吧write到audioTrack里面 stream
@@ -440,7 +454,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             playBack.start();
             try {
                 playBack.join();
-            } catch (Exception e ) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -449,8 +463,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
-            Log.d("SeekBar Log", "The progress is " + progress);
             this.progress = progress + 60;
+            Log.d("SeekBar Log", "The progress is " + this.progress);
+            seekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+            TextView seekBarValue = (TextView) findViewById(R.id.seekbarvalue);
+            seekBarValue.setText(String.valueOf(this.progress));
         }
     }
 
@@ -463,6 +480,4 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onStopTrackingTouch(SeekBar seekBar) {
         metronome.changeTempo(this.progress);
     }
-
-
 }
