@@ -17,9 +17,12 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
 
+=======
+>>>>>>> origin/master
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,10 +30,15 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
+<<<<<<< HEAD
 
     private SQLiteHandler db;
     private SessionManager session;
     Button btnLogout;
+=======
+
+
+>>>>>>> origin/master
     Metronome metronome;
     Button tempoButton;
     Button timeSignatureButton;
@@ -156,6 +164,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
 
+<<<<<<< HEAD
             btnLogout = (Button) findViewById(R.id.btnLogout);
             // SqLite database handler
             db = new SQLiteHandler(getApplicationContext());
@@ -175,6 +184,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             });
 
+=======
+>>>>>>> origin/master
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
