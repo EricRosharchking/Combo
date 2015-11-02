@@ -1,28 +1,6 @@
 <resources>
-    <string name="app_name">ProjectCombo</string>
+    <string name="app_name">ProjectCambo</string>
     <string name="action_settings">Settings</string>
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-        <string name="noteC">C </string>
-        <string name="noteCs">Cs</string>
-        <string name="noteD">D </string>
-        <string name="noteEb">Eb</string>
-        <string name="noteE">E </string>
-        <string name="noteF">F </string>
-        <string name="noteFs">Fs</string>
-        <string name="noteG">G </string>
-        <string name="noteGs">Gs</string>
-        <string name="noteA">A </string>
-        <string name="noteBb">Bb</string>
-        <string name="noteB">B </string>
-        <string name="main_score">Here is the notes you played</string>
-        <string name="record_status">Not Recording</string>
-        <string name="tempo">4/4</string>
-        <string name="time_signature">60</string>
-    <string name="playBack">PlayBack</string>
-=======
->>>>>>> Stashed changes
     <string name="noteC">C </string>
     <string name="noteCs">Cs</string>
     <string name="noteD">D </string>
@@ -46,15 +24,20 @@
     <string name="password">password</string>
     <string name="Remember_me">Remember me</string>
     <string name="login">login</string>
+    <string name="name">name</string>
     <string name="forgot_password"><u>Forgot password</u></string>
     <string name="Sign_up_now">Sign up now</string>
     <string name="confirm_password">confirm password</string>
     <string name="signup">signup</string>
     <string name="already_have_an_account"><u>Already have an account? Signin now</u></string>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> TJWANG_branch
->>>>>>> Stashed changes
-
+    <string name="play"><u>PLAY</u></string>
+    <string name="startmetro"><u>START METRONOME</u></string>
+    <string name="timesig3"><u>3/4</u></string>
+    <string name="timesig4"><u>4/4</u></string>
+    <string name="title_activity_user_main_page">UserMainPage</string>
+    <string name="logout">LOG OUT</string>
+    <string name="seekbar">60</string>
+    <string name="createNewSong">CREATE NEW SONG</string>
+    <string name="viewHistory">VIEW HISTORY</string>
+    <string name="title_activity_user_main">UserMainActivity</string>
 </resources>

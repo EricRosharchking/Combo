@@ -2,14 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.liyuan.projectcombo" >
 
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
+        android:name=".app.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".welcomePage"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -19,12 +31,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".welcomePage"
-            android:label="@string/title_activity_welcome_page" >
-        </activity>
-        <activity
             android:name=".register"
             android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".UserMainPage"
+            android:label="@string/title_activity_user_main_page" >
         </activity>
     </application>
 

@@ -12,13 +12,24 @@
         <!--android:layout_width="wrap_content "-->
         <!--android:text="email"-->
         <!--android:layout_height="wrap_content" />-->
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/name"
+        android:background="#66FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:paddingLeft="30dp"
+        android:paddingRight="0dp"/>
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginBottom="10dp"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:background="#66FFFFFF"
         android:textColorHint="#FFFFFF"
         android:paddingLeft="30dp"
@@ -58,20 +69,21 @@
         android:paddingRight="0dp"/>
 
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/btnRegister"
         android:text="@string/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:background="#D6A0A0A0"/>
 
-
-    <TextView
+    <Button
+        android:id="@+id/btnLogin"
         android:layout_width="fill_parent"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:text="@string/already_have_an_account"
-        android:id="@+id/signin"
-        android:layout_marginLeft="300dp"
-        android:textColor="#FFFFFF"/>
+        android:textAllCaps="false"
+        android:background="@null"
+    />
 
 </LinearLayout>
