@@ -74,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         try {
             super.onCreate(savedInstanceState);
 
-/*
+
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 Log.d("ActionBar Log", "ActionBar is Null");
             }
-*/
+
 
 
             setContentView(R.layout.activity_main);
