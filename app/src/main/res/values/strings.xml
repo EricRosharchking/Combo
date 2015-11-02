@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectCombo</string>
+    <string name="app_name">ProjectCambo</string>
     <string name="action_settings">Settings</string>
     <string name="noteC">C </string>
     <string name="noteCs">Cs</string>
@@ -24,6 +24,7 @@
     <string name="password">password</string>
     <string name="Remember_me">Remember me</string>
     <string name="login">login</string>
+    <string name="name">name</string>
     <string name="forgot_password"><u>Forgot password</u></string>
     <string name="Sign_up_now">Sign up now</string>
     <string name="confirm_password">confirm password</string>
@@ -33,9 +34,11 @@
     <string name="startmetro"><u>START METRONOME</u></string>
     <string name="timesig3"><u>3/4</u></string>
     <string name="timesig4"><u>4/4</u></string>
-    <string name="title_activity_user_main_page">user_mainPage</string>
+
+    <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="logout">LOG OUT</string>
+    <string name="seekbar">60</string>
     <string name="createNewSong">CREATE NEW SONG</string>
     <string name="viewHistory">VIEW HISTORY</string>
-    <string name="seekbar">60</string>
+    <string name="title_activity_user_main">UserMainActivity</string>
 </resources>

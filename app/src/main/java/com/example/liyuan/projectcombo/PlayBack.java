@@ -70,20 +70,33 @@ public class PlayBack extends Thread{
                         samples = new short[sampleSize];
                         double phase_Index = 0.0;
                         double  frequency = musicScore.get(notesScore[j]);
-                        for (int i = 0; i < sampleSize; i ++) {
-                            samples[i] = (short) (amplitude * Math.sin(phase_Index));
-                            phase_Index += TWO_PI * frequency / SAMPLE_RATE;
-                        }
-                        audioTrack.write(samples, 0, sampleSize);
-                        Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
+                        if (frequency != 0) {
+                            for (int i = 0; i < sampleSize; i ++) {
+                                samples[i] = (short) (amplitude * Math.sin(phase_Index));
+                                phase_Index += TWO_PI * frequency / SAMPLE_RATE;
+                            }
+                            audioTrack.write(samples, 0, sampleSize);
+                            Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
 
-                        samples = new short[22050];
-                        for (int i = 0; i < 22050 && amplitude > 0; i ++) { // 这个Decay的长度要改成跟tempo有关的，八分之一的beat长度
-                            samples[i] = (short) (amplitude * Math.sin(phase_Index));
-                            phase_Index += TWO_PI * frequency / SAMPLE_RATE;
-                            amplitude -= 2;
+
+                            samples = new short[22050];
+                            for (int i = 0; i < 22050 && amplitude > 0; i ++) { // 这个Decay的长度要改成跟tempo有关的，八分之一的beat长度
+                                samples[i] = (short) (amplitude * Math.sin(phase_Index));
+                                phase_Index += TWO_PI * frequency / SAMPLE_RATE;
+                                amplitude -= 2;
+                            }
+                            audioTrack.write(samples, 0, 22050);
+                        } else {
+                            sampleSize -= 22050;
+                            if (sampleSize > 0) {
+                                samples = new short[sampleSize];
+                                for (int i = 0; i < sampleSize; i ++) {
+                                    samples[i] = (short) (amplitude * Math.sin(phase_Index));
+                                    phase_Index += TWO_PI * frequency / SAMPLE_RATE;
+                                }
+                                audioTrack.write(samples, 0, sampleSize);
+                            }
                         }
-                        audioTrack.write(samples, 0, 22050);
                         Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
                     }
                     isRunning = false;

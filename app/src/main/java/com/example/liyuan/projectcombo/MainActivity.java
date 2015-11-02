@@ -1,6 +1,7 @@
 package com.example.liyuan.projectcombo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -15,7 +16,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
+import com.example.liyuan.projectcombo.helper.SQLiteHandler;
+import com.example.liyuan.projectcombo.helper.SessionManager;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
+
+    private SQLiteHandler db;
+    private SessionManager session;
+    Button btnLogout;
 
 
     Metronome metronome;
@@ -149,6 +155,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            // SqLite database handler
+            db = new SQLiteHandler(getApplicationContext());
+
+            // session manager
+            session = new SessionManager(getApplicationContext());
+
+            if (!session.isLoggedIn()) {
+                logoutUser();
+            }
+            // Logout button click event
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logoutUser();
+                }
+            });
 
         } catch (NumberFormatException e) {
             timeSignature = 60;
@@ -156,6 +180,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } finally {
             secondsPerBeat = 60.0 / timeSignature;
         }
+    }
+
+    /**
+     * Logging out the user. Will set isLoggedIn flag to false in shared
+     * preferences Clears the user data from sqlite users table
+     * */
+    private void logoutUser() {
+        session.setLogin(false);
+
+        db.deleteUsers();
+
+        // Launching the login activity
+        Intent intent = new Intent(MainActivity.this, welcomePage.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -480,5 +519,4 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onStopTrackingTouch(SeekBar seekBar) {
         metronome.changeTempo(this.progress);
     }
-
 }

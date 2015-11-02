@@ -120,8 +120,17 @@
                 android:textColor="#FFFFFF"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:gravity="center_vertical"
+                android:gravity="center_vertical|center_horizontal"
                 android:id="@+id/seekbarvalue"/>
+            <Button
+                android:layout_weight="0.07"
+                android:id="@+id/btnLogout"
+                android:layout_width="68dp"
+                android:layout_height="fill_parent"
+                android:text="logout"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"/>
         </LinearLayout>
 
         <LinearLayout

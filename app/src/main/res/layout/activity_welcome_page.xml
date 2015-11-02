@@ -13,11 +13,12 @@
         android:padding="30dp">
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             android:hint="@string/email"
+            android:inputType="textEmailAddress"
             android:background="#66FFFFFF"
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="10dp"
@@ -48,45 +49,24 @@
             android:textColor="#FFFFFF" />
 
         <Button
-            android:id="@+id/login"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
             android:layout_gravity="bottom"
             android:background="#D6A0A0A0"
             android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:background="@null"
+            android:text="Register here"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:id="@+id/forgotpasswordholder">
-
-                <TextView
-                    android:id="@+id/forgotpassword"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/forgot_password"
-                    android:layout_gravity="center"
-                    android:textColor="#FFFFFF"/>
-
-                <TextView
-                    android:id="@+id/signup"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Sign_up_now"
-                    android:paddingLeft="180dp"
-                    android:textColor="#FFFFFF"
-                    android:layout_weight="1" />
-            </LinearLayout>
-        </LinearLayout>
 
 
     </LinearLayout>
