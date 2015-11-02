@@ -71,6 +71,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         try {
             super.onCreate(savedInstanceState);
 
+
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -84,6 +85,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 Log.d("ActionBar Log", "ActionBar is Null");
             }
+
 
             setContentView(R.layout.activity_main);
             UpperOctave = (ImageButton) findViewById(R.id.upoctave);
@@ -175,13 +177,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 logoutUser();
             }
             // Logout button click event
-            btnLogout.setOnClickListener(new View.OnClickListener() {
+            if (btnLogout != null) {
+                btnLogout.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    logoutUser();
-                }
-            });
+                    @Override
+                    public void onClick(View v) {
+                        logoutUser();
+                    }
+                });
+            }
 
         } catch (NumberFormatException e) {
             timeSignature = 60;
