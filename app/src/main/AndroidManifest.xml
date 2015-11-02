@@ -35,15 +35,11 @@
             android:label="@string/title_activity_register" >
         </activity>
         <activity
-<<<<<<< HEAD
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".UserMainPage"
-=======
-            android:name=".user_mainPage"
->>>>>>> origin/master
             android:label="@string/title_activity_user_main_page" >
         </activity>
     </application>
