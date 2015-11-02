@@ -31,6 +31,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     Button btnLogout;
 
 
+    int key;
+
     Metronome metronome;
     Button tempoButton;
     Button timeSignatureButton;
@@ -65,12 +67,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     DateFormat df;
     Date now;
     int octavefordisplay = 4;
+    DisplayThread displayThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
 
+/*
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -85,6 +89,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 Log.d("ActionBar Log", "ActionBar is Null");
             }
+*/
 
 
             setContentView(R.layout.activity_main);
@@ -163,6 +168,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
             metronome = new Metronome();
+
+            displayThread = new DisplayThread();
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
@@ -283,6 +290,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 now = new Date();
                 notesAndRest = "";
                 lengthOfNotesAndRest = notesAndRest;
+
+
+                if (displayThread.getState() != Thread.State.NEW) {
+                    displayThread = new DisplayThread();
+                }
+                displayThread.start();
             } else {
                 recordButton.setImageResource(R.drawable.startbutton);
                 onRecord = false;
@@ -296,7 +309,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 notesAndRest = notesAndRest + " " + "0";
                 lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
                 Log.d("RecordingLog", "The Record Time is " + recordTime);
-                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
+//                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
+
+
+
+                if (displayThread != null) {
+                    displayThread.stopThread();
+                    Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
+                    textView.setText(displayThread.getArchived());
+                    Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
+                }
             }
         }
 
@@ -308,9 +330,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
             Log.d("KeyNoteMap Log", "KeyNoteMap State is " + (keyNoteMap == null));
             Log.d("KeyNoteMap Log", "KeyNoteMap.get State is " + keyNoteMap.containsKey(v.getId()));
-            if (keyNoteMap != null && keyNoteMap.get(v.getId()) != null) {
+            /*if (keyNoteMap != null && keyNoteMap.get(v.getId()) != null) {
                 textView.append("0 " + keyNoteMap.get(v.getId()) + " ");
-            }
+            }*/
         } else {
             Log.d("Log", "This is not a button you clicked");
         }
@@ -379,6 +401,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (event.getAction() == MotionEvent.ACTION_DOWN) {                                     //just press the key
                 if (onRecord == true) {
 
+
+                    key = noteID;
+                    if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
+                        displayThread.update(key);
+                    }
+
                     if (Notes[noteID - 1] != null) {
                         Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
                     }
@@ -422,6 +450,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 audioThreads[noteID].stopPlaying();
                 if (onRecord == true) {
 
+                    key = 0;
+                    if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
+                        displayThread.update(key);
+                    }
 
                     audioThreads[noteID].stopPlaying();
 
@@ -441,6 +473,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         Log.d("The score should be", notesAndRest);
         Log.d("The length of it is", lengthOfNotesAndRest);
+        textView.setText(displayThread.getDisplay());
         return super.onTouchEvent(event);
     }
 
