@@ -64,6 +64,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double recordTime;
     DateFormat df;
     Date now;
+    int octavefordisplay = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +105,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             Log.d("HashMap Log", "The size of KeyNoteMap is " + keyNoteMap.size());
-
+//            TextView keyBoardOctave = (TextView) findViewById(R.id.keyboardOctave);
+//            String keyboardNameDisplay = "";
             for (int i = 0; i < Notes.length; i++) {
                 Notes[i] = new Note(i + 1);
                 Log.d("Notes Log", "The note is " + Notes[i].toString());
+//                if (i == 0) {
+//                    keyboardNameDisplay = Notes[i].toString();
+//                } else {
+//                    keyboardNameDisplay = keyboardNameDisplay + " " + Notes[i].toString();
+//                    Log.d("Notes Log", "The note is " + Notes[i].toString());
+//                    keyBoardOctave.setText(keyboardNameDisplay);
+//                }
             }
 
             AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
@@ -224,18 +233,33 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void onClick(View v) {
 //        Log.d("ButtonLog", "the button you clicked is " + v.getId());
-
+//        TextView keyBoardOctave1 = (TextView) findViewById(R.id.keyboardOctave);
+        String keyboardNameDisplay = "";
+        TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
         if (audioThreads != null) {
             if (v.getId() == R.id.upoctave) {
-                for (Note note : Notes) {
-                    if (note != null) {
-                        note.upOctave();
+                if (octavefordisplay <= 4) {
+
+                    octavefordisplay = octavefordisplay + 1;
+                    keyBoardOctave2.setText("C"+String.valueOf(octavefordisplay));
+                    for (Note note : Notes) {
+                        if (note != null) {
+                            note.upOctave();
+                        }
+//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
+//                        keyBoardOctave1.setText(keyboardNameDisplay);
                     }
                 }
             } else if (v.getId() == R.id.loweroctave) {
-                for (Note note : Notes) {
-                    if (note != null) {
-                        note.lowerOctave();
+                if (octavefordisplay >= 4) {
+                    octavefordisplay = octavefordisplay - 1;
+                    keyBoardOctave2.setText("C"+String.valueOf(octavefordisplay));
+                    for (Note note : Notes) {
+                        if (note != null) {
+                            note.lowerOctave();
+                        }
+//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
+//                        keyBoardOctave1.setText(keyboardNameDisplay);
                     }
                 }
             }
