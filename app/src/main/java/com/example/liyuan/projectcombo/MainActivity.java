@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private SessionManager session;
     Button btnLogout;
 
-
+    Button buttonBack;
     Metronome metronome;
     Button tempoButton;
     Button timeSignatureButton;
@@ -166,6 +166,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
+            buttonBack = (Button) findViewById(R.id.buttonBack);
+
             btnLogout = (Button) findViewById(R.id.btnLogout);
             // SqLite database handler
             db = new SQLiteHandler(getApplicationContext());
@@ -187,6 +189,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 });
             }
 
+            buttonBack.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(),
+                            UserMainPage.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
@@ -205,7 +216,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         db.deleteUsers();
 
         // Launching the login activity
-        Intent intent = new Intent(MainActivity.this, welcomePage.class);
+        Intent intent = new Intent(MainActivity.this, UserMainPage.class);
         startActivity(intent);
         finish();
     }

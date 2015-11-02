@@ -58,7 +58,7 @@ public class welcomePage extends Activity {
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(welcomePage.this, MainActivity.class);
+            Intent intent = new Intent(welcomePage.this, UserMainPage.class);
             startActivity(intent);
             finish();
         }
@@ -137,7 +137,7 @@ public class welcomePage extends Activity {
 
                         // Launch main activity
                         Intent intent = new Intent(welcomePage.this,
-                                MainActivity.class);
+                                UserMainPage.class);
                         startActivity(intent);
                         finish();
                     } else {

@@ -38,6 +38,7 @@
 
     <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="logout">LOG OUT</string>
+    <string name="back">BACK</string>
     <string name="createNewSong">CREATE NEW SONG</string>
     <string name="viewHistory">VIEW HISTORY</string>
     <string name="seekbar">60</string>

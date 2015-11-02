@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/welcomepage"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingLeft="70dp"
     android:paddingRight="70dp">
 
