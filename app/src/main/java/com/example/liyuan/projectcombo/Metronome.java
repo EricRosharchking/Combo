@@ -8,20 +8,26 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 /**
  * Created by Liyuan on 10/17/2015.
  */
-public class Metronome {
+public class Metronome extends Activity {
+
     private final int SAMPLE_RATE = 44100;
     boolean isRunning = true;
     int size = 22050;
     private final double frequency1 = 659.3f;
     private final double frequency2 = 261.1f;
     Thread t;
+    double sliderval;
+    int metronomeTempo;
+    SeekBar tempoSeekBar;
 
 
     public Metronome() {
+
         t = new Thread() {
             public void run() {
                 // set process priority
@@ -36,7 +42,7 @@ public class Metronome {
                         AudioTrack.MODE_STREAM);
 
                 short samples[];
-                int amp = 10000;
+                int amp = 20000;
                 double twopi = 2 * Math.PI;
                 double ph = 0.0;
 
@@ -47,7 +53,6 @@ public class Metronome {
                 while(isRunning){
                     samples = new short[size];
                     try {
-                        long startTime = System.currentTimeMillis();
                         for (int i = 0; i < samples.length; i++) {
                             samples[i] = (short) (amp * Math.sin(ph));
                             ph += twopi * frequency2 / SAMPLE_RATE;
@@ -83,6 +88,54 @@ public class Metronome {
     public void start() {
         if (t != null) {
             t.start();
+        } else {
+            t = new Thread() {
+                public void run() {
+                    // set process priority
+                    setPriority(Thread.MAX_PRIORITY);
+                    // set the buffer size
+                    int buffsize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
+                            AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+                    // create an audiotrack object
+                    AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                            SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
+                            AudioFormat.ENCODING_PCM_16BIT, SAMPLE_RATE,
+                            AudioTrack.MODE_STREAM);
+
+                    short samples[];
+                    double amp = 32768.0;
+                    double twopi = 2 * Math.PI;
+                    double ph = 0.0;
+
+                    // start audio
+                    audioTrack.play();
+
+                    // synthesis loop
+                    while(isRunning){
+                        samples = new short[size];
+                        try {
+                            long startTime = System.currentTimeMillis();
+                            for (int i = 0; i < samples.length; i++) {
+                                samples[i] = (short) (amp * Math.sin(ph));
+                                ph += twopi * frequency2 / SAMPLE_RATE;
+                            }
+                            audioTrack.write(samples, 0, samples.length);
+                            for (int i = 0; i < samples.length; i++) {
+                                samples[i] = 0;
+                                ph += twopi * frequency2 / SAMPLE_RATE;
+                            }
+                            audioTrack.write(samples, 0, samples.length);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.d("Size Log", "The current size is " + size);
+                            Log.d("Size Log", "The sample size is " + samples.length);
+                            break;
+                        }
+                    }
+                    audioTrack.stop();
+                    audioTrack.release();
+                }
+            };
         }
     }
 
@@ -98,14 +151,9 @@ public class Metronome {
         }
     }
 
-    public void changeTempo() {
-        if (size == 22050) {
-            size = 14700;
-        } else if (size == 14700) {
-            size = 11025;
-        } else if (size == 11025) {
-            size = 22050;
-        }
+    public void changeTempo(int newSize) {
+        metronomeTempo = newSize;
+        size = 44100 * 60 / metronomeTempo / 2;
     }
 
 }

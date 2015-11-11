@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/welcomepage"
+    android:orientation="vertical"
+    android:paddingLeft="70dp"
+    android:paddingRight="70dp">
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <LinearLayout
+            android:id="@+id/userholder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/createNewSong"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="#99FFFFFF"
+                android:text="@string/createNewSong"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+
+            <Button
+                android:id="@+id/viewHistory"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:background="#99FFFFFF"
+                android:text="@string/viewHistory"
+                android:textColor="#FFFFFF"
+                android:textIsSelectable="false"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/logoutholder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="20dp"
+                android:background="#00FFFFFF"
+                android:text="@string/logout"
+                android:textColor="#FFFFFF"
+                android:textIsSelectable="false"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
