@@ -90,5 +90,8 @@ public class DisplayThread extends Thread {
         this.timeSignature = timeSignature;
         barTime = timeSignature * 1000;
         displayTime = barTime * 4;
+        Log.d("DisplayThread Log", "The current timeSignature is " + timeSignature);
+        Log.d("DisplayThread Log", "The current barTime is " + barTime);
+        Log.d("DisplayThread Log", "The current displayTime is " + displayTime);
     }
 }

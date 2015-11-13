@@ -88,7 +88,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:checked="true"
+                        android:checked="false"
                         android:text="@string/timesig3"
                         android:textColor="#FFFFFF"
                         android:onClick="onRadioButtonClick"/>
@@ -100,7 +100,7 @@
                         android:layout_weight="1"
                         android:text="@string/timesig4"
                         android:textColor="#FFFFFF"
-                        android:checked="false"
+                        android:checked="true"
                         android:onClick="onRadioButtonClick"/>
 
                 </RadioGroup>
