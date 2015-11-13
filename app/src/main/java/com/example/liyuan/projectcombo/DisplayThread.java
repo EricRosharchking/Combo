@@ -14,7 +14,8 @@ public class DisplayThread extends Thread {
     private String archived;
     private int key;
     private int lastKey;
-
+    private int barTime;
+    private int displayTime;
 
     public DisplayThread() {
         timeSignature = 4;
@@ -24,7 +25,8 @@ public class DisplayThread extends Thread {
         isRunning = true;
         key = 0;
         lastKey = -1;
-
+        barTime = timeSignature * 1000;
+        displayTime = barTime * 4;
 
     }
 
@@ -48,9 +50,9 @@ public class DisplayThread extends Thread {
                 Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
                 Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
                 Log.d("DisplayThread Log", "The display is " + display);
-                if ((elapsedTime % 4000) == 0) {
+                if ((elapsedTime % barTime) == 0) {
                     display = display + "|";
-                    if ((elapsedTime % 16000) == 0) {
+                    if ((elapsedTime % displayTime) == 0) {
                         archived += display;
                         display = "";
                     }
@@ -82,5 +84,11 @@ public class DisplayThread extends Thread {
     }
     public void update(int strike) {
         key = strike;
+    }
+
+    public void setTimeSignature(int timeSignature) {
+        this.timeSignature = timeSignature;
+        barTime = timeSignature * 1000;
+        displayTime = barTime * 4;
     }
 }

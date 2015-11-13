@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
@@ -33,6 +34,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     int key;
 
+    RadioButton radioButton;
     Metronome metronome;
     Button tempoButton;
     Button timeSignatureButton;
@@ -68,6 +70,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     Date now;
     int octavefordisplay = 4;
     DisplayThread displayThread;
+
+    int tempo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +172,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
             metronome = new Metronome();
+
+            tempo = 3;
 
             displayThread = new DisplayThread();
 
@@ -340,6 +346,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if(v.getId() == R.id.time_signature) {
 
         }*/
+    }
+
+
+    public void onRadioButtonClick(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.tempo3:
+                if (checked)
+                    tempo = 3;
+                    break;
+            case R.id.tempo4:
+                if (checked)
+                    tempo = 4;
+                    break;
+        }
+        if (metronome != null) {
+            metronome.changeTimeSignature(tempo);
+        }
+
+        if (displayThread != null) {
+            displayThread.setTimeSignature(tempo);
+        }
     }
 
     double noteStartTime;
