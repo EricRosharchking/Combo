@@ -193,12 +193,25 @@ public class register extends ActionBarActivity {
             pDialog.show();
     }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
 
+    private void hideDialog() {
+        if(pDialog != null){
+            if(pDialog.isShowing()){
+                pDialog.dismiss();
+                pDialog = null;
+            }
+        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        if((pDialog != null) && pDialog.isShowing() ){
+            pDialog.dismiss();
+            pDialog = null;
+        }
+
+    }
 
 }

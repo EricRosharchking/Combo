@@ -17,7 +17,10 @@ public class Metronome extends Activity {
 
     private final int SAMPLE_RATE = 44100;
     boolean isRunning = true;
-    int size = 22050;
+    int sound  = 4410;
+    int count;
+    int timeSignature;
+    int size = 44100;
     private final double frequency1 = 659.3f;
     private final double frequency2 = 261.1f;
     Thread t;
@@ -27,7 +30,7 @@ public class Metronome extends Activity {
 
 
     public Metronome() {
-
+        timeSignature = 4;
         t = new Thread() {
             public void run() {
                 // set process priority
@@ -46,23 +49,39 @@ public class Metronome extends Activity {
                 double twopi = 2 * Math.PI;
                 double ph = 0.0;
 
+                double frequency = frequency1;
                 // start audio
                 audioTrack.play();
+                count = 1;
 
                 // synthesis loop
                 while(isRunning){
+                    if (count == 1) {
+                        frequency = frequency1;
+                        count = 2;
+                        Log.d("Metronome Count Log" , "Count is " + count);
+                    } else {
+                        frequency = frequency2;
+                        if (count < timeSignature) {
+                            count ++;
+                            Log.d("Metronome Count Log", "Count is " + count);
+                        } else {
+                            count = 1;
+                            Log.d("Metronome Count Log", "Count is " + timeSignature);
+                        }
+                    }
                     samples = new short[size];
                     try {
-                        for (int i = 0; i < samples.length; i++) {
+                        for (int i = 0; i < sound; i++) {
                             samples[i] = (short) (amp * Math.sin(ph));
-                            ph += twopi * frequency2 / SAMPLE_RATE;
+                            ph += twopi * frequency / SAMPLE_RATE;
                         }
-                        audioTrack.write(samples, 0, samples.length);
-                        for (int i = 0; i < samples.length; i++) {
+                        for (int i = sound; i < samples.length; i++) {
                             samples[i] = 0;
-                            ph += twopi * frequency2 / SAMPLE_RATE;
                         }
                         audioTrack.write(samples, 0, samples.length);
+                        Log.d("Metronome Log", "The volume is " + count);
+                        Log.d("Metronome Log", "The frequency is " + frequency);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.d("Size Log", "The current size is " + size);
@@ -76,12 +95,6 @@ public class Metronome extends Activity {
         };
     }
 
-    public void startMetronome() {
-    }
-
-    public void prepare() {
-
-    }
 
 
 
@@ -106,25 +119,39 @@ public class Metronome extends Activity {
                     double amp = 32768.0;
                     double twopi = 2 * Math.PI;
                     double ph = 0.0;
+                    double frequency = frequency1;
 
                     // start audio
                     audioTrack.play();
 
                     // synthesis loop
                     while(isRunning){
+                        if (count == 1) {
+                            frequency = frequency1;
+                            count = 2;
+                            Log.d("Metronome Count Log" , "Count is " + count);
+                        } else {
+                            frequency = frequency2;
+                            if (count < timeSignature) {
+                                count ++;
+                                Log.d("Metronome Count Log", "Count is " + count);
+                            } else {
+                                count = 1;
+                                Log.d("Metronome Count Log", "Count is " + timeSignature);
+                            }
+                        }
                         samples = new short[size];
                         try {
-                            long startTime = System.currentTimeMillis();
-                            for (int i = 0; i < samples.length; i++) {
+                            for (int i = 0; i < sound; i++) {
                                 samples[i] = (short) (amp * Math.sin(ph));
-                                ph += twopi * frequency2 / SAMPLE_RATE;
+                                ph += twopi * frequency / SAMPLE_RATE;
                             }
-                            audioTrack.write(samples, 0, samples.length);
-                            for (int i = 0; i < samples.length; i++) {
+                            for (int i = sound; i < samples.length; i++) {
                                 samples[i] = 0;
-                                ph += twopi * frequency2 / SAMPLE_RATE;
                             }
                             audioTrack.write(samples, 0, samples.length);
+                            Log.d("Metronome Log", "The volume is " + count);
+                            Log.d("Metronome Log", "The frequency is " + frequency);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.d("Size Log", "The current size is " + size);
@@ -154,6 +181,10 @@ public class Metronome extends Activity {
     public void changeTempo(int newSize) {
         metronomeTempo = newSize;
         size = 44100 * 60 / metronomeTempo / 2;
+    }
+
+    public void changeTimeSignature(int timeSignature) {
+        this.timeSignature = timeSignature;
     }
 
 }

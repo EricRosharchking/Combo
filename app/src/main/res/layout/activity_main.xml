@@ -88,18 +88,20 @@
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:checked="true"
+                        android:checked="false"
                         android:text="@string/timesig3"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:onClick="onRadioButtonClick"/>
 
                     <RadioButton
-
                         android:id="@+id/tempo4"
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:text="@string/timesig4"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#FFFFFF"
+                        android:checked="true"
+                        android:onClick="onRadioButtonClick"/>
 
                 </RadioGroup>
             </LinearLayout>
@@ -116,7 +118,7 @@
 
             <TextView
                 android:text="@string/seekbar"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:textColor="#FFFFFF"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
@@ -124,11 +126,12 @@
                 android:id="@+id/seekbarvalue" />
             <Button
                 android:layout_weight="0.07"
-                android:id="@+id/btnLogout"
+                android:id="@+id/buttonBack"
                 android:layout_width="68dp"
                 android:background="#484848"
-                android:layout_height="fill_parent"
-                android:text="@string/logout"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/back"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="15dp"/>

@@ -14,10 +14,21 @@ public class UserMainPage extends ActionBarActivity {
     private SQLiteHandler db;
     private SessionManager session;
     Button btnLogout;
+    Button createNewSong;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main_page);
+        createNewSong = (Button)findViewById(R.id.createNewSong);
+        createNewSong.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
         btnLogout = (Button) findViewById(R.id.btnLogout);
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -36,6 +47,7 @@ public class UserMainPage extends ActionBarActivity {
                 logoutUser();
             }
         });
+
     }
 
     /**
