@@ -73,9 +73,9 @@
                 android:src="@drawable/metronome" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="0.15">
+                android:layout_weight="1.5">
 
                 <RadioGroup
                     android:id="@+id/timeSigRadioGroup"
@@ -89,19 +89,19 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:checked="false"
+                        android:onClick="onRadioButtonClick"
                         android:text="@string/timesig3"
-                        android:textColor="#FFFFFF"
-                        android:onClick="onRadioButtonClick"/>
+                        android:textColor="#FFFFFF" />
 
                     <RadioButton
                         android:id="@+id/tempo4"
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="@string/timesig4"
-                        android:textColor="#FFFFFF"
                         android:checked="true"
-                        android:onClick="onRadioButtonClick"/>
+                        android:onClick="onRadioButtonClick"
+                        android:text="@string/timesig4"
+                        android:textColor="#FFFFFF" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -110,31 +110,32 @@
                 android:id="@+id/tempoSeekBar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="2.9"
                 android:max="60"
-                android:layout_gravity="center_vertical"
                 android:progress="1" />
 
             <TextView
-                android:text="@string/seekbar"
-                android:layout_weight="0.6"
-                android:textColor="#FFFFFF"
+                android:id="@+id/seekbarvalue"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
+                android:layout_weight="0.6"
                 android:gravity="center_vertical"
-                android:id="@+id/seekbarvalue" />
+                android:text="@string/seekbar"
+                android:textColor="#FFFFFF" />
+
             <Button
-                android:layout_weight="0.07"
                 android:id="@+id/buttonBack"
                 android:layout_width="68dp"
-                android:background="#484848"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="0.07"
+                android:background="#484848"
                 android:text="@string/back"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -151,15 +152,17 @@
                 android:background="#00FFFFFF"
                 android:scaleType="fitXY"
                 android:src="@drawable/down" />
+
             <TextView
                 android:id="@+id/keyboardOctave2"
-                android:text="@string/keyboard2"
-                android:gravity="left|center_vertical"
                 android:layout_width="50dp"
-                android:textStyle="bold"
                 android:layout_height="50dp"
+                android:gravity="left|center_vertical"
+                android:text="@string/keyboard2"
+                android:textColor="#009999"
                 android:textSize="30sp"
-                android:textColor="#009999" />
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/main_score"
                 android:layout_width="0dp"
@@ -206,7 +209,7 @@
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey1"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteC" />
 
                     <ImageButton
@@ -216,7 +219,7 @@
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey2"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteD" />
 
                     <ImageButton
@@ -227,7 +230,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey3"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteE" />
 
                     <ImageButton
@@ -238,7 +241,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey1"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteF" />
 
                     <ImageButton
@@ -249,7 +252,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey2"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteG" />
 
                     <ImageButton
@@ -260,7 +263,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey2"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteA" />
 
                     <ImageButton
@@ -271,7 +274,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey3"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteB" />
 
                     <ImageButton
@@ -282,322 +285,629 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey1"
+                        android:src="@drawable/whitekey"
                         android:text="@string/noteC" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/black_keys"
+                    android:id="@+id/black_keyboard"
                     android:layout_width="fill_parent"
-                    android:layout_height="130dp"
-                    android:layout_gravity="top"
-                    android:gravity="top">
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/csharp"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="43dp"
+                    <LinearLayout
+                        android:id="@+id/black_keys"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="top"
+                        android:layout_weight="1.5"
+                        android:gravity="top">
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageButton
+                            android:id="@+id/csharp"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteCs" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageButton
+                            android:id="@+id/eflat"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteEb" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="4"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageButton
+                            android:id="@+id/fsharp"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteFs" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageButton
+                            android:id="@+id/gsharp"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteGs" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageButton
+                            android:id="@+id/bflat"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteBb" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="4"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageButton
+                            android:id="@+id/highcsharp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/highcsharp"
+                            android:text="@string/noteBb" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/black_keys_plusspace"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="bottom"
                         android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteCs" />
+                        android:orientation="horizontal"></LinearLayout>
+                    <!--
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/eflat"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="27dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteEb" />
+                                        <LinearLayout
+                                            android:id="@+id/black_keys"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1.5"
+                                            android:layout_gravity="top"
+                                            android:gravity="top">
 
-                    <ImageButton
-                        android:id="@+id/fsharp"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="100dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteFs" />
+                                            <ImageButton
+                                                android:id="@+id/csharp"
+                                                android:layout_width="0dp"
+                                                android:layout_height="fill_parent"
+                                                android:layout_marginLeft="0dp"
+                                                android:layout_marginStart="43dp"
+                                                android:layout_weight="1"
+                                                android:background="#00FFFFFF"
+                                                android:padding="0dp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/blackkey"
+                                                android:text="@string/noteCs" />
 
-                    <ImageButton
-                        android:id="@+id/gsharp"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteGs" />
+                                            <ImageButton
+                                                android:id="@+id/eflat"
+                                                android:layout_width="0dp"
+                                                android:layout_height="fill_parent"
+                                                android:layout_marginLeft="0dp"
+                                                android:layout_marginStart="27dp"
+                                                android:layout_weight="1"
+                                                android:background="#00FFFFFF"
+                                                android:padding="0dp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/blackkey"
+                                                android:text="@string/noteEb" />
 
-                    <ImageButton
-                        android:id="@+id/bflat"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteBb" />
+                                            <ImageButton
+                                                android:id="@+id/fsharp"
+                                                android:layout_width="0dp"
+                                                android:layout_height="fill_parent"
+                                                android:layout_marginLeft="0dp"
+                                                android:layout_marginStart="100dp"
+                                                android:layout_weight="1"
+                                                android:background="#00FFFFFF"
+                                                android:padding="0dp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/blackkey"
+                                                android:text="@string/noteFs" />
 
-                    <ImageButton
-                        android:id="@+id/highcsharp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="100dp"
-                        android:layout_marginStart="100dp"
-                        android:layout_weight="0.5"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/highcsharp"
-                        android:text="@string/noteBb" />
+                                            <ImageButton
+                                                android:id="@+id/gsharp"
+                                                android:layout_width="0dp"
+                                                android:layout_height="fill_parent"
+                                                android:layout_marginLeft="0dp"
+                                                android:layout_marginStart="24dp"
+                                                android:layout_weight="1"
+                                                android:background="#00FFFFFF"
+                                                android:padding="0dp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/blackkey"
+                                                android:text="@string/noteGs" />
+
+                                            <ImageButton
+                                                android:id="@+id/bflat"
+                                                android:layout_width="0dp"
+                                                android:layout_height="fill_parent"
+                                                android:layout_marginLeft="0dp"
+                                                android:layout_marginStart="24dp"
+                                                android:layout_weight="1"
+                                                android:background="#00FFFFFF"
+                                                android:padding="0dp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/blackkey"
+                                                android:text="@string/noteBb" />
+
+                                            <ImageButton
+                                                android:id="@+id/highcsharp"
+                                                android:layout_width="0dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_marginLeft="100dp"
+                                                android:layout_marginStart="100dp"
+                                                android:layout_weight="0.5"
+                                                android:background="#00FFFFFF"
+                                                android:padding="0dp"
+                                                android:scaleType="fitXY"
+                                                android:src="@drawable/highcsharp"
+                                                android:text="@string/noteBb" />
+                                        </LinearLayout>-->
+
+
                 </LinearLayout>
-                <!--<TextView-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/keyboardOctave"-->
-                <!--android:text="@string/keyboard"-->
-                <!--android:textSize="20sp"-->
-                <!--android:layout_alignParentBottom="false" />-->
+
                 <LinearLayout
                     android:id="@+id/white_keys_text"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/cnatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:scaleType="fitXY"
-                        android:textSize="25sp"
+                        android:text="@string/noteC"
                         android:textColor="#686868"
-                        android:text="@string/noteC" />
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/dnatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:scaleType="fitXY"
-                        android:textSize="25sp"
+                        android:text="@string/noteD"
                         android:textColor="#686868"
-                        android:text="@string/noteD" />
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/enatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:textSize="25sp"
+                        android:text="@string/noteE"
                         android:textColor="#686868"
-                        android:text="@string/noteE" />
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/fnatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:textSize="25sp"
+                        android:text="@string/noteF"
                         android:textColor="#686868"
-                        android:text="@string/noteF" />
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/gnatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:textSize="25sp"
+                        android:text="@string/noteG"
                         android:textColor="#686868"
-                        android:text="@string/noteG" />
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/anatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:padding="0dp"
-                        android:textSize="25sp"
-                        android:textColor="#686868"
                         android:scaleType="fitXY"
-                        android:text="@string/noteA" />
+                        android:text="@string/noteA"
+                        android:textColor="#686868"
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/bnatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:padding="0dp"
-                        android:textSize="25sp"
-                        android:textColor="#686868"
                         android:scaleType="fitXY"
-                        android:text="@string/noteB" />
+                        android:text="@string/noteB"
+                        android:textColor="#686868"
+                        android:textSize="25sp" />
 
                     <TextView
-                        android:gravity="bottom|center_horizontal"
                         android:id="@+id/highcnatural_text"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
+                        android:gravity="bottom|center_horizontal"
                         android:padding="0dp"
-                        android:textSize="25sp"
-                        android:textColor="#686868"
                         android:scaleType="fitXY"
-                        android:text="@string/noteC" />
+                        android:text="@string/noteC"
+                        android:textColor="#686868"
+                        android:textSize="25sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/black_keys_Text"
+                    android:id="@+id/black_keyboard_text"
                     android:layout_width="fill_parent"
-                    android:layout_height="130dp"
-                    android:layout_gravity="top"
-                    android:gravity="top">
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:gravity="bottom|center_horizontal"
-                        android:textSize="20sp"
-                        android:textColor="#888888"
-                        android:id="@+id/csharp_Text"
-                        android:layout_marginBottom="18dp"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="43dp"
+                    <LinearLayout
+                        android:id="@+id/black_keys_Text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="top"
+                        android:layout_weight="1.1"
+                        android:gravity="top">
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/csharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteCs"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/eflat_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteEb"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="4"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/fsharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteFs"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/gsharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteGs"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/bflat_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteBb"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="4"
+                            android:background="#00FFFFFF"
+                            android:padding="0dp"
+                            android:scaleType="fitXY" />
+
+                        <TextView
+                            android:id="@+id/highcsharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/highcsharp"
+                            android:text="@string/highcsharp"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/black_keys_text_space"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteCs" />
-
-                    <TextView
-                        android:gravity="bottom|center_horizontal"
-                        android:textSize="20sp"
-                        android:layout_marginBottom="18dp"
-                        android:textColor="#888888"
-                        android:id="@+id/eflat_Text"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="27dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteEb" />
-
-                    <TextView
-                        android:gravity="bottom|center_horizontal"
-                        android:textSize="20sp"
-                        android:layout_marginBottom="18dp"
-                        android:textColor="#888888"
-                        android:id="@+id/fsharp_Text"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="100dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteFs" />
-
-                    <TextView
-                        android:gravity="bottom|center_horizontal"
-                        android:textSize="20sp"
-                        android:layout_marginBottom="18dp"
-                        android:textColor="#888888"
-                        android:id="@+id/gsharp_Text"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteGs" />
-
-                    <TextView
-                        android:gravity="bottom|center_horizontal"
-                        android:textSize="20sp"
-                        android:layout_marginBottom="18dp"
-                        android:textColor="#888888"
-                        android:id="@+id/bflat_Text"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_weight="1"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/blackkey"
-                        android:text="@string/noteBb" />
-
-                    <TextView
-                        android:gravity="bottom|center_horizontal"
-                        android:textSize="20sp"
-                        android:textColor="#888888"
-                        android:layout_marginBottom="18dp"
-                        android:id="@+id/highcsharp_Text"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="100dp"
-                        android:layout_marginStart="100dp"
-                        android:layout_weight="0.5"
-                        android:background="#00FFFFFF"
-                        android:padding="0dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/highcsharp"
-                        android:text="@string/highcsharp" />
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal">
+                    </LinearLayout>
                 </LinearLayout>
+                <!--<LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/black_keys_Text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3"
+                        android:layout_gravity="top"
+                        android:gravity="top">
 
+                        <TextView
+                            android:id="@+id/csharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginStart="43dp"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteCs"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/eflat_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginStart="27dp"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteEb"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/fsharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginStart="100dp"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteFs"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/gsharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteGs"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/bflat_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_weight="1"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/blackkey"
+                            android:text="@string/noteBb"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/highcsharp_Text"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="18dp"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginStart="100dp"
+                            android:layout_weight="0.5"
+                            android:background="#00FFFFFF"
+                            android:gravity="bottom|center_horizontal"
+                            android:padding="0dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/highcsharp"
+                            android:text="@string/highcsharp"
+                            android:textColor="#888888"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/black_keys_text_space"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal">
+                    </LinearLayout>
+                </LinearLayout>-->
 
             </RelativeLayout>
         </LinearLayout>
