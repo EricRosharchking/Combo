@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         try {
             super.onCreate(savedInstanceState);
 
-/*
+
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -93,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 Log.d("ActionBar Log", "ActionBar is Null");
             }
-*/
+
 
 
             setContentView(R.layout.activity_main);
@@ -173,7 +173,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronomeRunning = false;
             metronome = new Metronome();
 
-            tempo = 3;
+            tempo = 4;
 
             displayThread = new DisplayThread();
 
@@ -301,6 +301,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (displayThread.getState() != Thread.State.NEW) {
                     displayThread = new DisplayThread();
                 }
+                displayThread.setTimeSignature(getTempo());
                 displayThread.start();
             } else {
                 recordButton.setImageResource(R.drawable.startbutton);
@@ -363,13 +364,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     tempo = 4;
                     break;
         }
-        if (metronome != null) {
+        /*if (metronome != null) {
+            metronome.changeTimeSignature(tempo);
+        } else {
+            metronome = new Metronome();
             metronome.changeTimeSignature(tempo);
         }
 
         if (displayThread != null) {
             displayThread.setTimeSignature(tempo);
-        }
+        } else {
+            displayThread = new DisplayThread();
+            displayThread.setTimeSignature(tempo);
+        }*/
     }
 
     double noteStartTime;
@@ -526,8 +533,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void startMetronome(View view) {
         if (metronomeRunning == false) {
-            metronome = new Metronome();
-            metronome.start();
+            if  (metronome != null) {
+                metronome.start();
+            } else {
+                metronome = new Metronome();
+                metronome.start();
+            }
             metronomeRunning = true;
             ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
             imageButton.setImageResource(R.drawable.stopmetro);
@@ -609,5 +620,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         metronome.changeTempo(this.progress);
+    }
+
+    private int getTempo() {
+        if (new Integer(tempo) == null) {
+            tempo = 4;
+        }
+        return tempo;
     }
 }

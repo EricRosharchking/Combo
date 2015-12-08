@@ -57,6 +57,9 @@ public class DisplayThread extends Thread {
                         display = "";
                     }
                 }
+                Log.d("Debug Log", "TimeSignature is " + timeSignature);
+                Log.d("Debug Log", "BarTime is " + barTime);
+                Log.d("Debug Log", "DisplayTime is " + displayTime);
             }
         }
         Log.d("DisplayThread Log", "Length of Archived is " + archived.length());
