@@ -209,7 +209,7 @@
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteC" />
 
                     <ImageButton
@@ -219,7 +219,7 @@
                         android:layout_weight="1"
                         android:background="#00FFFFFF"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteD" />
 
                     <ImageButton
@@ -230,7 +230,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteE" />
 
                     <ImageButton
@@ -241,7 +241,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteF" />
 
                     <ImageButton
@@ -252,7 +252,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteG" />
 
                     <ImageButton
@@ -263,7 +263,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteA" />
 
                     <ImageButton
@@ -274,7 +274,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteB" />
 
                     <ImageButton
@@ -285,7 +285,7 @@
                         android:background="#00FFFFFF"
                         android:padding="0dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/whitekey"
+                        android:src="@drawable/selector"
                         android:text="@string/noteC" />
 
                 </LinearLayout>
@@ -320,7 +320,7 @@
                             android:background="#00FFFFFF"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteCs" />
 
                         <ImageButton
@@ -339,7 +339,7 @@
                             android:background="#00FFFFFF"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteEb" />
 
                         <ImageButton
@@ -358,7 +358,7 @@
                             android:background="#00FFFFFF"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteFs" />
 
                         <ImageButton
@@ -377,7 +377,7 @@
                             android:background="#00FFFFFF"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteGs" />
 
                         <ImageButton
@@ -396,7 +396,7 @@
                             android:background="#00FFFFFF"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteBb" />
 
                         <ImageButton
@@ -449,7 +449,7 @@
                                                 android:background="#00FFFFFF"
                                                 android:padding="0dp"
                                                 android:scaleType="fitXY"
-                                                android:src="@drawable/blackkey"
+                                                android:src="@drawable/selector_blackkey"
                                                 android:text="@string/noteCs" />
 
                                             <ImageButton
@@ -462,7 +462,7 @@
                                                 android:background="#00FFFFFF"
                                                 android:padding="0dp"
                                                 android:scaleType="fitXY"
-                                                android:src="@drawable/blackkey"
+                                                android:src="@drawable/selector_blackkey"
                                                 android:text="@string/noteEb" />
 
                                             <ImageButton
@@ -475,7 +475,7 @@
                                                 android:background="#00FFFFFF"
                                                 android:padding="0dp"
                                                 android:scaleType="fitXY"
-                                                android:src="@drawable/blackkey"
+                                                android:src="@drawable/selector_blackkey"
                                                 android:text="@string/noteFs" />
 
                                             <ImageButton
@@ -488,7 +488,7 @@
                                                 android:background="#00FFFFFF"
                                                 android:padding="0dp"
                                                 android:scaleType="fitXY"
-                                                android:src="@drawable/blackkey"
+                                                android:src="@drawable/selector_blackkey"
                                                 android:text="@string/noteGs" />
 
                                             <ImageButton
@@ -501,7 +501,7 @@
                                                 android:background="#00FFFFFF"
                                                 android:padding="0dp"
                                                 android:scaleType="fitXY"
-                                                android:src="@drawable/blackkey"
+                                                android:src="@drawable/selector_blackkey"
                                                 android:text="@string/noteBb" />
 
                                             <ImageButton
@@ -661,7 +661,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteCs"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -683,7 +683,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteEb"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -705,7 +705,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteFs"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -727,7 +727,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteGs"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -749,7 +749,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteBb"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -809,7 +809,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteCs"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -826,7 +826,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteEb"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -843,7 +843,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteFs"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -860,7 +860,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteGs"
                             android:textColor="#888888"
                             android:textSize="20sp" />
@@ -877,7 +877,7 @@
                             android:gravity="bottom|center_horizontal"
                             android:padding="0dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/blackkey"
+                            android:src="@drawable/selector_blackkey"
                             android:text="@string/noteBb"
                             android:textColor="#888888"
                             android:textSize="20sp" />
