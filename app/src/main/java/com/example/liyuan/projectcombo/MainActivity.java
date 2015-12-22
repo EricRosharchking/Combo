@@ -2,10 +2,12 @@ package com.example.liyuan.projectcombo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.media.AudioManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -17,8 +19,10 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
+
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -80,7 +84,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             super.onCreate(savedInstanceState);
 
 
-
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -94,7 +97,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 Log.d("ActionBar Log", "ActionBar is Null");
             }
-
 
 
             setContentView(R.layout.activity_main);
@@ -213,10 +215,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             });
 
-            buttonAddLyrics.setOnClickListener(new View.OnClickListener(){
+            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                public void onClick(View v){
+                public void onClick(View v) {
                     addLyrics();
                 }
             });
@@ -233,7 +235,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * Directing the user to add lyrics page.
      * AddLyrics will share the scores user entered from MainActivity
      **/
-    private void addLyrics(){
+    private void addLyrics() {
         Intent i = new Intent(MainActivity.this,
                 AddLyrics.class);
         i.putExtra("scores", displayThread.getArchived());
@@ -244,7 +246,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     /**
      * Logging out the user. Will set isLoggedIn flag to false in shared
      * preferences Clears the user data from sqlite users table
-     * */
+     */
     private void logoutUser() {
         session.setLogin(false);
 
@@ -291,7 +293,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (octavefordisplay <= 4) {
 
                     octavefordisplay = octavefordisplay + 1;
-                    keyBoardOctave2.setText("C"+String.valueOf(octavefordisplay));
+                    keyBoardOctave2.setText("C" + String.valueOf(octavefordisplay));
                     for (Note note : Notes) {
                         if (note != null) {
                             note.upOctave();
@@ -303,7 +305,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else if (v.getId() == R.id.loweroctave) {
                 if (octavefordisplay >= 4) {
                     octavefordisplay = octavefordisplay - 1;
-                    keyBoardOctave2.setText("C"+String.valueOf(octavefordisplay));
+                    keyBoardOctave2.setText("C" + String.valueOf(octavefordisplay));
                     for (Note note : Notes) {
                         if (note != null) {
                             note.lowerOctave();
@@ -352,11 +354,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
 
 
-
                 if (displayThread != null) {
                     displayThread.stopThread();
                     Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
-                    textView.setText(displayThread.getArchived());
+//                    textView.setText(displayThread.getArchived());
+                    textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause in html
                     Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
                 }
             }
@@ -387,15 +389,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.tempo3:
                 if (checked)
                     tempo = 3;
-                    break;
+                break;
             case R.id.tempo4:
                 if (checked)
                     tempo = 4;
-                    break;
+                break;
         }
         /*if (metronome != null) {
             metronome.changeTimeSignature(tempo);
@@ -543,7 +545,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         Log.d("The score should be", notesAndRest);
         Log.d("The length of it is", lengthOfNotesAndRest);
-        textView.setText(displayThread.getDisplay());
+//        textView.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );//中间加横线
+//        textView.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );//底部加横线
+        textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause
+//        textView.setText(displayThread.getDisplay());
         return super.onTouchEvent(event);
     }
 
@@ -566,7 +571,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void startMetronome(View view) {
         if (metronomeRunning == false) {
-            if  (metronome != null) {
+            if (metronome != null) {
                 metronome.start();
             } else {
                 metronome = new Metronome();
