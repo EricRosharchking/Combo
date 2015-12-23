@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     int key;
 
+    Button buttonAddLyrics;
     Button buttonBack;
     RadioButton radioButton;
     Metronome metronome;
@@ -180,7 +181,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
             buttonBack = (Button) findViewById(R.id.buttonBack);
-
+            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
             // SqLite database handler
             db = new SQLiteHandler(getApplicationContext());
@@ -211,12 +212,33 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     finish();
                 }
             });
+
+            buttonAddLyrics.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v){
+                    addLyrics();
+                }
+            });
+
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
         } finally {
             secondsPerBeat = 60.0 / timeSignature;
         }
+    }
+
+    /**
+     * Directing the user to add lyrics page.
+     * AddLyrics will share the scores user entered from MainActivity
+     **/
+    private void addLyrics(){
+        Intent i = new Intent(MainActivity.this,
+                AddLyrics.class);
+        i.putExtra("scores", displayThread.getArchived());
+        startActivity(i);
+        finish();
     }
 
     /**
