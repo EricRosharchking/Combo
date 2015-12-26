@@ -17,31 +17,112 @@
         android:padding="5dp"
         android:orientation="vertical">
         <TableRow
-            android:id="@+id/tableRowScores"
+            android:id="@+id/tableRowScores1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textViewScores"
+                android:id="@+id/textViewScores1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Scores are to be displayed here"
+                android:text="Scores row 1 are to be displayed here"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
         <TableRow
-            android:id="@+id/tableRowLyrics"
+            android:id="@+id/tableRowLyrics1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <EditText
-                android:id="@+id/editTextLyrics"
+                android:id="@+id/editTextLyrics1"
                 android:imeOptions="flagNoExtractUi"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/addLyrics"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowScores2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/textViewScores2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scores row 2 are to be displayed here"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowLyrics2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editTextLyrics2"
+                android:imeOptions="flagNoExtractUi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/addLyrics"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowScores3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewScores3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scores row 3 are to be displayed here"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowLyrics3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editTextLyrics3"
+                android:imeOptions="flagNoExtractUi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/addLyrics"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowScores4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewScores4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scores row 4 are to be displayed here"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowLyrics4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editTextLyrics4"
+                android:imeOptions="flagNoExtractUi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/addLyrics"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
         <Button
             android:id="@+id/buttonSaveLyrics"
