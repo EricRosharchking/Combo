@@ -42,7 +42,7 @@ public class AddLyrics extends ActionBarActivity {
         String scores = rawScores.replace("_", " ");
 
         tvScores1.setText(scores);
-        
+
         /*
         String[] toDisplay = split(scores);
         for(int i=0; i<toDisplay.length; i++){
