@@ -1,5 +1,6 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -21,12 +24,6 @@ public class AddLyrics extends ActionBarActivity {
 
     TextView tvScores1;
     EditText etLyrics1;
-    TextView tvScores2;
-    EditText etLyrics2;
-    TextView tvScores3;
-    EditText etLyrics3;
-    TextView tvScores4;
-    EditText etLyrics4;
     Button btnSaveLyrics;
 
     @Override
@@ -36,12 +33,6 @@ public class AddLyrics extends ActionBarActivity {
 
         tvScores1 = (TextView) findViewById(R.id.textViewScores1);
         etLyrics1 = (EditText) findViewById(R.id.editTextLyrics1);
-        tvScores2 = (TextView) findViewById(R.id.textViewScores2);
-        etLyrics2 = (EditText) findViewById(R.id.editTextLyrics2);
-        tvScores3 = (TextView) findViewById(R.id.textViewScores3);
-        etLyrics3 = (EditText) findViewById(R.id.editTextLyrics3);
-        tvScores4 = (TextView) findViewById(R.id.textViewScores4);
-        etLyrics4 = (EditText) findViewById(R.id.editTextLyrics4);
         btnSaveLyrics = (Button) findViewById(R.id.buttonSaveLyrics);
 
         //retrieve scores (in String) from MainActivity
@@ -50,10 +41,15 @@ public class AddLyrics extends ActionBarActivity {
 
         String scores = rawScores.replace("_", " ");
 
-        String[] toDisplay = split(scores);
         tvScores1.setText(scores);
+        /*
+        String[] toDisplay = split(scores);
+        for(int i=0; i<toDisplay.length; i++){
+            tvScores1.setText(toDisplay[i]);
+        }*/
 
-        //save to pdf
+
+        //save as pdf to internal storage
         btnSaveLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,5 +121,17 @@ public class AddLyrics extends ActionBarActivity {
 
         return list;
     }
+/*
+//add table dynamically
+    public void init(){
+        TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        TableRow tbRow = new TableRow(this);
+        TextView tvScores = new TextView(this);
+        tbRow.addView(tvScores);
+        TableRow tbRow1 = new TableRow(this);
+        EditText etLyrics = new EditText(this);
+        tbRow1.addView(etLyrics);
+        //Button btSave = new Button(this);
+    }*/
 
 }
