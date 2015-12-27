@@ -122,8 +122,8 @@ public class AddLyrics extends ActionBarActivity {
 
         return list;
     }
-/*
-//add table dynamically
+
+    //add table dynamically
     public void init(){
         TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
         TableRow tbRow = new TableRow(this);
@@ -133,6 +133,6 @@ public class AddLyrics extends ActionBarActivity {
         EditText etLyrics = new EditText(this);
         tbRow1.addView(etLyrics);
         //Button btSave = new Button(this);
-    }*/
+    }
 
 }
