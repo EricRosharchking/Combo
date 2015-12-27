@@ -132,7 +132,9 @@ public class AddLyrics extends ActionBarActivity {
         TableRow tbRow1 = new TableRow(this);
         EditText etLyrics = new EditText(this);
         tbRow1.addView(etLyrics);
-        //Button btSave = new Button(this);
+        Button btSave = new Button(this);
+        TableRow tbRow2 = new TableRow(this);
+        tbRow2.addView(btSave);
     }
 
 }
