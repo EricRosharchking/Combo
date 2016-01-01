@@ -24,6 +24,7 @@ import java.util.List;
 
 public class AddLyrics extends ActionBarActivity {
 
+    TableLayout tbLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,36 +42,52 @@ public class AddLyrics extends ActionBarActivity {
 
         int rawScoresLength = rawScores.length();
 
-        TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+
         tbLayout.removeAllViews();
 
         TableRow tbRow = new TableRow(this);
-        TextView tvScores = new TextView(this);
+
+        //for illustration purpose
+        TextView tv = new TextView(this);
 
         for(int i=0; i<rawScoresLength; i++){
-            tvScores = new TextView(this);
+            //create new textview for each char in rawScores
+            TextView tvScores = new TextView(this);
             char c = rawScores.charAt(i);
-            tvScores.setText(c+"");
+            //set to char
+            tvScores.setText(c + "");
             Log.d("c", "the score at position c is: " + c);
             tbRow.addView(tvScores);
-            tbLayout.addView(tbRow);
         }
 
         TableRow tbRow1 = new TableRow(this);
+        tbLayout.addView(tbRow,
+                new TableLayout.LayoutParams
+                        (TableLayout.LayoutParams.WRAP_CONTENT,
+                                TableLayout.LayoutParams.WRAP_CONTENT));
 
         for(int i=0; i<rawScoresLength; i++){
             EditText etLyrics = new EditText(this);
             etLyrics.setText(" ");
             tbRow1.addView(etLyrics);
-            tbLayout.addView(tbRow1);
         }
+        tbLayout.addView(tbRow1,
+                new TableLayout.LayoutParams
+                        (TableLayout.LayoutParams.WRAP_CONTENT,
+                                TableLayout.LayoutParams.WRAP_CONTENT));
 
         Button btSave = new Button(this);
         btSave.setBackgroundColor(484848);
         btSave.setTextColor(Color.WHITE);
         TableRow tbRow2 = new TableRow(this);
         tbRow2.addView(btSave);
-        tbLayout.addView(tbRow2);
+        tbLayout.addView(tbRow2,
+                new TableLayout.LayoutParams
+                        (TableLayout.LayoutParams.WRAP_CONTENT,
+                                TableLayout.LayoutParams.WRAP_CONTENT));
+
+
 
         /*
         String[] toDisplay = split(scores);
