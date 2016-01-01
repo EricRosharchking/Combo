@@ -44,4 +44,9 @@
     <string name="seekbar">60</string>
     <string name="keyboard">keyboard</string>
     <string name="keyboard2">C4</string>
+    <string name="title_activity_add_lyrics">AddLyrics</string>
+    <string name="addLyrics">Add Lyrics</string>
+    <string name="saveLyrics">Save</string>
+
+
 </resources>
