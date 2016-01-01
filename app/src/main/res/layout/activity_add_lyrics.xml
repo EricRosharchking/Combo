@@ -16,33 +16,8 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:orientation="vertical">
-        <TableRow
-            android:id="@+id/tableRowScores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/textViewScores"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Scores are to be displayed here"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRowLyrics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
 
-            <EditText
-                android:id="@+id/editTextLyrics"
-                android:imeOptions="flagNoExtractUi"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:hint="@string/addLyrics"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        </TableRow>
         <Button
             android:id="@+id/buttonSaveLyrics"
             android:layout_width="wrap_content"
