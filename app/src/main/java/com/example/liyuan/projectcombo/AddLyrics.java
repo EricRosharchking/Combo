@@ -27,15 +27,12 @@ public class AddLyrics extends ActionBarActivity {
     TextView tvScores1;
     EditText etLyrics1;
     Button btnSaveLyrics;
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_lyrics);
 
-        tvScores1 = (TextView) findViewById(R.id.textViewScores1);
-        etLyrics1 = (EditText) findViewById(R.id.editTextLyrics1);
-        btnSaveLyrics = (Button) findViewById(R.id.buttonSaveLyrics);
 
         //retrieve scores (in String) from MainActivity
         Intent intent = getIntent();
@@ -137,24 +134,35 @@ public class AddLyrics extends ActionBarActivity {
         int rawScoresLength = rawScores.length();
 
         TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        tbLayout.removeAllViews();
+
         TableRow tbRow = new TableRow(this);
+        TextView tvScores = new TextView(this);
 
         for(int i=0; i<rawScoresLength; i++){
-            TextView tvScores = new TextView(this);
+            tvScores = new TextView(this);
+            char c = rawScores.charAt(i);
+            tvScores.setText(c+"");
+            Log.d("c", "the score at position c is: " + c);
             tbRow.addView(tvScores);
+            tbLayout.addView(tbRow);
         }
 
         TableRow tbRow1 = new TableRow(this);
 
         for(int i=0; i<rawScoresLength; i++){
             EditText etLyrics = new EditText(this);
+            etLyrics.setText(" ");
             tbRow1.addView(etLyrics);
+            tbLayout.addView(tbRow1);
         }
 
-
         Button btSave = new Button(this);
+        btSave.setBackgroundColor(484848);
+        btSave.setTextColor(Color.WHITE);
         TableRow tbRow2 = new TableRow(this);
         tbRow2.addView(btSave);
+        tbLayout.addView(tbRow2);
 
         /*
         String[] toDisplay = split(scores);
@@ -163,7 +171,7 @@ public class AddLyrics extends ActionBarActivity {
         }*/
 
 
-        //save as pdf to internal storage
+        /*//save as pdf to internal storage
         btnSaveLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +195,7 @@ public class AddLyrics extends ActionBarActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 
     //split the String to String[] for use to split into multiple arrays
