@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,18 +24,12 @@ import java.util.List;
 
 public class AddLyrics extends ActionBarActivity {
 
-    //TextView tvScores;
-    //EditText etLyrics;
-    //Button btnSaveLyrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_lyrics);
 
-        //tvScores = (TextView) findViewById(R.id.textViewScores);
-        //etLyrics = (EditText) findViewById(R.id.editTextLyrics);
-        //btnSaveLyrics = (Button) findViewById(R.id.buttonSaveLyrics);
 
         //retrieve scores (in String) from MainActivity
         Intent intent = getIntent();
@@ -47,14 +42,18 @@ public class AddLyrics extends ActionBarActivity {
         int rawScoresLength = rawScores.length();
 
         TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        tbLayout.removeAllViews();
+
         TableRow tbRow = new TableRow(this);
+        TextView tvScores = new TextView(this);
 
         for(int i=0; i<rawScoresLength; i++){
-            TextView tvScores = new TextView(this);
+            tvScores = new TextView(this);
             char c = rawScores.charAt(i);
-            tvScores.setText(c);
+            tvScores.setText(c+"");
+            Log.d("c", "the score at position c is: " + c);
             tbRow.addView(tvScores);
-
+            tbLayout.addView(tbRow);
         }
 
         TableRow tbRow1 = new TableRow(this);
@@ -62,16 +61,16 @@ public class AddLyrics extends ActionBarActivity {
         for(int i=0; i<rawScoresLength; i++){
             EditText etLyrics = new EditText(this);
             etLyrics.setText(" ");
-            //etLyrics.setImeOptions(flagNoExtractUi);
             tbRow1.addView(etLyrics);
+            tbLayout.addView(tbRow1);
         }
-
 
         Button btSave = new Button(this);
         btSave.setBackgroundColor(484848);
         btSave.setTextColor(Color.WHITE);
         TableRow tbRow2 = new TableRow(this);
         tbRow2.addView(btSave);
+        tbLayout.addView(tbRow2);
 
         /*
         String[] toDisplay = split(scores);
@@ -81,19 +80,14 @@ public class AddLyrics extends ActionBarActivity {
 
 
         /*//save as pdf to internal storage
-        btSave.setOnClickListener(new View.OnClickListener() {
+        btnSaveLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 FileOutputStream out = null;
 
                 try{
-                    String data = "";
-                    if(tvScores!=null){
-
-                        data = tvScores.getText().toString().trim();
-                    }
-
+                    String data = tvScores1.getText().toString().trim();
 
                     String filename = "Song";
 
