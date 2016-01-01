@@ -39,9 +39,31 @@ public class AddLyrics extends ActionBarActivity {
         Intent intent = getIntent();
         String rawScores = intent.getStringExtra("scores");
 
-        String scores = rawScores.replace("_", " ");
+        //String scores = rawScores.replace("_", " ");
 
-        tvScores1.setText(scores);
+        //tvScores1.setText(scores);
+
+        int rawScoresLength = rawScores.length();
+
+        TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        TableRow tbRow = new TableRow(this);
+
+        for(int i=0; i<rawScoresLength; i++){
+            TextView tvScores = new TextView(this);
+            tbRow.addView(tvScores);
+        }
+
+        TableRow tbRow1 = new TableRow(this);
+
+        for(int i=0; i<rawScoresLength; i++){
+            EditText etLyrics = new EditText(this);
+            tbRow1.addView(etLyrics);
+        }
+
+
+        Button btSave = new Button(this);
+        TableRow tbRow2 = new TableRow(this);
+        tbRow2.addView(btSave);
 
         /*
         String[] toDisplay = split(scores);
@@ -123,7 +145,7 @@ public class AddLyrics extends ActionBarActivity {
         return list;
     }
 
-    //add table dynamically
+    /*//add table dynamically
     public void init(){
         TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
         TableRow tbRow = new TableRow(this);
@@ -135,6 +157,6 @@ public class AddLyrics extends ActionBarActivity {
         Button btSave = new Button(this);
         TableRow tbRow2 = new TableRow(this);
         tbRow2.addView(btSave);
-    }
+    }*/
 
 }
