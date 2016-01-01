@@ -18,17 +18,7 @@
         android:orientation="vertical">
 
 
-        <Button
-            android:id="@+id/buttonSaveLyrics"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.07"
-            android:background="#484848"
-            android:text="@string/saveLyrics"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"/>
+        
     </TableLayout>
 
 
