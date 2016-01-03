@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
@@ -25,22 +28,29 @@ import java.util.List;
 public class AddLyrics extends ActionBarActivity {
 
     TableLayout tbLayout;
+    DisplayThread displayThread;
+    WebView webview;
+    final String mimeType = "text/html";
+    final String encoding = "UTF-8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_lyrics);
 
-
         //retrieve scores (in String) from MainActivity
         Intent intent = getIntent();
         String rawScores = intent.getStringExtra("scores");
+        Log.d("rawScores", "The raw scores: " + rawScores);
+
+        Spanned scores = Html.fromHtml(rawScores + "\u2225");
 
         //String scores = rawScores.replace("_", " ");
 
-        //tvScores1.setText(scores);
-
         int rawScoresLength = rawScores.length();
+        Html.fromHtml(rawScores.getText().toString());
+
+        //webview.loadDataWithBaseURL("", rawScores, mimeType, encoding, "");
 
         tbLayout = (TableLayout) findViewById(R.id.tableLayout);
 
@@ -50,7 +60,11 @@ public class AddLyrics extends ActionBarActivity {
 
         //for illustration purpose
         TextView tv = new TextView(this);
+        tv.setText(Html.fromHtml(rawScores + "\u2225"));
+        tbRow.addView(tv);
 
+
+         /*//bug: unable to get length of html
         for(int i=0; i<rawScoresLength; i++){
             //create new textview for each char in rawScores
             TextView tvScores = new TextView(this);
@@ -59,7 +73,7 @@ public class AddLyrics extends ActionBarActivity {
             tvScores.setText(c + "");
             Log.d("c", "the score at position c is: " + c);
             tbRow.addView(tvScores);
-        }
+        }*/
 
         TableRow tbRow1 = new TableRow(this);
         tbLayout.addView(tbRow,
@@ -67,7 +81,7 @@ public class AddLyrics extends ActionBarActivity {
                         (TableLayout.LayoutParams.WRAP_CONTENT,
                                 TableLayout.LayoutParams.WRAP_CONTENT));
 
-        for(int i=0; i<rawScoresLength; i++){
+        for(int i=0; i<30; i++){
             EditText etLyrics = new EditText(this);
             etLyrics.setText(" ");
             tbRow1.addView(etLyrics);
@@ -78,7 +92,7 @@ public class AddLyrics extends ActionBarActivity {
                                 TableLayout.LayoutParams.WRAP_CONTENT));
 
         Button btSave = new Button(this);
-        btSave.setBackgroundColor(484848);
+        btSave.setBackgroundColor(Color.DKGRAY);
         btSave.setTextColor(Color.WHITE);
         TableRow tbRow2 = new TableRow(this);
         tbRow2.addView(btSave);
