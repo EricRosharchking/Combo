@@ -48,7 +48,6 @@ public class AddLyrics extends ActionBarActivity {
         //String scores = rawScores.replace("_", " ");
 
         int rawScoresLength = rawScores.length();
-        Html.fromHtml(rawScores.getText().toString());
 
         //webview.loadDataWithBaseURL("", rawScores, mimeType, encoding, "");
 
@@ -81,7 +80,7 @@ public class AddLyrics extends ActionBarActivity {
                         (TableLayout.LayoutParams.WRAP_CONTENT,
                                 TableLayout.LayoutParams.WRAP_CONTENT));
 
-        for(int i=0; i<30; i++){
+        for(int i=0; i<3; i++){
             EditText etLyrics = new EditText(this);
             etLyrics.setText(" ");
             tbRow1.addView(etLyrics);
