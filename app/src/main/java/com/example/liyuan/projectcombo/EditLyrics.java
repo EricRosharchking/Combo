@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 public class EditLyrics extends Activity {
     private final static String ARG_INT = "ARG_INT";
+    private final static String ARG_STRING = "ARG_STRING";
 
     private String stringField;
     private int intField;
@@ -61,7 +62,7 @@ public class EditLyrics extends Activity {
                                      final int intArg, final List<Object> objectList) {
 
         // Initialize a new intent
-        final Intent intent = new Intent(context, SomeActivity.class);
+        final Intent intent = new Intent(context, EditLyrics.class);
 
         // To speed things up :)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

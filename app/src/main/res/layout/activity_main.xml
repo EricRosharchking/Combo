@@ -132,6 +132,16 @@
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/buttonAddLyrics"
+                android:layout_width="68dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.07"
+                android:background="#484848"
+                android:text="@string/addLyrics"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
         <LinearLayout
