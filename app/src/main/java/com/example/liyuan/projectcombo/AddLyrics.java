@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,7 +24,10 @@ import java.util.List;
 public class AddLyrics extends ActionBarActivity {
 
     TableLayout tbLayout;
-
+    TextView tvScores1;
+    EditText etLyrics1;
+    Button btnSaveLyrics;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class AddLyrics extends ActionBarActivity {
         Intent intent = getIntent();
         String rawScores = intent.getStringExtra("scores");
 
+		
+		
         //String scores = rawScores.replace("_", " ");
 
         //tvScores1.setText(scores);
@@ -121,7 +125,138 @@ public class AddLyrics extends ActionBarActivity {
                 }
             }
         });*/
+		
+        String scores = rawScores.replace("_", " ");
+
+
+        //tvScores1.setText(scores);
+
+        int rawScoresLength = rawScores.length();
+
+        TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        tbLayout.removeAllViews();
+
+        TableRow tbRow = new TableRow(this);
+        TextView tvScores = new TextView(this);
+
+        for(int i=0; i<rawScoresLength; i++){
+            tvScores = new TextView(this);
+            char c = rawScores.charAt(i);
+            tvScores.setText(c+"");
+            Log.d("c", "the score at position c is: " + c);
+            tbRow.addView(tvScores);
+            tbLayout.addView(tbRow);
+        }
+
+        TableRow tbRow1 = new TableRow(this);
+
+        for(int i=0; i<rawScoresLength; i++){
+            EditText etLyrics = new EditText(this);
+            etLyrics.setText(" ");
+            tbRow1.addView(etLyrics);
+            tbLayout.addView(tbRow1);
+        }
+
+        Button btSave = new Button(this);
+        btSave.setBackgroundColor(484848);
+        btSave.setTextColor(Color.WHITE);
+        TableRow tbRow2 = new TableRow(this);
+        tbRow2.addView(btSave);
+        tbLayout.addView(tbRow2);
+
+        /*
+        String[] toDisplay = split(scores);
+        for(int i=0; i<toDisplay.length; i++){
+            tvScores1.setText(toDisplay[i]);
+        }*/
+
+
+        /*//save as pdf to internal storage
+        btnSaveLyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FileOutputStream out = null;
+
+                try{
+                    String data = tvScores1.getText().toString().trim();
+
+                    String filename = "Song";
+
+                    out = getApplicationContext().openFileOutput(filename, Context.MODE_PRIVATE);
+
+                    //data is your string or byte block or whatever
+                    out.write(data.getBytes(Charset.forName("UTF-8")));
+
+                    out.close();
+                } catch(FileNotFoundException e){
+                    e.printStackTrace();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        });*/
     }
+
+    //split the String to String[] for use to split into multiple arrays
+    //split the String to String[] to ensure alignment with the lyrics text box
+    //(i.e. one lyrics tb under one score)
+    private static String[] split(String string)
+    {
+        char[] chars = string.toCharArray();
+        String[] strings = new String[chars.length];
+        for (int i = 0; i < chars.length; i++)
+        {
+            strings[i] = String.valueOf(chars[i]);
+        }
+        return strings;
+    }
+
+    //split the String[] into multiple arrays to ensure that one array fits into one score text view
+    //(i.e. one score line of size X is in textviewscores1)
+    public static <T extends Object> List<T[]> splitArray(T[] array, int max){
+
+        int x = array.length / max;
+        int r = (array.length % max); // remainder
+
+        int lower = 0;
+        int upper = 0;
+
+        List<T[]> list = new ArrayList<T[]>();
+
+        int i=0;
+
+        for(i=0; i<x; i++){
+
+            upper += max;
+
+            list.add(Arrays.copyOfRange(array, lower, upper));
+
+            lower = upper;
+        }
+
+        if(r > 0){
+
+            list.add(Arrays.copyOfRange(array, lower, (lower + r)));
+
+        }
+
+        return list;
+    }
+
+    /*//add table dynamically
+    public void init(){
+        TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
+        TableRow tbRow = new TableRow(this);
+        TextView tvScores = new TextView(this);
+        tbRow.addView(tvScores);
+        TableRow tbRow1 = new TableRow(this);
+        EditText etLyrics = new EditText(this);
+        tbRow1.addView(etLyrics);
+        Button btSave = new Button(this);
+        TableRow tbRow2 = new TableRow(this);
+        tbRow2.addView(btSave);
+    }*/
 
     //split the String to String[] for use to split into multiple arrays
     //split the String to String[] to ensure alignment with the lyrics text box

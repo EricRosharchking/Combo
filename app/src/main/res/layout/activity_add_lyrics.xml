@@ -3,16 +3,112 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+<<<<<<< 007538f36f318f70afa1a070bcf655cea75de0d8
+
+<<<<<<< 8b325f04a48decbb7f89c16c70cf60874bd53998
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+=======
+
+>>>>>>> Add, save lyrics
+
+<<<<<<< c035e54ddb8ea153aec92a34f8f543ce7c34c842
+        <LinearLayout
+=======
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+<<<<<<< 8b325f04a48decbb7f89c16c70cf60874bd53998
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="vertical">
+        <TableRow
+            android:id="@+id/tableRowScores1"
+>>>>>>> Add lyrics
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+<<<<<<< c035e54ddb8ea153aec92a34f8f543ce7c34c842
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
+=======
+            <TextView
+                android:id="@+id/textViewScores1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scores row 1 are to be displayed here"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowLyrics1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editTextLyrics1"
+                android:imeOptions="flagNoExtractUi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/addLyrics"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRowScores2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+=======
+>>>>>>> Add, save lyrics
+=======
+>>>>>>> Add lyrics
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+<<<<<<< 007538f36f318f70afa1a070bcf655cea75de0d8
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+<<<<<<< 8b325f04a48decbb7f89c16c70cf60874bd53998
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.07"
+            android:background="#484848"
+            android:text="@string/saveLyrics"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"/>
+    </TableLayout>
+
+>>>>>>> Add lyrics
+
+            </TableLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>
+=======
+            android:orientation="vertical">
+=======
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+>>>>>>> Add lyrics
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
@@ -23,4 +119,11 @@
             </TableLayout>
         </LinearLayout>
     </HorizontalScrollView>
+<<<<<<< 007538f36f318f70afa1a070bcf655cea75de0d8
+
+
+</ScrollView>
+>>>>>>> Add, save lyrics
+=======
 </LinearLayout>
+>>>>>>> Add lyrics
