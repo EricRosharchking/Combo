@@ -38,8 +38,6 @@ public class AddLyrics extends ActionBarActivity {
         Intent intent = getIntent();
         String rawScores = intent.getStringExtra("scores");
 
-		
-		
         //String scores = rawScores.replace("_", " ");
 
         //tvScores1.setText(scores);
