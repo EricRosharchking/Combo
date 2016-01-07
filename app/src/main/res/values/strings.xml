@@ -47,6 +47,8 @@
     <string name="title_activity_add_lyrics">AddLyrics</string>
     <string name="addLyrics">Add Lyrics</string>
     <string name="saveLyrics">Save</string>
+    <string name="saveSongs">save</string>
+    <string name="openHistory">open</string>
 
 
 </resources>
