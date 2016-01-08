@@ -31,6 +31,8 @@ import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
 
+    ScoreFile scoreFile;
+
     private SQLiteHandler db;
     private SessionManager session;
     Button btnLogout;
@@ -223,6 +225,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             });
 
+
+            scoreFile = new ScoreFile(App.getAppContext());
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
@@ -275,7 +279,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+
+        } else if (id == R.id.saveSong) {
+            save();
+        } else if (id == R.id.openHistory) {
+            openOrNew();
         }
 
         return super.onOptionsItemSelected(item);
@@ -556,6 +564,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int progress;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         for (AudioThread thread : audioThreads) {
@@ -666,5 +684,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             tempo = 4;
         }
         return tempo;
+    }    public void openOrNew() {
+        Intent intent = new Intent(this, NewActivity.class);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
     }
+
+    private void save() {
+        Intent intent = new Intent(this, SaveActivity.class);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
+    }
+
 }
