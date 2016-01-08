@@ -51,6 +51,7 @@
         </activity>
         <activity
             android:name=".NewActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_new"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -59,6 +60,7 @@
         </activity>
         <activity
             android:name=".SaveActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_save"
             android:parentActivityName=".MainActivity">
             <meta-data

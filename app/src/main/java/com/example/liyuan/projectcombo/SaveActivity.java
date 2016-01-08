@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -62,9 +65,17 @@ public class SaveActivity extends ActionBarActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             // User clicked OK, so save the mSelectedItems results somewhere
                             // or return them to the component that opened the dialog
+                            LayoutInflater inflater = LayoutInflater.from(SaveActivity.this);
+                            View view =  inflater.inflate(R.layout.activity_save, new ViewGroup(SaveActivity.this)
+                            {
+                                @Override
+                                protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-                            name = ((TextView) findViewById(R.id.filename)).getText().toString();
-                            author = ((TextView) findViewById(R.id.author)).getText().toString();
+                                }
+                            });
+
+                            name = ((EditText) view.findViewById(R.id.filename)).getText().toString();
+                            author = ((EditText) view.findViewById(R.id.author)).getText().toString();
                             Score score = new Score();
                             score.setTitle(name);
                             score.setAuthor(author);
