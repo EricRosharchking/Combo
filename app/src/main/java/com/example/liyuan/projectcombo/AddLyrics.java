@@ -61,8 +61,6 @@ public class AddLyrics extends ActionBarActivity {
         TextView tv = new TextView(this);
         tv.setText(Html.fromHtml(rawScores + "\u2225"));
         tbRow.addView(tv);
-
-
          /*//bug: unable to get length of html
         for(int i=0; i<rawScoresLength; i++){
             //create new textview for each char in rawScores
