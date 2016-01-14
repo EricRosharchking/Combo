@@ -33,21 +33,25 @@
         <activity
             android:name=".register"
             android:label="@string/title_activity_register"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme = "@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme = "@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name=".UserMainPage"
             android:label="@string/title_activity_user_main_page"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme = "@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name=".AddLyrics"
-            android:label="@string/title_activity_add_lyrics" >
+            android:label="@string/title_activity_add_lyrics"
+            android:theme = "@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name=".NewActivity"
@@ -62,7 +66,8 @@
             android:name=".SaveActivity"
             android:screenOrientation="landscape"
             android:label="@string/title_activity_save"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme = "@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
