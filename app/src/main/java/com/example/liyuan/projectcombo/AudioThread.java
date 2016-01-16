@@ -14,17 +14,18 @@ public class AudioThread extends Thread {
     private final double sustain = 0.88;
     private final double dive = 0.1;
     private Note note;
-    private AudioTrack audioTrack;
+    private static AudioTrack audioTrack;
     private final double TWO_PI = 2 * Math.PI;
-    private final int SAMPLE_RATE = 44100;
-    private final int BUFFER_SIZE = AudioTrack.getMinBufferSize(SAMPLE_RATE,
-            AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
+    private final int SAMPLE_RATE = 22050;
+    private final int BUFFER_SIZE = 44100;//AudioTrack.getMinBufferSize(SAMPLE_RATE,
+    //AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
 
     private boolean isRunning;
 
     public AudioThread(Note note) {
         isRunning = true;
         this.note = note;
+
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                 SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE,AudioTrack.MODE_STREAM);
@@ -33,11 +34,16 @@ public class AudioThread extends Thread {
     }
 
     public void run() {
-        audioTrack.play();
+        try {
+            audioTrack.play();
+        } catch (java.lang.IllegalStateException e) {
+            e.printStackTrace();
+            audioTrack = init();
+        }
         short samples[] = new short[BUFFER_SIZE];
-        double amplitude = 32768.0;
+        double amplitude = 16384.0;
         double sustainVolume = amplitude * 5 / 8;
-        double frequency = 261.1f;
+        double frequency = 261.63f;
         if (note != null) {
             frequency = note.getFrequency();
         }
@@ -46,8 +52,11 @@ public class AudioThread extends Thread {
 
         try {
             int elapsed_Buffer = 0;
-            while(isRunning) {
-                for (int i = 0; i < BUFFER_SIZE; i++) {
+            //while(isRunning) {
+            for (int i = 0; i < SAMPLE_RATE ; i++) {
+                //Please do not change this part
+                    /*
+
                     if(i + elapsed_Buffer < SAMPLE_RATE * strike) {
                         // The initial strike or attack
                         amplitude *= (i / (SAMPLE_RATE * strike));
@@ -65,12 +74,45 @@ public class AudioThread extends Thread {
                             amplitude -= (amplitude / (SAMPLE_RATE * dive));
                         }
                     }*/
-                    samples[i] = (short) (amplitude * Math.sin(phase_Index));
+                    /*samples[i] = (short) (amplitude * Math.sin(phase_Index));
                     phase_Index += TWO_PI * frequency / SAMPLE_RATE;
+                    */
+
+
+                //Please do not change this part
+
+                double a = xxx(i, SAMPLE_RATE, frequency, 0);
+                double b = xxx(i, SAMPLE_RATE, frequency, 0.25);
+                double c = xxx(i, SAMPLE_RATE, frequency, 0.5);
+                double extra = Math.pow(a, 2) + (0.75 * b) + (0.1 * c);
+                double test = generate(i, SAMPLE_RATE, frequency, extra);
+
+                double dampen = getDampen(SAMPLE_RATE, frequency, amplitude);
+
+                double y = 1 - (i -  44100.0    * 0.002)    / (44100.0    *  1.998);
+
+                double j = Math.pow(y, dampen);
+                double value = amplitude * j * test;
+
+                if(i < 88) {
+                    value = amplitude * (i / (SAMPLE_RATE * strike)) * test;
                 }
-                audioTrack.write(samples, 0, BUFFER_SIZE);
-                elapsed_Buffer += BUFFER_SIZE;
+
+                ////TODO:把phase_Index算回去 然后可以根据触摸长短调整音节的长短
+
+                samples[i * 2] = (short) value;
+                value = value / (Math.pow(2, 8));
+                samples[i *2 + 1] = (short) value;
+
+
             }
+            audioTrack.write(samples, 0, BUFFER_SIZE);
+            elapsed_Buffer += BUFFER_SIZE;
+            //}
+
+            Log.d("Elapsed Buffer Log", "The elapsed buffer is " + elapsed_Buffer);
+            //TODO
+            /*
             Log.d("Elapsed Buffer Log", "The elapsed buffer is " + elapsed_Buffer);
             samples = new short[(int) (22050)];
             for (int i = 0; i < 22050 && amplitude > 0; i ++) { // 这个Decay的长度要改成跟tempo有关的，八分之一的beat长度
@@ -79,6 +121,9 @@ public class AudioThread extends Thread {
                 amplitude -= 2;
             }
             audioTrack.write(samples, 0, 22050);
+            */
+            //TODO
+
         } catch (IllegalStateException e) {
             e.printStackTrace();
             Log.d("AudioTrack Log", "The audiotrack pointer is " + e.toString());
@@ -89,6 +134,41 @@ public class AudioThread extends Thread {
         audioTrack.release();*/
     }
 
+    private double generate(int i, int sampleRate, double frequency, double extra) {
+        double data = 0.0;
+
+        double di = (double) i;
+        double ds = (double) sampleRate;
+
+        double a = xxx(i, sampleRate, frequency, 0);
+        double b = xxx(i, sampleRate, frequency, 0.25);
+        double c = xxx(i, sampleRate, frequency, 0.5);
+
+        extra = Math.pow(a, 2) + (0.75 * b) + (0.1 * c);
+        data = Math.sin(2 * Math.PI * (di / ds) * frequency + extra);
+
+        return data;
+    }
+
+    private double xxx(int i, int sampleRate, double frequency, double extra) {
+
+        double di = (double) i;
+        double ds = (double) sampleRate;
+        double xx = Math.sin(2 * Math.PI * (di / ds) * frequency + extra);
+        //if (i < 10) {
+        //Log.d("base Log", "base is [" + i +"]" + xx);
+        //}
+        return xx;
+    }
+
+    private double getDampen(int sampleRate, double frequency, double volume) {
+        double result = 0.0;
+        double ds = (double) sampleRate;
+        double a = Math.log((frequency * volume) / ds);
+        result = Math.pow((0.5 * a),2);
+
+        return result;
+    }
 
     public void stopPlaying() {
         isRunning = false;/*
@@ -98,6 +178,12 @@ public class AudioThread extends Thread {
         }*/
     }
 
+    private AudioTrack init() {
+        return new AudioTrack(AudioManager.STREAM_MUSIC,
+                SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO,
+                AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE,AudioTrack.MODE_STREAM);
+    }
+
 /*    public void upOctave() {
         note.upOctave();
     }
@@ -105,5 +191,4 @@ public class AudioThread extends Thread {
     public void lowerOctave() {
         note.lowerOctave();
     }*/
-
 }
