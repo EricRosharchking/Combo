@@ -73,7 +73,7 @@ public class PlayBack extends Thread{
                         double phase_Index = 0.0;
                         double  frequency = musicScore.get(notesScore[j]);
                         if (frequency != 0) {
-                            for (int i = 0; i < SAMPLE_RATE; i ++) {
+                            for (int i = 0; i < sampleSize / 2; i ++) {
                                 double a = xxx(i, SAMPLE_RATE, frequency, 0);
                                 double b = xxx(i, SAMPLE_RATE, frequency, 0.25);
                                 double c = xxx(i, SAMPLE_RATE, frequency, 0.5);

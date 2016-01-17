@@ -21,10 +21,11 @@ public class Metronome extends Activity {
     int count;
     int timeSignature;
     int size = 44100;
-    private final double frequency1 = 659.3f;
-    private final double frequency2 = 261.1f;
+    private final double FREQUENCY1 = 659.3f;
+    private final double FREQUENCY2 = 261.1f;
     Thread t;
     double sliderval;
+    private final double amp = 20000.0;
     int metronomeTempo;
     SeekBar tempoSeekBar;
 
@@ -45,11 +46,10 @@ public class Metronome extends Activity {
                         AudioTrack.MODE_STREAM);
 
                 short samples[];
-                int amp = 20000;
                 double twopi = 2 * Math.PI;
                 double ph = 0.0;
 
-                double frequency = frequency1;
+                double frequency = FREQUENCY1;
                 // start audio
                 audioTrack.play();
                 count = 1;
@@ -57,11 +57,11 @@ public class Metronome extends Activity {
                 // synthesis loop
                 while(isRunning){
                     if (count == 1) {
-                        frequency = frequency1;
+                        frequency = FREQUENCY1;
                         count = 2;
                         Log.d("Metronome Count Log" , "Count is " + count);
                     } else {
-                        frequency = frequency2;
+                        frequency = FREQUENCY2;
                         if (count < timeSignature) {
                             count ++;
                             Log.d("Metronome Count Log", "Count is " + count);
@@ -99,16 +99,14 @@ public class Metronome extends Activity {
 
 
     public void start() {
-        if (t != null) {
+        isRunning = true;
+        if (t != null && t.getState() == Thread.State.NEW) {
             t.start();
         } else {
             t = new Thread() {
                 public void run() {
                     // set process priority
                     setPriority(Thread.MAX_PRIORITY);
-                    // set the buffer size
-                    int buffsize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
-                            AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
                     // create an audiotrack object
                     AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                             SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
@@ -116,10 +114,10 @@ public class Metronome extends Activity {
                             AudioTrack.MODE_STREAM);
 
                     short samples[];
-                    double amp = 32768.0;
                     double twopi = 2 * Math.PI;
                     double ph = 0.0;
-                    double frequency = frequency1;
+                    double frequency;
+                    count = 1;
 
                     // start audio
                     audioTrack.play();
@@ -127,11 +125,11 @@ public class Metronome extends Activity {
                     // synthesis loop
                     while(isRunning){
                         if (count == 1) {
-                            frequency = frequency1;
+                            frequency = FREQUENCY1;
                             count = 2;
                             Log.d("Metronome Count Log" , "Count is " + count);
                         } else {
-                            frequency = frequency2;
+                            frequency = FREQUENCY2;
                             if (count < timeSignature) {
                                 count ++;
                                 Log.d("Metronome Count Log", "Count is " + count);
@@ -163,6 +161,7 @@ public class Metronome extends Activity {
                     audioTrack.release();
                 }
             };
+            t.start();
         }
     }
 
@@ -180,7 +179,7 @@ public class Metronome extends Activity {
 
     public void changeTempo(int newSize) {
         metronomeTempo = newSize;
-        size = 44100 * 60 / metronomeTempo / 2;
+        size = 44100 * 60 / metronomeTempo;
     }
 
     public void changeTimeSignature(int timeSignature) {

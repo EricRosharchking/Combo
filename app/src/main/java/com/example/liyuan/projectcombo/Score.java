@@ -17,7 +17,7 @@ public class Score implements Serializable {
         title = "New Score";
         tempo = 60;
         timeSignature = "4/4";
-        score = "";
+        score = "1___2___3___4___5___";
     }
 
     public void appendScore(String append){
