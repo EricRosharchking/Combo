@@ -18,8 +18,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class NewActivity extends ActionBarActivity implements DialogInterface.OnClickListener {
-String name;
-String[] names;
+    String name;
+    String[] names;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ String[] names;
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
             Log.d("Dialog Log", "Context is not null");
-             builder = new AlertDialog.Builder(context);
+            builder = new AlertDialog.Builder(context);
 
             // Set the dialog title
 
@@ -68,8 +68,11 @@ String[] names;
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Log.d("Check Log", "Item selected is " + which);
-                                    name = names [which];
+                                    //Log.d("Check Log", "Item selected is " + which);
+                                    name = names[which];
+                                    Log.e("Log@New73", "Item checked is  " + which);
+                                    int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                                    name = names[selectedPosition];
                                 }
                             })
                     // Set the action buttons
@@ -91,19 +94,25 @@ String[] names;
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+        //name = names[which];
         if (which == -1) {
             Log.d("Log@NewActivity92", "Opening " + name);
+            //dialog.
             ScoreFile scoreFile = new ScoreFile();
             try {
                 ScoreStatus scorestatus = scoreFile.open(name);
+                Log.i("Log@New104", "scorestatus is null? " + (scorestatus == null));
                 Score score= scorestatus.getScore();
+                Log.i("Log@New106", "score is null? " + (score == null));
+                int[] array = score.getScore();
+                Log.i("Log@New108", "array is null? " + (array == null));
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("Score", score);
                 Log.d("Log@NewActivity102", "Starting Activity for Result");
                 //startActivityForResult(intent, 1);
-                finish();
                 startActivity(intent);
+                finish();
             } catch (IOException e) {
                 e.printStackTrace();
                 finish();

@@ -30,10 +30,10 @@ public class ScoreFile implements Serializable {
         // TODO get the HashSet from a file, that's stored as byte[];
         title = getFileFormat(title);
         //if(object instanceof Context) {
-            //Log.d("Log@ScoreFile33", "the Object is a Context");
-            //context = (Context) object;
+        //Log.d("Log@ScoreFile33", "the Object is a Context");
+        //context = (Context) object;
         //} else {
-            //Log.e("Error@ScoreFile36", "the Object is not a Context");
+        //Log.e("Error@ScoreFile36", "the Object is not a Context");
         //}
         fileSet = openAllFileNames().getAllFileNamesSet();
         Log.d("File size Log", "" + fileSet.size());
@@ -93,11 +93,11 @@ public class ScoreFile implements Serializable {
                 fos.close();
                 status = true;
                 fileSet.add(fileName);
-                boolean wtf = saveAllFileNames(fileSet);
+                boolean zzz = saveAllFileNames(fileSet);
                 for (String s: fileSet) {
                     Log.i("Files include", s);
                 }
-                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + wtf + fileSet.size());
+                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + zzz + fileSet.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new IOException(e);
@@ -118,6 +118,7 @@ public class ScoreFile implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(fis));
             Object o = ois.readObject();
             scoreStatus = new ScoreStatus(o);
+            Log.i("Log@ScoreFile121", "scoreStatus is " + (scoreStatus != null));
             ois.close();
             fis.close();
         } catch (Exception e) {

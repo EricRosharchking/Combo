@@ -127,22 +127,25 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 
             name = sequence1.toString();
 
-            Log.d("Log@SaveActivity128", "FileName" + sequence1.length() + sequence2.length() + name);
+            Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
             if (sequence2.length() > 0) {
                 author = sequence2.toString();
             }
 
-            Score score = new Score();
+            Score score = (Score) getIntent().getSerializableExtra("Score");
+            Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
             score.setAuthor(author);
+            int[] array = score.getScore();
+            Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
             try{
                 scoreFile.save(score);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d("Log@SaveActivity142", "Save Clicked " + " " + name);
-            Log.d("Log@SaveActivity143", "Save Clicked " + " " + author);
+            Log.d("Log@SaveActivity146", "Save Clicked " + " " + name);
+            Log.d("Log@SaveActivity147", "Save Clicked " + " " + author);
             finish();
         } else if (which == -2) {
             finish();
