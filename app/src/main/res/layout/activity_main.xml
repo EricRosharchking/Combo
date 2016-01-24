@@ -180,7 +180,6 @@
                     android:layout_height="fill_parent"></TextView>
             </ScrollView>
 
-
             <ImageButton
                 android:id="@+id/upoctave"
                 android:layout_width="50dp"

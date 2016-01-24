@@ -15,12 +15,12 @@ import android.widget.SeekBar;
  */
 public class Metronome extends Activity {
 
-    private final int SAMPLE_RATE = 44100;
+    private final int SAMPLE_RATE = 22050;
     boolean isRunning = true;
     int sound  = 4410;
     int count;
     int timeSignature;
-    int size = 44100;
+    int size = 22050;
     private final double frequency1 = 659.3f;
     private final double frequency2 = 261.1f;
     Thread t;
@@ -99,6 +99,7 @@ public class Metronome extends Activity {
 
 
     public void start() {
+        isRunning = true;
         if (t != null) {
             t.start();
         } else {
