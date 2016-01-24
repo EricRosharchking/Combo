@@ -31,6 +31,17 @@ import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
 
+    double noteBeats;
+    boolean opened;
+    double noteStartTime;
+    double noteEndTime;
+    double rest;
+    double restStartTime;
+    double restEndTime;
+    double elapse;
+    Score score;
+    int[] numericNotes;
+    double[] lengths;
     ScoreFile scoreFile;
 
     private SQLiteHandler db;
@@ -230,6 +241,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
             scoreFile = new ScoreFile();
+            numericNotes = null;
+            lengths = null;
+
+            opened = false;
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
@@ -292,8 +307,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-
-    double noteBeats;
 
     public void onClick(View v) {
 //        Log.d("ButtonLog", "the button you clicked is " + v.getId());
@@ -423,12 +436,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }*/
     }
 
-    double noteStartTime;
-    double noteEndTime;
-    double rest;
-    double restStartTime;
-    double restEndTime;
-    double elapse;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -596,9 +603,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (getIntent().getSerializableExtra("Score") != null) {
-            open(getIntent());
-            Score score = (Score)getIntent().getSerializableExtra("Score");
-            textView.setText(score.getScore());
+            //open(getIntent());
+            Score thisScore = (Score)getIntent().getSerializableExtra("Score");
+            Log.d("Log@617", "Score is null? " + (thisScore == null));
+            if (thisScore != null && thisScore.getScore() != null) {
+                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
+                textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+            }
+
+            score = thisScore;
+            opened = true;
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
         }
@@ -640,15 +654,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+
     public void playBack(View view) {
         //// TODO: 10/18/2015 HashMap Key must be unique. . .
-        Log.d("PlayBack Log", "PlayBack Entered");
-        Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
+        //Log.d("PlayBack Log", "PlayBack Entered");
+        //Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
 
-        notesAndRest = notesAndRest.trim();
-        lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
+        //notesAndRest = notesAndRest.trim();
+        //lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
         Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
+
+
         for (int i = 0; i < notesAndRest.split(" ").length; i++) {
             Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
         }
@@ -657,13 +674,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
         }
 
-        if (notesAndRest.length() != 0 && notesAndRest.split(" ").length == lengthOfNotesAndRest.split(" ").length) {
-            String[] scoreNotes = notesAndRest.split(" ");
-            String[] scoreLength = lengthOfNotesAndRest.split(" ");
-            int[] numericNotes = new int[scoreNotes.length];
-            for (int i = 0; i < scoreNotes.length; i++) {
-                numericNotes[i] = Integer.parseInt(scoreNotes[i]);
-            }
+        numericNotes = prepareScore();
+        lengths = prepareLengths();
+
+        Log.i("Log@Main735", "score is null? " + (score == null));
+        if (opened) {
+            numericNotes = score.getScore();
+            lengths = score.getLengths();
+            opened = false;
+        }
+
+        if (numericNotes != null && lengths != null) {
+            Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+        }
+        if (numericNotes.length == lengths.length) {
+
+
             //写一下吧write到audioTrack里面 stream
 
 /*            numericNotes = new int[4];
@@ -679,7 +705,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             scoreLength[3] = "1.000";*/
 
 
-            PlayBack playBack = new PlayBack(numericNotes, scoreLength);
+            PlayBack playBack = new PlayBack(numericNotes, lengths);
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
             try {
@@ -689,6 +715,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
     }
+
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -701,32 +728,47 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
 
     }
+
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         metronome.changeTempo(this.progress);
     }
 
+
     private int getTempo() {
         if (new Integer(tempo) == null) {
             tempo = 4;
         }
         return tempo;
-    }    public void openOrNew() {
+    }
+
+
+    public void openOrNew() {
         Intent intent = new Intent(this, NewActivity.class);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
 
+
     private void save() {
         Intent intent = new Intent(this, SaveActivity.class);
+        score = new Score();
+        numericNotes = prepareScore();
+        lengths = prepareLengths();
+        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
+        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
+        score.setScore(numericNotes, lengths);
+        intent.putExtra("Score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
+
 
     private void upOctave() {
         TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
@@ -743,6 +785,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             displayThread.setOctave(octavefordisplay);
         }
     }
+
 
     private void lowerOctave() {
         TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
@@ -762,24 +805,67 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-    protected void open (Intent data) {
-        Log.d("OnResultLog", "On Activity Result Entered");
-        try {
-            Score score = (Score) data.getSerializableExtra("Score");
-            displayThread.setArchived(score.getScore());
-            for (String s: score.getScore().trim().split("_")) {
-                if (!s.isEmpty()) {
-                    s += " ";
-                    notesAndRest += s;
-                }
+    private String extractScore(int[] notes, double[] lengths) {
+        String scoreString = "Score";
+        if (notes != null && lengths!= null && notes.length == lengths.length) {
+            for (int i = 0; i < notes.length; i++) {
+                String thisNote = notes[i] + " ";
+                scoreString += thisNote;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            notesAndRest = "1 0 2 0 3";
         }
-        lengthOfNotesAndRest = "1 1 1 1 1";
-
-        Log.d("OnResult", "Notes and rest are " + notesAndRest);
+        return scoreString;
     }
+
+
+    private int[] prepareScore() {
+        int [] array;
+        if (!notesAndRest.isEmpty()) {
+            String[] scoreNotes = notesAndRest.trim().split(" ");
+            array = new int[scoreNotes.length];
+            for (int i = 0; i < scoreNotes.length; i++) {
+                array[i] = Integer.parseInt(scoreNotes[i]);
+            }
+        } else {
+            array = new int[] {1, 3, 5};
+        }
+        return array;
+    }
+
+
+    private double[] prepareLengths() {
+        double[] array;
+        if (!lengthOfNotesAndRest.isEmpty()) {
+            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
+            array = new double[scoreLength.length];
+            for (int i = 0; i < scoreLength.length; i++) {
+                array[i] = Double.parseDouble(scoreLength[i]);
+            }
+        } else {
+            array = new double[] {1.0, 1.0, 1.0};
+        }
+        return array;
+    }
+
+
+
+//    protected void open (Intent data) {
+//        Log.d("OnResultLog", "On Activity Result Entered");
+//        try {
+//            Score score = (Score) data.getSerializableExtra("Score");
+//            displayThread.setArchived(score.getScore());
+//            for (String s: score.getScore().trim().split("_")) {
+//                if (!s.isEmpty()) {
+//                    s += " ";
+//                    notesAndRest += s;
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            notesAndRest = "1 0 2 0 3";
+//        }
+//        lengthOfNotesAndRest = "1 1 1 1 1";
+//
+//        Log.d("OnResult", "Notes and rest are " + notesAndRest);
+//    }
 
 }
