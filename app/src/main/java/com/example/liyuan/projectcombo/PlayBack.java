@@ -34,7 +34,7 @@ public class PlayBack extends Thread{
         }
     }
 
-    public PlayBack(int[] notes, String[] lengths) {
+    public PlayBack(int[] notes, double[] lengths) {
         if (notes == null || notes.length == 0 || notes.length != lengths.length) {
             isRunning = false;
             Log.d("PlayBack Log", "notes or length is null or empty");
@@ -43,10 +43,7 @@ public class PlayBack extends Thread{
 
             Log.d("PlayBack Log", "notes and lengths are not null");
             notesScore = notes;
-            notesLength = new double [lengths.length];
-            for(int i = 0; i < lengths.length; i ++) {
-                notesLength[i] = Double.parseDouble(lengths[i]);
-            }
+            notesLength = lengths;
             isRunning = true;
             audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                     SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO,
@@ -66,14 +63,15 @@ public class PlayBack extends Thread{
 
                     for (int j = 0; j < size; j ++) {
 
-                        double amplitude = 32768.0;
-                        Log.d("PlayBack Log", "The integer j is " + j);
-                        int sampleSize = (int) (SAMPLE_RATE * notesLength[j]) * 2;
+                        double amplitude = 16384.0;
+                        //Log.d("PlayBack Log", "The integer j is " + j);
+                        int sampleSize = (int) ((SAMPLE_RATE * notesLength[j]) * 2);
                         samples = new short[sampleSize];
+                        int sample_count = sampleSize / 2;
                         double phase_Index = 0.0;
                         double  frequency = musicScore.get(notesScore[j]);
                         if (frequency != 0) {
-                            for (int i = 0; i < SAMPLE_RATE; i ++) {
+                            for (int i = 0; i < sample_count; i ++) {
                                 double a = xxx(i, SAMPLE_RATE, frequency, 0);
                                 double b = xxx(i, SAMPLE_RATE, frequency, 0.25);
                                 double c = xxx(i, SAMPLE_RATE, frequency, 0.5);
@@ -82,7 +80,8 @@ public class PlayBack extends Thread{
 
                                 double dampen = getDampen(SAMPLE_RATE, frequency, amplitude);
 
-                                double y = 1 - (i -  44100.0    * 0.002)    / (44100.0    *  1.998);
+                                double remaining = 1.998;
+                                double y = 1 - (i -  SAMPLE_RATE    * strike) / (SAMPLE_RATE    *  remaining);
 
                                 double k = Math.pow(y, dampen);
                                 double value = amplitude * k * test;
@@ -109,7 +108,7 @@ public class PlayBack extends Thread{
                             //}
                             //audioTrack.write(samples, 0, SAMPLE_RATE / 2);
                         } else {
-                            sampleSize -= 22050;
+                            //sampleSize -= 22050;
                             if (sampleSize > 0) {
                                 samples = new short[sampleSize];
                                 for (int i = 0; i < sampleSize; i ++) {
@@ -131,6 +130,7 @@ public class PlayBack extends Thread{
 
         }
     }
+
     private double generate(int i, int sampleRate, double frequency, double extra) {
         double data = 0.0;
 
