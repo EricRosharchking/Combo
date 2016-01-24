@@ -78,8 +78,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int octavefordisplay = 4;
     DisplayThread displayThread;
 
-    int noteID;
-
     int tempo;
 
     @Override
@@ -181,7 +179,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronome = new Metronome();
 
             tempo = 4;
-            noteID = 1;
 
             displayThread = new DisplayThread();
 
@@ -229,7 +226,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             });
 
 
-            scoreFile = new ScoreFile();
+            scoreFile = new ScoreFile(App.getAppContext());
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
@@ -299,20 +296,40 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        Log.d("ButtonLog", "the button you clicked is " + v.getId());
 //        TextView keyBoardOctave1 = (TextView) findViewById(R.id.keyboardOctave);
         String keyboardNameDisplay = "";
-
-
+        TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
         if (audioThreads != null) {
             if (v.getId() == R.id.upoctave) {
-                upOctave();
+                if (octavefordisplay <= 4) {
+
+                    octavefordisplay = octavefordisplay + 1;
+                    keyBoardOctave2.setText("C" + String.valueOf(octavefordisplay));
+                    for (Note note : Notes) {
+                        if (note != null) {
+                            note.upOctave();
+                        }
+//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
+//                        keyBoardOctave1.setText(keyboardNameDisplay);
+                    }
+                }
             } else if (v.getId() == R.id.loweroctave) {
-                lowerOctave();
+                if (octavefordisplay >= 4) {
+                    octavefordisplay = octavefordisplay - 1;
+                    keyBoardOctave2.setText("C" + String.valueOf(octavefordisplay));
+                    for (Note note : Notes) {
+                        if (note != null) {
+                            note.lowerOctave();
+                        }
+//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
+//                        keyBoardOctave1.setText(keyboardNameDisplay);
+                    }
+                }
             }
         }
 
         if (v.getId() == recordButton.getId()) {
 //            Log.d("ButtonLog","This is the record button");
 //            Log.d("Log","OnRecord is " + onRecord);
-            if (!onRecord) {
+            if (onRecord == false) {
                 recordButton.setImageResource(R.drawable.stopbutton);
                 onRecord = true;
                 recordStatus.setText("Recording");
@@ -356,37 +373,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
 
-        if (v instanceof ImageButton) {
+        if (v instanceof ImageButton && onRecord == true) {
 //            Log.d("what", String.valueOf(textView.getText()) + "* compared to *"+ getText(R.string.main_score));
-
-            //Play Part
-//            if (audioThreads[noteID].getState() == Thread.State.NEW) {
-//                audioThreads[noteID].start();
-//                Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//            } else {
-//                audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-//                Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                audioThreads[noteID].start();
-//            }
-            //Play Part End
-
-            if (onRecord) {
-                if (resetScore) {
-                    textView.setText("");
-                    resetScore = false;
-                }
-                Log.d("KeyNoteMap Log", "KeyNoteMap State is " + (keyNoteMap == null));
-                Log.d("KeyNoteMap Log", "KeyNoteMap.get State is " + keyNoteMap.containsKey(v.getId()));
-                        /*if (keyNoteMap != null && keyNoteMap.get(v.getId()) != null) {
-                            textView.append("0 " + keyNoteMap.get(v.getId()) + " ");
-                        }*/
+            if (resetScore == true) {
+                textView.setText("");
+                resetScore = false;
             }
-
+            Log.d("KeyNoteMap Log", "KeyNoteMap State is " + (keyNoteMap == null));
+            Log.d("KeyNoteMap Log", "KeyNoteMap.get State is " + keyNoteMap.containsKey(v.getId()));
+            /*if (keyNoteMap != null && keyNoteMap.get(v.getId()) != null) {
+                textView.append("0 " + keyNoteMap.get(v.getId()) + " ");
+            }*/
         } else {
             Log.d("Log", "This is not a button you clicked");
         }
-
-
 /*
         if(v.getId() == R.id.time_signature) {
 
@@ -408,13 +408,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     tempo = 4;
                 break;
         }
-        if (metronome != null) {
+        /*if (metronome != null) {
             metronome.changeTimeSignature(tempo);
         } else {
             metronome = new Metronome();
             metronome.changeTimeSignature(tempo);
         }
-        /*
+
         if (displayThread != null) {
             displayThread.setTimeSignature(tempo);
         } else {
@@ -432,10 +432,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        boolean swipable = false;
         if (v instanceof ImageButton) {
 
-
+            int noteID = 1;
             switch (v.getId()) {
                 case R.id.cnatural:
                     noteID = 1;
@@ -477,41 +476,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     noteID = 13;
                     break;
                 default:
-                    noteID = 13;
                     break;
             }
 
-//            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//                Log.d("Log@Main485", "Action_Outside");
-//                swipable = true;
-//                audioThreads[noteID].stopPlaying();
-//            }
-
-//            if (event.getAction() == MotionEvent.ACTION_MOVE && swipable == true) {
-//
-//                //Play and Move
-//                swipable = false;
-//                audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-//                Log.d("Log@MainActivity490", "AudioThread State is not NEW: " + audioThreads[noteID].getState().toString());
-//                audioThreads[noteID].start();
-//            }
-
             if (event.getAction() == MotionEvent.ACTION_DOWN) {                                     //just press the key
-
-                Log.d("Log@Main484", noteID + "AudioThread State is " + audioThreads[noteID].getState().toString());
-                //Play Part Start
-//                if (audioThreads[noteID].getState() != Thread.State.NEW) {
-                    audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-                    Log.d("Log@MainActivity490", "AudioThread State is not NEW: " + audioThreads[noteID].getState().toString());
-                    audioThreads[noteID].start();
-//                } else {
-//                    Log.d("Log@MainActivity487", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                    audioThreads[noteID].start();
-//                }
-
-                //Play Part End
-
-                onHold = true;
                 if (onRecord == true) {
 
 
@@ -523,7 +491,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     if (Notes[noteID - 1] != null) {
                         Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
                     }
+                    //Play Part Start
+                    if (audioThreads[noteID].getState() == Thread.State.NEW) {
+                        audioThreads[noteID].start();
+                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
+                    } else {
+                        audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
+                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
+                        audioThreads[noteID].start();
+                    }
+                    //Play Part End
 
+                    onHold = true;
                     noteStartTime = System.currentTimeMillis();
                     restEndTime = noteStartTime;                                                    //start count the time
                     rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
@@ -537,22 +516,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
                     }
                     //Play Part Start
-//                    if (audioThreads[noteID].getState() == Thread.State.NEW) {
-//                        audioThreads[noteID].start();
-//                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                    } else {
-//                        audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-//                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                        audioThreads[noteID].start();
-//                    }
+                    if (audioThreads[noteID].getState() == Thread.State.NEW) {
+                        audioThreads[noteID].start();
+                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
+                    } else {
+                        audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
+                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
+                        audioThreads[noteID].start();
+                    }
                 }
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
                 audioThreads[noteID].stopPlaying();
-//                if (audioThreads[noteID] != null) {
-//                    audioThreads[noteID] = null;
-//                }
                 if (onRecord == true) {
 
                     key = 0;
@@ -560,7 +536,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         displayThread.update(key);
                     }
 
-//                    audioThreads[noteID].stopPlaying();
+                    audioThreads[noteID].stopPlaying();
 
                     onHold = false;
                     noteEndTime = System.currentTimeMillis();
@@ -595,33 +571,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getSerializableExtra("Score") != null) {
-            open(getIntent());
-            Score score = (Score)getIntent().getSerializableExtra("Score");
-            textView.setText(score.getScore());
-        } else {
-            Log.e("onResumeLog@Main555", "Score is null");
-        }
     }
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         for (AudioThread thread : audioThreads) {
             try {
-                if(thread != null) {
-                    thread.join();
-                }
+                thread.join();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            thread = null;
         }
-        super.onDestroy();
     }
 
     boolean metronomeRunning;
 
     public void startMetronome(View view) {
-        if (!metronomeRunning) {
+        if (metronomeRunning == false) {
             if (metronome != null) {
                 metronome.start();
             } else {
@@ -648,7 +616,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         notesAndRest = notesAndRest.trim();
         lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
-        Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
+        Log.d("PlayBack Log", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
         for (int i = 0; i < notesAndRest.split(" ").length; i++) {
             Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
         }
@@ -726,60 +694,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Intent intent = new Intent(this, SaveActivity.class);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
-    }
-
-    private void upOctave() {
-        TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
-        if (octavefordisplay <= 4) {
-            octavefordisplay = octavefordisplay + 1;
-            keyBoardOctave2.setText("C" + String.valueOf(octavefordisplay));
-            for (Note note : Notes) {
-                if (note != null) {
-                    note.upOctave();
-                }
-//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
-//                        keyBoardOctave1.setText(keyboardNameDisplay);
-            }
-            displayThread.setOctave(octavefordisplay);
-        }
-    }
-
-    private void lowerOctave() {
-        TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
-        if (octavefordisplay >= 4) {
-            octavefordisplay = octavefordisplay - 1;
-            keyBoardOctave2.setText("C" + String.valueOf(octavefordisplay));
-            for (Note note : Notes) {
-                if (note != null) {
-                    note.lowerOctave();
-                }
-//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
-//                        keyBoardOctave1.setText(keyboardNameDisplay);
-            }
-            displayThread.setOctave(octavefordisplay);
-
-        }
-    }
-
-
-    protected void open (Intent data) {
-        Log.d("OnResultLog", "On Activity Result Entered");
-        try {
-            Score score = (Score) data.getSerializableExtra("Score");
-            displayThread.setArchived(score.getScore());
-            for (String s: score.getScore().trim().split("_")) {
-                if (!s.isEmpty()) {
-                    s += " ";
-                    notesAndRest += s;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            notesAndRest = "1 0 2 0 3";
-        }
-        lengthOfNotesAndRest = "1 1 1 1 1";
-
-        Log.d("OnResult", "Notes and rest are " + notesAndRest);
     }
 
 }

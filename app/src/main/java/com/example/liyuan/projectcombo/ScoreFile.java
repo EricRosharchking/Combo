@@ -20,21 +20,21 @@ import java.util.HashSet;
 public class ScoreFile implements Serializable {
     private String title;
     private String artist;
-    //private Context context;
+    private Context context;
     private HashSet<String> fileSet;////TODO all names in the set do not include the file format(".SCORE")
 
     private final String allFileNames = "ALL_FILE_NAMES.DATA";
 
-    public ScoreFile() {
+    public ScoreFile(Object object) {
         title = getNewName();
         // TODO get the HashSet from a file, that's stored as byte[];
         title = getFileFormat(title);
-        //if(object instanceof Context) {
-        //Log.d("Log@ScoreFile33", "the Object is a Context");
-        //context = (Context) object;
-        //} else {
-        //Log.e("Error@ScoreFile36", "the Object is not a Context");
-        //}
+        if(object instanceof Context) {
+            Log.d("Context Log", "the Object is a Context");
+            context = (Context) object;
+        } else {
+            Log.d("Context Log", "the Object is not a Context");
+        }
         fileSet = openAllFileNames().getAllFileNamesSet();
         Log.d("File size Log", "" + fileSet.size());
     }
@@ -79,31 +79,19 @@ public class ScoreFile implements Serializable {
         String fileName = score.getTitle();
         fileName = addSuffix(fileName);
         score.setTitle(fileName);
-        Context context = App.getAppContext();
-        if (context != null) {
-            try {
-
-                Log.d("Log@ScoreFile85", "Context is not null");
-
-                Log.d("", fileName);
-                FileOutputStream fos = context.openFileOutput(getFileFormat(fileName), Context.MODE_PRIVATE);
-                ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
-                oos.writeObject(score);
-                oos.close();
-                fos.close();
-                status = true;
-                fileSet.add(fileName);
-                boolean zzz = saveAllFileNames(fileSet);
-                for (String s: fileSet) {
-                    Log.i("Files include", s);
-                }
-                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + zzz + fileSet.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new IOException(e);
-            }
-        } else {
-            Log.e("Log@ScoreFile103", "context is null");
+        try {
+            FileOutputStream fos = context.openFileOutput(getFileFormat(fileName), Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
+            oos.writeObject(score);
+            oos.close();
+            fos.close();
+            status = true;
+            fileSet.add(fileName);
+            boolean wtf = saveAllFileNames(fileSet);
+            Log.d("Save all file names Log", "Status is " + wtf + fileSet.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException(e);
         }
         return status;
     }
@@ -113,12 +101,10 @@ public class ScoreFile implements Serializable {
 
         name = getFileFormat(name);
         try{
-            Context context = App.getAppContext();
             FileInputStream fis = context.openFileInput(name);
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(fis));
             Object o = ois.readObject();
             scoreStatus = new ScoreStatus(o);
-            Log.i("Log@ScoreFile121", "scoreStatus is " + (scoreStatus != null));
             ois.close();
             fis.close();
         } catch (Exception e) {
@@ -132,23 +118,22 @@ public class ScoreFile implements Serializable {
 
     public FileStatus openAllFileNames() {
         HashSet<String> thisSet = new HashSet<String>();
-        //context = App.getAppContext();
-        Context context = App.getAppContext();
+        context = App.getAppContext();
         if (context != null) {
-            Log.d("Log@ScoreFile123", "Context is not null");
+            Log.d("AllFileOpenContext Log", "Context is not null");
             try {
-                Log.d("Log@ScoreFile125", "The context is " + context.getString(R.string.login));
+                Log.d("Context Content Log", "The context is " + context.getString(R.string.login));
                 FileInputStream fis = context.openFileInput(allFileNames);
                 ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(fis));
 
                 Object[] objects = (Object[]) ois.readObject();
 
-                Log.d("Log@ScoreFile131", "openAllFileNames size of objects is " + objects.length);
+                Log.d("openAllFileNames", "size of objects is " + objects.length);
                 for (Object o : objects) {
                     if (o instanceof byte[]) {
                         byte[] b = (byte[]) o;
                         String string = new String(b, Charset.forName("UTF-8"));
-                        Log.d("Log@ScoreFile136", "openAllFileNames" + string);
+                        Log.d("openAllFileNames", string);
                         thisSet.add(string);
                     }
                 }
@@ -180,12 +165,11 @@ public class ScoreFile implements Serializable {
         for(Object o: objects) {
             if (o instanceof byte[]) {
                 byte[] b = (byte[]) o;
-                Log.d("ObjectLog@ScoreFile182", "The size of o is " + b.length);
+                Log.d("Object Log", "The size of o is " + b.length);
             }
         }
 
         try{
-            Context context = App.getAppContext();
             FileOutputStream fos = context.openFileOutput(allFileNames, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
             oos.writeObject(objects);
@@ -204,11 +188,11 @@ public class ScoreFile implements Serializable {
         return fileSet;
     }
 
-    /*public Context getContext() {
+    public Context getContext() {
         return context;
     }
 
     public void setContext(Context context) {
         this.context = context;
-    }*/
+    }
 }

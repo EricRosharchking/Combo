@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.Arrays;
-import java.util.zip.Inflater;
 
-public class SaveActivity extends ActionBarActivity implements Serializable, DialogInterface.OnClickListener {
+public class SaveActivity extends ActionBarActivity {
     String[] names;
     String name;
     String author;
@@ -30,17 +28,12 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
         names = new String[]{"1", "2", "3"};
-        Context context = App.getAppContext();
-        name = "New Score";
-        author = "Anonymous";
-
-        if (context != null) {
+        if (scoreFile.getContext() != null) {
 
             Object[] objectArray = scoreFile.openAllFileNames().getAllFileNamesSet().toArray();
             names = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        } else {
-            Log.e("Error@SaveActivity38", "Context is null");
         }
+
 
         try {
             Dialog d = onCreateDialog(savedInstanceState);
@@ -56,16 +49,52 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         AlertDialog.Builder builder;
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
-            Log.d("Log@SaveActivity56", "Context is not null");
+            Log.d("Dialog Log", "Context is not null");
             builder = new AlertDialog.Builder(context);
 
             LayoutInflater inflater = LayoutInflater.from(context);
             // Set the dialog title
 
             builder.setTitle(R.string.save)
-                    .setView(inflater.inflate(R.layout.dialog_save, null))
-                    .setPositiveButton("Save", this)
-                    .setNegativeButton("Cancel", this);
+                    .setView(inflater.inflate(R.layout.activity_save, null))
+                    // Specify the list array, the items to be selected by default (null for none),
+                    // and the listener through which to receive callbacks when items are selected
+                    // Set the action buttons
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK, so save the mSelectedItems results somewhere
+                            // or return them to the component that opened the dialog
+                            LayoutInflater inflater = LayoutInflater.from(SaveActivity.this);
+                            View view =  inflater.inflate(R.layout.activity_save, new ViewGroup(SaveActivity.this)
+                            {
+                                @Override
+                                protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
+                                }
+                            });
+
+                            name = ((EditText) view.findViewById(R.id.filename)).getText().toString();
+                            author = ((EditText) view.findViewById(R.id.author)).getText().toString();
+                            Score score = new Score();
+                            score.setTitle(name);
+                            score.setAuthor(author);
+                            ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
+                            try{
+                                scoreFile.save(score);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("SaveDialog Log", "Save Clicked " + id + " " + name);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
 
         } else {
             Log.e("NewActivity Log", "Context is Null");
@@ -108,47 +137,5 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        Log.i("ListenerLog@158", "Button is " + which);
-        if(which == -1) {
-            //save
-            Log.d("SaveActivity118", "Save Clicked");
-
-
-
-            Dialog view = (Dialog) dialog;
-            EditText nameField = (EditText)view.findViewById(R.id.name_Field);
-            EditText authorField = (EditText)view.findViewById(R.id.author_Field);
-            CharSequence sequence1 = nameField.getText();
-            CharSequence sequence2 = authorField.getText();
-
-            name = sequence1.toString();
-
-            Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
-            if (sequence2.length() > 0) {
-                author = sequence2.toString();
-            }
-
-            Score score = (Score) getIntent().getSerializableExtra("Score");
-            Log.i("Log@Save136", "score is null? " + (score == null));
-            score.setTitle(name);
-            score.setAuthor(author);
-            int[] array = score.getScore();
-            Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
-            ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
-            try{
-                scoreFile.save(score);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Log.d("Log@SaveActivity146", "Save Clicked " + " " + name);
-            Log.d("Log@SaveActivity147", "Save Clicked " + " " + author);
-            finish();
-        } else if (which == -2) {
-            finish();
-        }
     }
 }

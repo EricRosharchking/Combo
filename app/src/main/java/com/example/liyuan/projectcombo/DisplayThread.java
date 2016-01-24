@@ -22,17 +22,6 @@ public class DisplayThread extends Thread {
     private int lastKey;
     private int barTime;
     private int displayTime;
-    private int octave;
-    private int quarterBeat;
-    private int noteTime;
-    private int lastNoteTime;
-
-    private final String underline = "<sub>\u0332</sub>";
-    private final String double_underline = "<sub>\u0333</sub>";
-    private final String curve = "<sup>\u0361</sup>";
-    private final String bullet = "&#8226\n";
-    private final String dot_above = "<sub>\u0307</sub>";
-    private final String dot_below = "<sub>\u0323</sub>";
 
     public DisplayThread() {
         timeSignature = 4;
@@ -44,8 +33,7 @@ public class DisplayThread extends Thread {
         lastKey = -1;
         barTime = timeSignature * 1000;
         displayTime = barTime * 4;
-        octave = 4;
-        quarterBeat = 250;
+
     }
 
     public void run() {
@@ -63,21 +51,10 @@ public class DisplayThread extends Thread {
         startTime = System.currentTimeMillis();
         Log.d("DisplayThread Log", "The start Time is " + startTime);
         long elapsedTime = System.currentTimeMillis() - startTime;
-        long count = elapsedTime / quarterBeat;
+        long count = elapsedTime / 250;
         while (isRunning) {
             elapsedTime = System.currentTimeMillis() - startTime;
-
-            String addon = "";
-            if (octave == 3) {
-                addon = dot_below;
-            } else if (octave == 5) {
-                addon = dot_above;
-            }
-            if (key == 0) {
-                addon = "";
-            }
-            if ((elapsedTime % quarterBeat) == 0 && elapsedTime > count * quarterBeat && (elapsedTime / quarterBeat) > 0) {
-                Log.d("Log@DisplayThread72", "Octave is " + octave);
+            if ((elapsedTime % 250) == 0 && elapsedTime > count * 250 && (elapsedTime / 250) > 0) {
                 if (lastKey == key) {
 //                    display = display + "⏜";//"\u23DC"和"⏜"textview都无法显示
                     display = display+" - ";//短破折号
@@ -86,19 +63,21 @@ public class DisplayThread extends Thread {
 //                    display = display+"\u2040\n";//tie是短的
                 } else {
 //                    String underline = "<u>" + key + "&#8226\n </u>";//"<u>"underline
+                    String underline = "<sub>\u0332</sub>";
+                    String double_underline = "<sub>\u0333</sub>";
+                    String curve = "<sup>\u0361</sup>";
+                    String bullet = "&#8226\n";
+                    String dot_below = "<sub>\u0323</sub>";
 //                    String underline = lastKey+"<sup>\u0361</sup><sub><big>\u0333</big></sub>" + key+"<sub><big>\u0333</big></sub>" +"&#8226\n";//bullet point
-//                    String addon = lastKey+curve+underline+key+double_underline+bullet+lastKey+dot_below;//testing
+                    String addon = lastKey+curve+underline+key+double_underline+bullet+lastKey+dot_below;//testing
                     lastKey = key;
-                    addon = lastKey + addon;
                     display += addon;
-                    Log.d("Log@DisplayThread89", "Addon is " + addon);
-                    //display += addon;
                 }
                 count = elapsedTime / 250;
-//                Log.d("DisplayThread Log", "The current system time is " + System.currentTimeMillis());
-//                Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
-//                Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
-//                Log.d("DisplayThread Log", "The display is " + display);
+                Log.d("DisplayThread Log", "The current system time is " + System.currentTimeMillis());
+                Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
+                Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
+                Log.d("DisplayThread Log", "The display is " + display);
                 if ((elapsedTime % barTime) == 0) {
                     display = display + "|";
                     if ((elapsedTime % displayTime) == 0) {
@@ -106,9 +85,9 @@ public class DisplayThread extends Thread {
                         display = "";
                     }
                 }
-//                Log.d("Debug Log", "TimeSignature is " + timeSignature);
-//                Log.d("Debug Log", "BarTime is " + barTime);
-//                Log.d("Debug Log", "DisplayTime is " + displayTime);
+                Log.d("Debug Log", "TimeSignature is " + timeSignature);
+                Log.d("Debug Log", "BarTime is " + barTime);
+                Log.d("Debug Log", "DisplayTime is " + displayTime);
             }
         }
         Log.d("DisplayThread Log", "Length of Archived is " + archived.length());
@@ -134,7 +113,6 @@ public class DisplayThread extends Thread {
 
         archived += display;
     }
-
     public void update(int strike) {
         key = strike;
     }
@@ -146,17 +124,5 @@ public class DisplayThread extends Thread {
         Log.d("DisplayThread Log", "The current timeSignature is " + timeSignature);
         Log.d("DisplayThread Log", "The current barTime is " + barTime);
         Log.d("DisplayThread Log", "The current displayTime is " + displayTime);
-    }
-
-    public void setOctave(int octave) {
-        this.octave = octave;
-    }
-
-    public void setDisplay(String score) {
-        display = score;
-    }
-
-    public void setArchived(String score) {
-        archived = score;
     }
 }

@@ -177,7 +177,7 @@
                 android:paddingBottom="0dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="5dp"
+                android:paddingTop="0dp"
                 android:scrollbars="vertical"
                 android:text="@string/main_score"
                 android:textColor="#FFFFFF" />
