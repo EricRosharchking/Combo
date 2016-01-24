@@ -149,7 +149,8 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1.4"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <ImageButton
                 android:id="@+id/loweroctave"
@@ -176,14 +177,10 @@
                 <TextView
                     android:id="@+id/main_score"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="0dp"
-                    android:text="@string/main_score"
-                    android:textColor="#FFFFFF" />
+                    android:layout_height="fill_parent"></TextView>
             </ScrollView>
+
+
             <ImageButton
                 android:id="@+id/upoctave"
                 android:layout_width="50dp"

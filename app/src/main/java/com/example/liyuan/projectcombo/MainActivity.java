@@ -159,7 +159,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             textView = (TextView) findViewById(R.id.main_score);
-            textView.setMovementMethod(new ScrollingMovementMethod());
+            //textView.setMovementMethod(new ScrollingMovementMethod());
             recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
             recordButton = (ImageButton) findViewById(R.id.record_button);
