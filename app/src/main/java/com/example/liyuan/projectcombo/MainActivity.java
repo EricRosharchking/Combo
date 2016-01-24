@@ -1,6 +1,8 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.media.AudioManager;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -51,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
 
     Button buttonAddLyrics;
-    Button buttonBack;
+//    Button buttonBack;
     RadioButton radioButton;
     Metronome metronome;
     Button tempoButton;
@@ -97,7 +100,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-
+//            getActionBar().setDisplayHomeAsUpEnabled(true);
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -198,8 +201,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
-            buttonBack = (Button) findViewById(R.id.buttonBack);
-            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
+//            buttonBack = (Button) findViewById(R.id.buttonBack);
+//            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
             // SqLite database handler
             db = new SQLiteHandler(getApplicationContext());
@@ -221,23 +224,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 });
             }
 
-            buttonBack.setOnClickListener(new View.OnClickListener() {
+//            buttonBack.setOnClickListener(new View.OnClickListener() {
 
-                public void onClick(View view) {
-                    Intent i = new Intent(getApplicationContext(),
-                            UserMainPage.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
 
-            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    Intent i = new Intent(getApplicationContext(),
+//                            UserMainPage.class);
+//                    startActivity(i);
+//                    finish();
+//                }
+//            });
 
-                @Override
-                public void onClick(View v) {
-                    addLyrics();
-                }
-            });
+//            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    addLyrics();
+//                }
+//            });
 
 
             scoreFile = new ScoreFile();
@@ -252,7 +256,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             secondsPerBeat = 60.0 / timeSignature;
         }
     }
-
     /**
      * Directing the user to add lyrics page.
      * AddLyrics will share the scores user entered from MainActivity
@@ -302,6 +305,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             save();
         } else if (id == R.id.openHistory) {
             openOrNew();
+        } else if (id == R.id.addLyrics) {
+            addLyrics();
         }
 
         return super.onOptionsItemSelected(item);
@@ -708,11 +713,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             PlayBack playBack = new PlayBack(numericNotes, lengths);
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
+//                ImageButton imageButton = (ImageButton) findViewById(R.id.playBack);
+//                imageButton.setImageResource(R.drawable.playing);
             try {
                 playBack.join();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+//            imageButton.setImageResource(R.drawable.playback);
         }
     }
 
@@ -846,7 +854,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return array;
     }
 
-
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+//        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+//                && keyCode == KeyEvent.KEYCODE_BACK
+//                && event.getRepeatCount() == 0) {
+//            Log.d("CDA", "onKeyDown Called");
+//            onBackPressed();
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+//
+//
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(getApplicationContext(),welcomePage.class);
+        startActivity(i);
+        finish();
+    }
 
 //    protected void open (Intent data) {
 //        Log.d("OnResultLog", "On Activity Result Entered");
