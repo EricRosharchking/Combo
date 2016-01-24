@@ -13,7 +13,7 @@ public class App extends Application implements Serializable{
 
     public void onCreate() {
         super.onCreate();
-        App.mContext = getApplicationContext();
+        mContext = getApplicationContext();
     }
 
     public static Context getAppContext() {
