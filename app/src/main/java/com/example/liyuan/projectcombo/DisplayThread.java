@@ -97,9 +97,9 @@ public class DisplayThread extends Thread {
                 count = elapsedTime / 250;
                 int x = (int)count / 4;
                 int y = (int)count % 4;
-                for (int i = 1; i <= x; i ++) {
-                    display += "-";
-                }
+//                for (int i = 1; i <= x; i ++) {
+//                    display += "-";
+//                }
                 switch (y) {
                     case 1:
                         display += double_underline;
