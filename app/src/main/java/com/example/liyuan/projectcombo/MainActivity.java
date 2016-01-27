@@ -821,7 +821,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         ////TODO:
-        return Html.fromHtml(scoreString.trim()) + "";
+        return scoreString.trim();
+//                Html.fromHtml(scoreString.trim()) + "";
     }
 
 
