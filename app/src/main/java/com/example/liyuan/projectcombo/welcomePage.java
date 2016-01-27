@@ -99,6 +99,13 @@ public class welcomePage extends Activity {
     /**
      * function to verify login details in mysql db
      * */
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
+        startActivity(i);
+        finish();
+    }
+
     private void checkLogin(final String email, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
