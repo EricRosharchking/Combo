@@ -55,6 +55,7 @@
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_save">SaveActivity</string>
     <string name="start">Open A Score</string>
+    <string name="tempoHint">Tempo</string>
 
 
 </resources>
