@@ -1,7 +1,5 @@
 package com.example.liyuan.projectcombo;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -38,9 +36,9 @@ public class UserMainPage extends ActionBarActivity {
         // session manager
         session = new SessionManager(getApplicationContext());
 
-//        if (!session.isLoggedIn()) {
-//            logoutUser();
-//        }
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
         // Logout button click event
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -58,39 +56,13 @@ public class UserMainPage extends ActionBarActivity {
      * */
     private void logoutUser() {
         session.setLogin(false);
+
         db.deleteUsers();
-        AlertDialog.Builder ald = new AlertDialog.Builder(UserMainPage.this);
-        ald.setTitle("WARNING");
-        ald.setMessage("Are you sure you want to log out as current user?");
-        ald.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Intent i = new Intent(getApplicationContext(),welcomePage.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        ald.setNegativeButton("Cancel", null);
-        ald.show();
-    }
-    public void onBackPressed() {
-        AlertDialog.Builder ald = new AlertDialog.Builder(UserMainPage.this);
-        ald.setTitle("WARNING");
-        ald.setMessage("Are you sure you want to log out as current user?");
-        ald.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Intent i = new Intent(getApplicationContext(),welcomePage.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        ald.setNegativeButton("Cancel", null);
-        ald.show();
+
+        // Launching the login activity
+        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
+        startActivity(intent);
+        finish();
     }
 
 }
