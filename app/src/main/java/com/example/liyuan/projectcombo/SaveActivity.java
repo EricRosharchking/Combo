@@ -21,6 +21,9 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     String[] names;
     String name;
     String author;
+    int tempo;
+    int timeSig;
+    Score score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,18 +127,40 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
             EditText authorField = (EditText)view.findViewById(R.id.author_Field);
             CharSequence sequence1 = nameField.getText();
             CharSequence sequence2 = authorField.getText();
-
-            name = sequence1.toString();
+			
+			EditText tempoField = (EditText) view.findViewById(R.id.tempo_Field);
+            CharSequence sequence3 = tempoField.getText();
+            
+			name = sequence1.toString();
 
             Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
             if (sequence2.length() > 0) {
                 author = sequence2.toString();
             }
 
-            Score score = (Score) getIntent().getSerializableExtra("Score");
+            score = (Score) getIntent().getSerializableExtra("Score");
             Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
-            score.setAuthor(author);
+            score.setAuthor(author);if (sequence3.length() > 0) {
+                try {
+                    tempo = Integer.getInteger(sequence3.toString().trim());
+                } catch (Exception e) {
+                    tempo = 60;
+                }
+            }
+            score.setTempo(tempo);
+
+            switch (timeSig) {
+                case 3:
+                    score.setTimeSignatureFT();
+                    break;
+                case 4:
+                    score.setTimeSignatureFF();
+                    break;
+                default:
+                    break;
+            }
+			
             int[] array = score.getScore();
             Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
