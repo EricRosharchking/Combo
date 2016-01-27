@@ -142,12 +142,6 @@ public class AddLyrics extends ActionBarActivity {
     //split the String to String[] for use to split into multiple arrays
     //split the String to String[] to ensure alignment with the lyrics text box
     //(i.e. one lyrics tb under one score)
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
-        finish();
-    }
     private static String[] split(String string)
     {
         char[] chars = string.toCharArray();
