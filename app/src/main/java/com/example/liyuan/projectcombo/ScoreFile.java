@@ -1,9 +1,9 @@
 package com.example.liyuan.projectcombo;
-
 import android.content.Context;
 import android.util.Log;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -197,6 +197,36 @@ public class ScoreFile implements Serializable {
             throw new IOException(e);
         }
 
+        return status;
+    }
+
+
+    public boolean deleteAll() {
+        boolean status = false;
+        File f = null;
+        int i = fileSet.size();
+        try {
+            for (String s: fileSet) {
+                String str = s + ".SCORE";
+                f = new File(str);
+                f.delete();
+                Log.i("Log@Delete214", "File deleted: " + str);
+                i --;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        if (status) {
+            fileSet.clear();
+            status = (fileSet.isEmpty());
+            try {
+                saveAllFileNames(fileSet);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return status;
     }
 
