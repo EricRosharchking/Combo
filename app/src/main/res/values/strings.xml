@@ -35,7 +35,6 @@
     <string name="startmetro"><u>START METRONOME</u></string>
     <string name="timesig3"><u>3/4</u></string>
     <string name="timesig4"><u>4/4</u></string>
-
     <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="logout">LOG OUT</string>
     <string name="back">BACK</string>
@@ -54,7 +53,7 @@
     <string name="authorname">Author</string>
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_save">SaveActivity</string>
-    <string name="start">Open A Score</string>
+    <string name="start">View History</string>
 
 
 </resources>

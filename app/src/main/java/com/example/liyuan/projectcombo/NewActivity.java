@@ -25,7 +25,6 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
         names = new String[]{"1", "2", "3"};

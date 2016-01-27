@@ -27,21 +27,22 @@ public class AudioThread extends Thread {
         isRunning = true;
         this.note = note;
 
-        audioTrack = init();
+//        audioTrack = init();
 //        audioTrack.play();
         Log.d("BufferSize Log", "The current buffer size in use is: " + BUFFER_SIZE);
     }
 
     public void run() {
-        try {
+//        try {
 //            audioTrack.play();
-            prepare(audioTrack);
-        } catch (java.lang.IllegalStateException e) {
-            e.printStackTrace();
-            audioTrack = init();
-        }
+        audioTrack = init();
+        prepare(audioTrack);
+//        } catch (java.lang.IllegalStateException e) {
+//            e.printStackTrace();
+//            audioTrack = init();
+//        }
         short samples[] = new short[BUFFER_SIZE];
-        double amplitude = 16384.0 * 4 / 3;
+        double amplitude = 16384.0;
         double sustainVolume = amplitude * 5 / 8;
         double frequency = 261.63f;
         double remainder = 1.998;
@@ -125,13 +126,18 @@ public class AudioThread extends Thread {
             audioTrack.write(samples, 0, 22050);
             */
             //TODO
-
-            audioTrack.flush();
-            audioTrack.release();
-//            audioTrack = null;
+            if (audioTrack != null && audioTrack.getState() != AudioTrack.STATE_UNINITIALIZED) {
+                audioTrack.stop();
+                audioTrack.flush();
+                audioTrack.release();
+            //            audioTrack = null;
+            }
         } catch (IllegalStateException e) {
             e.printStackTrace();
             Log.d("AudioTrack Log", "The audiotrack pointer is " + e.toString());
+        }
+        if (!isRunning) {
+            audioTrack = null;
         }
 
 /*
@@ -189,6 +195,7 @@ public class AudioThread extends Thread {
     }
 
     private AudioTrack init() {
+        audioTrack = null;
         return new AudioTrack(AudioManager.STREAM_MUSIC,
                 SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE,AudioTrack.MODE_STREAM);
