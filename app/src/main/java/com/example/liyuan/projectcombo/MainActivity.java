@@ -32,7 +32,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
-
+    
+	private final String BULLET = "&#8226\n";
+    private final String UNDERLINE = "<sub>\u0332</sub>";
+    private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
     double noteBeats;
     boolean opened;
     double noteStartTime;
@@ -265,14 +268,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-        } else if (id == R.id.saveSong) {
-            save();
-        } else if (id == R.id.openHistory) {
-            openOrNew();
-        } else if (id == R.id.addLyrics) {
-            addLyrics();
+        switch (item.getItemId()) {
+            case R.id.openHistory:
+                openOrNew();
+                break;
+            case R.id.saveSong:
+                save();
+                break;
+            case R.id.deleteAll:
+                deleteAll();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -504,7 +509,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     noteStartTime = System.currentTimeMillis();
                     restEndTime = noteStartTime;                                                    //start count the time
-                    rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
+                    rest = (restEndTime - restStartTime) / 1000.0 / secondsPerBeat;
                     Log.d("RestLog", "Rest is " + rest + " beats long");
                     notesAndRest = notesAndRest + " " + "0";
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
@@ -527,7 +532,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
-                onHold = false;
+				onHold = false;
                 audioThreads[noteID].stopPlaying();
 //                if (audioThreads[noteID] != null) {
 //                    audioThreads[noteID] = null;
@@ -541,7 +546,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //                    audioThreads[noteID].stopPlaying();
 
-                    onHold = false;
                     noteEndTime = System.currentTimeMillis();
                     restStartTime = noteEndTime;
                     elapse = noteEndTime - noteStartTime;
@@ -743,6 +747,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
+	
+	
+    private void deleteAll() {
+        Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
+    }
 
 
     private void upOctave() {
@@ -781,14 +790,38 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "Score";
+        String scoreString = "";
         if (notes != null && lengths!= null && notes.length == lengths.length) {
             for (int i = 0; i < notes.length; i++) {
-                String thisNote = notes[i] + " ";
+                String thisNote = Integer.toString(notes[i]);
+                double thisLength = lengths[i];
+                int q = (int) Math.round(thisLength / 0.25);
+                if (q == 0) {
+                    q = 1;
+                }
+                switch (q) {
+                    case 1:
+                        thisNote += DOUBLE_UNDERLINE;
+                        break;
+                    case 2:
+                        thisNote += UNDERLINE;
+                        break;
+                    case 3:
+                        thisNote += UNDERLINE;
+                        thisNote += BULLET;
+                        break;
+                    default:
+                        break;
+                }
+
+
+
                 scoreString += thisNote;
             }
         }
-        return scoreString;
+
+        ////TODO:
+        return Html.fromHtml(scoreString.trim()) + "";
     }
 
 

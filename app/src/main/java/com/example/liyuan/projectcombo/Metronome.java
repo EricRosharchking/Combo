@@ -37,6 +37,7 @@ public class Metronome extends Activity {
 
     public Metronome() {
         timeSignature = 4;
+<<<<<<< HEAD
         peep = WavReader.readFile(App.getAppContext(), R.raw.pop3);
         pop = WavReader.readFile(App.getAppContext(), R.raw.pop1);
         for (short s: peep) {
@@ -45,6 +46,10 @@ public class Metronome extends Activity {
         for (short s:pop) {
             s /= 2;
         }
+=======
+        peep = WavReader.readFile(App.getAppContext(), R.raw.peep3);
+        pop = WavReader.readFile(App.getAppContext(), R.raw.peep1);
+>>>>>>> ly
         array = peep;
         count = 1;
 
@@ -169,6 +174,7 @@ public class Metronome extends Activity {
                         } else {
                             count = 1;
                             Log.d("Metronome Count Log", "Count is " + timeSignature);
+<<<<<<< HEAD
                         }
                     }
                     samples = new short[size];
@@ -176,6 +182,15 @@ public class Metronome extends Activity {
                         for (int i = 0; i < array.length; i ++) {
                             samples[i] = array[i];
                         }
+=======
+                        }
+                    }
+                    samples = new short[size];
+                    try {
+                        for (int i = 0; i < array.length; i ++) {
+                            samples[i] = array[i];
+                        }
+>>>>>>> ly
                         for (int i = array.length; i < samples.length; i ++) {
                             samples[i] = 0;
                         }

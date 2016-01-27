@@ -97,9 +97,11 @@ public class DisplayThread extends Thread {
                 count = elapsedTime / 250;
                 int x = (int)count / 4;
                 int y = (int)count % 4;
-                for (int i = 1; i <= x; i ++) {
-                    display += "-";
-                }
+
+//                for (int i = 1; i <= x; i ++) {
+//                    display += "-";
+//                }
+
                 switch (y) {
                     case 1:
                         display += double_underline;
@@ -114,7 +116,8 @@ public class DisplayThread extends Thread {
                     default:
                         break;
                 }
-//                display = Html.fromHtml(display).toString();
+
+                  display = Html.fromHtml(display).toString();
 //                Log.d("DisplayThread Log", "The current system time is " + System.currentTimeMillis());
 //                Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
 //                Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
