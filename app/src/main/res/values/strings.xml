@@ -53,12 +53,7 @@
     <string name="authorname">Author</string>
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_save">SaveActivity</string>
-<<<<<<< HEAD
     <string name="start">View History</string>
-=======
-    <string name="start">Open A Score</string>
     <string name="tempoHint">Tempo</string>
->>>>>>> ly
-
 
 </resources>
