@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class UserMainPage extends ActionBarActivity {
@@ -58,6 +59,8 @@ public class UserMainPage extends ActionBarActivity {
             }
         });
 
+
+
     }
     //Logout function
     private void logout(){
@@ -103,28 +106,14 @@ public class UserMainPage extends ActionBarActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_user_main_page, menu);
+//        return true;
+//    }
     public void onBackPressed() {
-        AlertDialog.Builder ald = new AlertDialog.Builder(UserMainPage.this);
-        ald.setTitle("WARNING");
-        ald.setMessage("Are you sure you want to log out as current user?");
-        ald.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Intent i = new Intent(getApplicationContext(),welcomePage.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        ald.setNegativeButton("Cancel", null);
-        ald.show();
+        logout();
     }
 
     @Override

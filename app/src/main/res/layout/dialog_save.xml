@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:text="@string/timesig3"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF" />
             <RadioButton
                 android:id="@+id/timeSig44"
                 android:onClick="changeTimeSig"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/timesig4"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF" />
         </RadioGroup>
     </RelativeLayout>
 </LinearLayout>
