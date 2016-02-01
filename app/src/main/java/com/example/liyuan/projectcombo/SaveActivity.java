@@ -107,7 +107,19 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         }
     }
 */
-
+public void changeTimeSig(View view) {
+    if (score != null) {
+        switch (view.getId()) {
+            case R.id.timeSig43:
+                timeSig = 3;
+            case R.id.timeSig44:
+                timeSig = 4;
+                break;
+            default:
+                timeSig = 4;
+        }
+    }
+}
     @Override
     protected void onDestroy() {
         super.onDestroy();
