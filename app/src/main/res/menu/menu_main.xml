@@ -19,4 +19,17 @@
         android:orderInCategory="100"
         android:title="@string/openHistory"
         app:showAsAction="never" />
+<<<<<<< HEAD
+
+=======
+>>>>>>> ly
+    <item
+        android:id="@+id/deleteAll"
+        android:orderInCategory="100"
+        android:title="Delete All"
+<<<<<<< HEAD
+        app:showAsAction="never" />
+=======
+        app:showAsAction="never"/>
+>>>>>>> ly
 </menu>

@@ -80,7 +80,7 @@ public class DisplayThread extends Thread {
                 Log.d("Log@DisplayThread72", "Octave is " + octave);
                 if (lastKey == key) {
 //                    display = display + "⏜";//"\u23DC"和"⏜"textview都无法显示
-                    display = display+" - ";//短破折号
+                    display = display +"-";//短破折号
 //                    display = display+"—";//长破折号
 //                    display = display+"\uFF0D\n";//长破折号怪怪的
 //                    display = display+"\u2040\n";//tie是短的
@@ -95,6 +95,30 @@ public class DisplayThread extends Thread {
                     //display += addon;
                 }
                 count = elapsedTime / 250;
+                int x = (int)count / 4;
+                int y = (int)count % 4;
+
+//                for (int i = 1; i <= x; i ++) {
+//                    display += "-";
+//                }
+
+
+                switch (y) {
+                    case 1:
+                        display += double_underline;
+                        break;
+                    case 2:
+                        display += underline;
+                        break;
+                    case 3:
+                        display += underline;
+                        display += bullet;
+                        break;
+                    default:
+                        break;
+                }
+
+//                  display = Html.fromHtml(display).toString();
 //                Log.d("DisplayThread Log", "The current system time is " + System.currentTimeMillis());
 //                Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
 //                Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
