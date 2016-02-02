@@ -136,7 +136,54 @@ public class DisplayThread extends Thread {
     }
 
     public void update(int strike) {
-        key = strike;
+        int thisKey = 1;
+        switch (strike) {
+            case -3:
+            case 3:
+            case 42:
+                thisKey = 2;
+                break;
+            case -4:
+            case 4:
+            case 56:
+            case -5:
+            case 5:
+            case 70:
+                thisKey = 3;
+                break;
+            case -6:
+            case 6:
+            case 84:
+            case -7:
+            case 7:
+            case 98:
+                thisKey = 4;
+                break;
+            case -8:
+            case 8:
+            case 112:
+            case -9:
+            case 9:
+            case 126:
+                thisKey = 5;
+                break;
+            case -10:
+            case 10:
+            case 140:
+                thisKey = 6;
+                break;
+            case -11:
+            case 11:
+            case 154:
+            case -12:
+            case 12:
+            case 168:
+                thisKey = 7;
+                break;
+            default:
+                break;
+        }
+        key = thisKey;
     }
 
     public void setTimeSignature(int timeSignature) {

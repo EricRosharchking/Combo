@@ -436,12 +436,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }*/
     }
 
+    int noteAddOn;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        boolean swipable = false;
+        noteAddOn = 1;
         if (v instanceof ImageButton) {
 
+            switch (octavefordisplay) {
+                case 3:
+                    noteAddOn = -1;
+                    break;
+                case 5:
+                    noteAddOn = 14;
+                    break;
+                default:
+                    noteAddOn = 1;
+                    break;
+            }
 
             switch (v.getId()) {
                 case R.id.cnatural:
@@ -523,6 +535,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
                     key = noteID;
+                    key = noteID * noteAddOn;
                     if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
                         displayThread.update(key);
                     }
@@ -577,7 +590,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     //Log.d("TouchLog", "The elapse is " + elapse);
                     noteBeats = elapse / secondsPerBeat;
                     Log.d("BeatsLog", "There are " + noteBeats + " beats in the note");
-                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    //notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId()) * noteAddOn;
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + noteBeats;
                 }
             }
@@ -629,6 +643,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+        metronome.stop();
         super.onDestroy();
     }
 
@@ -654,6 +669,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+    boolean isPlayBack;
 
     public void playBack(View view) {
         //// TODO: 10/18/2015 HashMap Key must be unique. . .
@@ -704,12 +720,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             scoreLength[2] = "1.000";
             scoreLength[3] = "1.000";*/
 
-
             PlayBack playBack = new PlayBack(numericNotes, lengths);
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
+
             try {
+                //Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
                 playBack.join();
+                //imageButton.setImageResource(R.drawable.playbackbutton);
             } catch (Exception e) {
                 e.printStackTrace();
             }
