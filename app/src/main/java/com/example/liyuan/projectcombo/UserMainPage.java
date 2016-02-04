@@ -1,20 +1,23 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.liyuan.projectcombo.helper.SQLiteHandler;
-import com.example.liyuan.projectcombo.helper.SessionManager;
 
 public class UserMainPage extends ActionBarActivity {
 
-    private SQLiteHandler db;
-    private SessionManager session;
     Button btnLogout;
     Button createNewSong;
+    Button viewHistory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,40 +32,108 @@ public class UserMainPage extends ActionBarActivity {
                 finish();
             }
         });
+
+        viewHistory = (Button)findViewById(R.id.viewHistory);
+        viewHistory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        NewActivity.class);
+                ScoreFile scoreFile = new ScoreFile();
+                i.putExtra("ScoreFile", scoreFile);
+                startActivity(i);
+                finish();
+            }
+        });
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         btnLogout = (Button) findViewById(R.id.btnLogout);
-        // SqLite database handler
-        db = new SQLiteHandler(getApplicationContext());
 
-        // session manager
-        session = new SessionManager(getApplicationContext());
-
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        }
         // Logout button click event
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                logoutUser();
+                logout();
             }
         });
 
     }
+    //Logout function
+    private void logout(){
+        //Creating an alert dialog to confirm logout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
 
-    /**
-     * Logging out the user. Will set isLoggedIn flag to false in shared
-     * preferences Clears the user data from sqlite users table
-     * */
-    private void logoutUser() {
-        session.setLogin(false);
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
 
-        db.deleteUsers();
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
-        // Launching the login activity
-        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
-        startActivity(intent);
-        finish();
+                        //Putting blank value to email
+                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Saving the sharedpreferences
+                        editor.commit();
+
+                        //Starting login activity
+                        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
+                        startActivity(intent);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        //Showing the alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    public void onBackPressed() {
+        AlertDialog.Builder ald = new AlertDialog.Builder(UserMainPage.this);
+        ald.setTitle("WARNING");
+        ald.setMessage("Are you sure you want to log out as current user?");
+        ald.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Intent i = new Intent(getApplicationContext(),welcomePage.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        ald.setNegativeButton("Cancel", null);
+        ald.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.btnLogout) {
+            //calling logout method when the logout button is clicked
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

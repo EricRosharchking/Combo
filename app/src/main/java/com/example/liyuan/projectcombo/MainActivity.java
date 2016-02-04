@@ -201,25 +201,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             buttonBack = (Button) findViewById(R.id.buttonBack);
             buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
-            // SqLite database handler
-            db = new SQLiteHandler(getApplicationContext());
 
-            // session manager
-            session = new SessionManager(getApplicationContext());
-
-            if (!session.isLoggedIn()) {
-                logoutUser();
-            }
-            // Logout button click event
-            if (btnLogout != null) {
-                btnLogout.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        logoutUser();
-                    }
-                });
-            }
 
             buttonBack.setOnClickListener(new View.OnClickListener() {
 
@@ -266,20 +248,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         finish();
     }
 
-    /**
-     * Logging out the user. Will set isLoggedIn flag to false in shared
-     * preferences Clears the user data from sqlite users table
-     */
-    private void logoutUser() {
-        session.setLogin(false);
 
-        db.deleteUsers();
-
-        // Launching the login activity
-        Intent intent = new Intent(MainActivity.this, UserMainPage.class);
-        startActivity(intent);
-        finish();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -302,6 +271,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             save();
         } else if (id == R.id.openHistory) {
             openOrNew();
+        } else if (id == R.id.addLyrics){
+            addLyrics();
         }
 
         return super.onOptionsItemSelected(item);
