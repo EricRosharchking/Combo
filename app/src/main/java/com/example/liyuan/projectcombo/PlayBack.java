@@ -31,6 +31,11 @@ public class PlayBack extends Thread{
         musicScore = new HashMap<Integer, Double>();
         for (int i = 0; i < 14; i ++) {
             musicScore.put(i, (new Note(i)).getFrequency());
+            if (i > 0) {
+                musicScore.put(i * -1, (new Note(i).getFrequency()) / 2.0);
+                musicScore.put(i * 14, (new Note(i).getFrequency()) * 2.0);
+            }
+
         }
     }
 
@@ -54,6 +59,9 @@ public class PlayBack extends Thread{
     }
 
     public void run() {
+//        View view = get
+//        ImageButton imageButton = (ImageButton) findViewById(R.id.playBack_Button);
+//        imageButton.setImageResource(R.drawable.playing);
         if (audioTrack != null) {
             audioTrack.play();
 

@@ -54,14 +54,6 @@ public class Score implements Serializable {
 
         return c;
     }
-	
-    public void setTimeSignatureFF() {
-        this.timeSignature = "4/4";
-    }
-
-    public void setTimeSignatureFT() {
-        this.timeSignature = "3/4";
-    }
 
     public void setAuthor(String author) {
         this.author = author;
