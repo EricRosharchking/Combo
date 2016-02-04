@@ -1,10 +1,7 @@
 package com.example.liyuan.projectcombo;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.support.v7.app.ActionBarActivity;
@@ -13,7 +10,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,6 +20,8 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.liyuan.projectcombo.helper.SQLiteHandler;
+import com.example.liyuan.projectcombo.helper.SessionManager;
 
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -32,10 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
-    
-	private final String BULLET = "&#8226\n";
-    private final String UNDERLINE = "<sub>\u0332</sub>";
-    private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
+
     double noteBeats;
     boolean opened;
     double noteStartTime;
@@ -49,12 +44,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double[] lengths;
     ScoreFile scoreFile;
 
+    private SQLiteHandler db;
+    private SessionManager session;
     Button btnLogout;
 
     int key;
 
     Button buttonAddLyrics;
-//    Button buttonBack;
+    Button buttonBack;
     RadioButton radioButton;
     Metronome metronome;
     Button tempoButton;
@@ -100,7 +97,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-//            getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -175,7 +172,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             textView = (TextView) findViewById(R.id.main_score);
-            //textView.setMovementMethod(new ScrollingMovementMethod());
+            textView.setMovementMethod(new ScrollingMovementMethod());
             recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
             recordButton = (ImageButton) findViewById(R.id.record_button);
@@ -201,29 +198,46 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
-//            buttonBack = (Button) findViewById(R.id.buttonBack);
-//            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
+            buttonBack = (Button) findViewById(R.id.buttonBack);
+            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
+            // SqLite database handler
+            db = new SQLiteHandler(getApplicationContext());
 
+            // session manager
+            session = new SessionManager(getApplicationContext());
 
-//            buttonBack.setOnClickListener(new View.OnClickListener() {
+            if (!session.isLoggedIn()) {
+                logoutUser();
+            }
+            // Logout button click event
+            if (btnLogout != null) {
+                btnLogout.setOnClickListener(new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View v) {
+                        logoutUser();
+                    }
+                });
+            }
 
-//                public void onClick(View view) {
-//                    Intent i = new Intent(getApplicationContext(),
-//                            UserMainPage.class);
-//                    startActivity(i);
-//                    finish();
-//                }
-//            });
+            buttonBack.setOnClickListener(new View.OnClickListener() {
 
-//            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    addLyrics();
-//                }
-//            });
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(),
+                            UserMainPage.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    addLyrics();
+                }
+            });
 
 
             scoreFile = new ScoreFile();
@@ -238,6 +252,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             secondsPerBeat = 60.0 / timeSignature;
         }
     }
+
     /**
      * Directing the user to add lyrics page.
      * AddLyrics will share the scores user entered from MainActivity
@@ -251,7 +266,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         finish();
     }
 
+    /**
+     * Logging out the user. Will set isLoggedIn flag to false in shared
+     * preferences Clears the user data from sqlite users table
+     */
+    private void logoutUser() {
+        session.setLogin(false);
 
+        db.deleteUsers();
+
+        // Launching the login activity
+        Intent intent = new Intent(MainActivity.this, UserMainPage.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -268,19 +296,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (item.getItemId()) {
-            case R.id.openHistory:
-                openOrNew();
-                break;
-            case R.id.saveSong:
-                save();
-                break;
-            case R.id.addLyrics:
-                addLyrics();
-                break;
-            case R.id.deleteAll:
-                deleteAll();
-                break;
+        if (id == R.id.action_settings) {
+
+        } else if (id == R.id.saveSong) {
+            save();
+        } else if (id == R.id.openHistory) {
+            openOrNew();
         }
 
         return super.onOptionsItemSelected(item);
@@ -415,12 +436,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }*/
     }
 
+    int noteAddOn;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        boolean swipable = false;
+        noteAddOn = 1;
         if (v instanceof ImageButton) {
 
+            switch (octavefordisplay) {
+                case 3:
+                    noteAddOn = -1;
+                    break;
+                case 5:
+                    noteAddOn = 14;
+                    break;
+                default:
+                    noteAddOn = 1;
+                    break;
+            }
 
             switch (v.getId()) {
                 case R.id.cnatural:
@@ -482,7 +515,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                audioThreads[noteID].start();
 //            }
 
-            if (event.getAction() == MotionEvent.ACTION_DOWN && !onHold) {                                     //just press the key
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {                                     //just press the key
 
                 Log.d("Log@Main484", noteID + "AudioThread State is " + audioThreads[noteID].getState().toString());
                 //Play Part Start
@@ -498,10 +531,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 //Play Part End
 
                 onHold = true;
-                if (onRecord) {
+                if (onRecord == true) {
 
 
                     key = noteID;
+                    key = noteID * noteAddOn;
                     if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
                         displayThread.update(key);
                     }
@@ -512,7 +546,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     noteStartTime = System.currentTimeMillis();
                     restEndTime = noteStartTime;                                                    //start count the time
-                    rest = (restEndTime - restStartTime) / 1000.0 / secondsPerBeat;
+                    rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
                     Log.d("RestLog", "Rest is " + rest + " beats long");
                     notesAndRest = notesAndRest + " " + "0";
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
@@ -535,7 +569,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
-				onHold = false;
                 audioThreads[noteID].stopPlaying();
 //                if (audioThreads[noteID] != null) {
 //                    audioThreads[noteID] = null;
@@ -549,14 +582,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //                    audioThreads[noteID].stopPlaying();
 
+                    onHold = false;
                     noteEndTime = System.currentTimeMillis();
                     restStartTime = noteEndTime;
                     elapse = noteEndTime - noteStartTime;
-                    elapse /= 1000.0;
+                    elapse /= 1000;
                     //Log.d("TouchLog", "The elapse is " + elapse);
                     noteBeats = elapse / secondsPerBeat;
                     Log.d("BeatsLog", "There are " + noteBeats + " beats in the note");
-                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    //notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId()) * noteAddOn;
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + noteBeats;
                 }
             }
@@ -608,6 +643,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+        metronome.stop();
         super.onDestroy();
     }
 
@@ -633,6 +669,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+    boolean isPlayBack;
 
     public void playBack(View view) {
         //// TODO: 10/18/2015 HashMap Key must be unique. . .
@@ -683,18 +720,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             scoreLength[2] = "1.000";
             scoreLength[3] = "1.000";*/
 
-
             PlayBack playBack = new PlayBack(numericNotes, lengths);
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
-//                ImageButton imageButton = (ImageButton) findViewById(R.id.playBack);
-//                imageButton.setImageResource(R.drawable.playing);
+
             try {
+                //Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
                 playBack.join();
+                //imageButton.setImageResource(R.drawable.playbackbutton);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            imageButton.setImageResource(R.drawable.playback);
         }
     }
 
@@ -750,11 +786,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
-	
-	
-    private void deleteAll() {
-        Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
-    }
 
 
     private void upOctave() {
@@ -793,38 +824,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "";
+        String scoreString = "Score";
         if (notes != null && lengths!= null && notes.length == lengths.length) {
             for (int i = 0; i < notes.length; i++) {
-                String thisNote = Integer.toString(notes[i]);
-                double thisLength = lengths[i];
-                int q = (int) Math.round(thisLength / 0.25);
-                if (q == 0) {
-                    q = 1;
-                }
-                switch (q) {
-                    case 1:
-                        thisNote += DOUBLE_UNDERLINE;
-                        break;
-                    case 2:
-                        thisNote += UNDERLINE;
-                        break;
-                    case 3:
-                        thisNote += UNDERLINE;
-                        thisNote += BULLET;
-                        break;
-                    default:
-                        break;
-                }
-
-
-
+                String thisNote = notes[i] + " ";
                 scoreString += thisNote;
             }
         }
-
-        ////TODO:
-        return Html.fromHtml(scoreString.trim()) + "";
+        return scoreString;
     }
 
 
@@ -857,25 +864,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return array;
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-//        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
-//                && keyCode == KeyEvent.KEYCODE_BACK
-//                && event.getRepeatCount() == 0) {
-//            Log.d("CDA", "onKeyDown Called");
-//            onBackPressed();
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
-//
-//
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
-        startActivity(i);
-        finish();
-    }
+
 
 //    protected void open (Intent data) {
 //        Log.d("OnResultLog", "On Activity Result Entered");

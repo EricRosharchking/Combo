@@ -7,22 +7,9 @@
         android:orderInCategory="100"
         android:title="@string/saveSongs"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/addLyrics"
-        android:orderInCategory="100"
-        android:title="@string/addLyrics"
-        app:showAsAction="never" />
-
     <item
         android:id="@+id/openHistory"
         android:orderInCategory="100"
         android:title="@string/openHistory"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/deleteAll"
-        android:orderInCategory="100"
-        android:title="Delete All"
         app:showAsAction="never" />
 </menu>
