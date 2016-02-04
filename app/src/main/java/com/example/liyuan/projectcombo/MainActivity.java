@@ -302,6 +302,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             save();
         } else if (id == R.id.openHistory) {
             openOrNew();
+        } else if (id == R.id.addLyrics){
+            addLyrics();
         }
 
         return super.onOptionsItemSelected(item);
