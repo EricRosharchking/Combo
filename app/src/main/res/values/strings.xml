@@ -54,7 +54,16 @@
     <string name="authorname">Author</string>
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_save">SaveActivity</string>
+<<<<<<< HEAD
+    <string name="start">View History</string>
+    <string name="tempoHint">Tempo</string>
+    <string name="my_keyboard">MyKeyboard</string>
+    <string name="sybtype_en_US">English (US)</string>
+    <string name="title_activity_keyboard">KeyboardActivity</string>
+    <string name="title_activity_try">TryActivity</string>
+=======
     <string name="start">Open A Score</string>
 
 
+>>>>>>> 5e736af365781b05e1b47df366a21d84c9a13c51
 </resources>
