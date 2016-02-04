@@ -275,6 +275,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.saveSong:
                 save();
                 break;
+            case R.id.addLyrics:
+                addLyrics();
+                break;
             case R.id.deleteAll:
                 deleteAll();
                 break;
