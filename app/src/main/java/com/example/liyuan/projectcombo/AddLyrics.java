@@ -10,10 +10,13 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -42,11 +45,18 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
     private String mUpper = "upper", mLower = "lower";
     private int w, mWindowWidth;
     Score score;
-    int[] numericNotes;
+    String notesAndRest;
+    String lengthOfNotesAndRest;
     double[] lengths;
     ScoreFile scoreFile;
-    Button btBack;
+    ImageButton btBack;
     Button btn;
+    int[] numericNotes;
+    Metronome metronome;
+    boolean metronomeRunning;
+    private AudioThread[] audioThreads = new AudioThread[14];
+    final Note[] Notes = new Note[13];
+    boolean opened;
     final int[] buttons = {R.id.button, R.id.button2, R.id.button3, R.id.button4,
             R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,
             R.id.button10, R.id.button11, R.id.button12, R.id.button13,
@@ -79,7 +89,20 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         scores = (TextView) findViewById(R.id.score);
         scores.setMovementMethod(new ScrollingMovementMethod());
 
-        scores.setText(Html.fromHtml(rawScores + "\u2225"));
+        scores.setText(Html.fromHtml(rawScores)+ "\u2225");
+        numericNotes = null;
+        lengths = null;
+        notesAndRest = "";
+        lengthOfNotesAndRest = notesAndRest;
+        metronomeRunning = false;
+        metronome = new Metronome();
+        opened = false;
+
+        for (int i = 1; i < audioThreads.length; i++) {
+            audioThreads[i] = new AudioThread(Notes[i - 1]);
+        }
+
+
 /*
         for(int i : buttons){
             btn = (Button) findViewById(i);
@@ -87,7 +110,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         }*/
 
 
-        btBack = (Button) findViewById(R.id.btBck);
+        btBack = (ImageButton) findViewById(R.id.back);
 
         b1 = (Button) findViewById(R.id.button);
         b2 = (Button) findViewById(R.id.button2);
@@ -196,6 +219,8 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         btBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                scores.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
                 int index = getEditSelection();// The location of the cursor
                 deleteEditValue(index);
             }
@@ -252,8 +277,6 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         b48.setOnClickListener(this);
         b49.setOnClickListener(this);
         b50.setOnClickListener(this);
-
-
 
     }
 
@@ -750,11 +773,170 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-
-
         }
 
+    }
 
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (getIntent().getSerializableExtra("Score") != null) {
+//            //open(getIntent());
+//            Score thisScore = (Score)getIntent().getSerializableExtra("Score");
+//            Log.d("Log@617", "Score is null? " + (thisScore == null));
+//            if (thisScore != null && thisScore.getScore() != null) {
+//                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
+//                //textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+//            }
+//
+//            score = thisScore;
+//            opened = true;
+//        } else {
+//            Log.e("onResumeLog@Main555", "Score is null");
+//        }
+//    }
+
+//    @Override
+//    protected void onDestroy() {
+//        for (AudioThread thread : audioThreads) {
+//            try {
+//                if(thread != null) {
+//                    thread.join();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        metronome.stop();
+//        super.onDestroy();
+//    }
+
+    public void startMetronome(View view) {
+        if (!metronomeRunning) {
+            if (metronome != null) {
+                metronome.start();
+            } else {
+                metronome = new Metronome();
+                metronome.start();
+            }
+            metronomeRunning = true;
+            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+            imageButton.setImageResource(R.drawable.stopmetro);
+        } else {
+            metronome.stop();
+            metronomeRunning = false;
+            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+            imageButton.setImageResource(R.drawable.metronome);
+        }
+
+    }
+
+    public void playBack(View view) {
+
+        Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
+
+        for (int i = 0; i < notesAndRest.split(" ").length; i++) {
+            Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
+        }
+        //// TODO: 10/18/2015 Trim the two Strings before split
+        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
+            Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+        }
+
+        numericNotes = prepareScore();
+        lengths = prepareLengths();
+
+        Log.i("Log@Main735", "score is null? " + (score == null));
+        if (opened) {
+            numericNotes = score.getScore();
+            lengths = score.getLengths();
+            opened = false;
+        }
+
+        if (numericNotes != null && lengths != null) {
+            Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+        }
+        if (numericNotes.length == lengths.length) {
+
+            PlayBack playBack = new PlayBack(numericNotes, lengths);
+            Log.d("PlayBack Log", "PlayBack initialised");
+            playBack.start();
+
+            try {
+                //Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
+                playBack.join();
+                //imageButton.setImageResource(R.drawable.playbackbutton);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int[] prepareScore(){
+        int [] array;
+        if (!notesAndRest.isEmpty()) {
+            String[] scoreNotes = notesAndRest.trim().split(" ");
+            array = new int[scoreNotes.length];
+            for (int i = 0; i < scoreNotes.length; i++) {
+                array[i] = Integer.parseInt(scoreNotes[i]);
+            }
+        } else {
+            array = new int[] {1, 3, 5};
+        }
+        return array;
+    }
+
+    private double[] prepareLengths() {
+        double[] array;
+        if (!lengthOfNotesAndRest.isEmpty()) {
+            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
+            array = new double[scoreLength.length];
+            for (int i = 0; i < scoreLength.length; i++) {
+                array[i] = Double.parseDouble(scoreLength[i]);
+            }
+        } else {
+            array = new double[] {1.0, 1.0, 1.0};
+        }
+        return array;
+    }
+
+    public void openOrNew() {
+        Intent intent = new Intent(this, NewActivity.class);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
+    }
+
+    private void save() {
+        Intent intent = new Intent(this, SaveActivity.class);
+        score = new Score();
+        numericNotes = prepareScore();
+        lengths = prepareLengths();
+        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
+        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
+        score.setScore(numericNotes, lengths);
+        intent.putExtra("Score", score);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+
+        }else if (id == R.id.saveSong){
+            save();
+        }else if (id == R.id.openHistory){
+            openOrNew();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //split the String to String[] for use to split into multiple arrays
@@ -766,6 +948,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         startActivity(i);
         finish();
     }
+
     private static String[] split(String string)
     {
         char[] chars = string.toCharArray();

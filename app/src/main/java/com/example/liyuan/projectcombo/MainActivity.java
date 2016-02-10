@@ -243,7 +243,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Intent i = new Intent(MainActivity.this,
                 AddLyrics.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
-        i.putExtra("scores", displayThread.getArchived());
+        i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
         finish();
     }
