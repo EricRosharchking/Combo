@@ -1,4 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -146,7 +150,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:id="@+id/metroPicker" />
+                android:theme="@style/AppTheme.Picker"
+                android:id="@+id/metroPicker"/>
 
             <!--<TextView-->
                 <!--android:id="@+id/seekbarvalue"-->
@@ -970,3 +975,11 @@
 
     </LinearLayout>
 </RelativeLayout>
+    <!-- Side navigation drawer UI -->
+    <ListView
+        android:id="@+id/navigationList"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:background="#ffeeeeee"/>
+</android.support.v4.widget.DrawerLayout>
