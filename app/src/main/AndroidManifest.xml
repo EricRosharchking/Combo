@@ -81,6 +81,16 @@
                 android:value=".MainActivity" />
         </activity>
 
+        <activity
+            android:name=".EditSaveActivity"
+            android:label="string/title_activity_editsave"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
 
     </application>
 

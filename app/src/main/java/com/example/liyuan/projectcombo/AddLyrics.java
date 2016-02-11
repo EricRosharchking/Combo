@@ -11,6 +11,7 @@ import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -63,7 +64,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             R.id.button14, R.id.button15, R.id.button16};
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
-            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50;
+            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51;
     TextView scores;
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
@@ -162,6 +163,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         b48 = (Button) findViewById(R.id.button48);
         b49 = (Button) findViewById(R.id.button49);
         b50 = (Button) findViewById(R.id.button50);
+        b51 = (Button) findViewById(R.id.button51);
 
 
         b1.setText(Html.fromHtml("1" + underline));
@@ -214,6 +216,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         b48.setText("6");
         b49.setText("7");
         b50.setText("0");
+        b51.setText("-");
 
 
         btBack.setOnClickListener(new OnClickListener() {
@@ -277,6 +280,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         b48.setOnClickListener(this);
         b49.setOnClickListener(this);
         b50.setOnClickListener(this);
+        b51.setOnClickListener(this);
 
     }
 
@@ -315,6 +319,15 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         String t = "";
         int index = getEditSelection();
         switch(v.getId()){
+            case R.id.button51:
+                t = "-";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
             case R.id.button50:
                 t = "0";
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -777,44 +790,56 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//    }
+    private String extractScore(int[] notes, double[] lengths) {
+        String scoreString = "Score2";
+        if (notes != null && lengths!= null && notes.length == lengths.length) {
+            for (int i = 0; i < notes.length; i++) {
+                String thisNote = notes[i] + " ";
+                scoreString += thisNote;
+            }
+        }
+        return scoreString;
+    }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (getIntent().getSerializableExtra("Score") != null) {
-//            //open(getIntent());
-//            Score thisScore = (Score)getIntent().getSerializableExtra("Score");
-//            Log.d("Log@617", "Score is null? " + (thisScore == null));
-//            if (thisScore != null && thisScore.getScore() != null) {
-//                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-//                //textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
-//            }
-//
-//            score = thisScore;
-//            opened = true;
-//        } else {
-//            Log.e("onResumeLog@Main555", "Score is null");
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
-//    @Override
-//    protected void onDestroy() {
-//        for (AudioThread thread : audioThreads) {
-//            try {
-//                if(thread != null) {
-//                    thread.join();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        metronome.stop();
-//        super.onDestroy();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getSerializableExtra("Score2") != null) {
+            //open(getIntent());
+            Score thisScore = (Score)getIntent().getSerializableExtra("Score2");
+            Log.d("Log@617", "Score is null? " + (thisScore == null));
+            if (thisScore != null && thisScore.getScore() != null) {
+                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
+                //textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+                scores.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+            }
+
+            score = thisScore;
+            opened = true;
+        } else {
+            Log.e("onResumeLog@Main789", "Score is null");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        for (AudioThread thread : audioThreads) {
+            try {
+                if(thread != null) {
+                    thread.join();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        metronome.stop();
+        super.onDestroy();
+    }
 
     public void startMetronome(View view) {
         if (!metronomeRunning) {
@@ -907,21 +932,28 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     public void openOrNew() {
         Intent intent = new Intent(this, NewActivity.class);
-        intent.putExtra("ScoreFile", scoreFile);
+        intent.putExtra("ScoreFile2", scoreFile);
         startActivity(intent);
     }
 
     private void save() {
-        Intent intent = new Intent(this, SaveActivity.class);
+        Intent intent = new Intent(this, EditSaveActivity.class);
         score = new Score();
         numericNotes = prepareScore();
         lengths = prepareLengths();
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         score.setScore(numericNotes, lengths);
-        intent.putExtra("Score", score);
-        intent.putExtra("ScoreFile", scoreFile);
+        intent.putExtra("Score2", score);
+        intent.putExtra("ScoreFile2", scoreFile);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
