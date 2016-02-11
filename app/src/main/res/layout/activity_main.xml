@@ -15,9 +15,19 @@
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.85"
+            android:layout_weight="1"
             android:background="#3A393A">
-
+            <ImageButton
+                android:id="@+id/menu"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="7dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:scaleType="fitXY"
+                android:src="@drawable/menu" />
             <ImageButton
                 android:id="@+id/record_button"
                 android:layout_width="0dp"
@@ -34,44 +44,53 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/startbutton" />
 
-            <TextView
-                android:id="@+id/record_status"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1.6"
-                android:padding="7dp"
-                android:text="@string/record_status"
-                android:textColor="#FFFFFF" />
+            <!--<TextView-->
+                <!--android:id="@+id/record_status"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_weight="1.6"-->
+                <!--android:padding="7dp"-->
+                <!--android:text="@string/record_status"-->
+                <!--android:textColor="#FFFFFF" />-->
 
             <ImageButton
                 android:id="@+id/playBack"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.9"
+                android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:onClick="playBack"
                 android:scaleType="fitXY"
                 android:src="@drawable/playback" />
 
             <ImageButton
-                android:id="@+id/metronomeButton"
+                android:id="@+id/pause"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="7dp"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
-                android:onClick="startMetronome"
+                android:onClick="playBack"
                 android:scaleType="fitXY"
-                android:src="@drawable/metronome" />
+                android:src="@drawable/pause" />
+            <ImageButton
+                android:id="@+id/stop"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:onClick="playBack"
+                android:scaleType="fitXY"
+                android:src="@drawable/stop" />
+
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1.5">
+                android:layout_weight="1">
 
                 <RadioGroup
                     android:id="@+id/timeSigRadioGroup"
@@ -101,47 +120,75 @@
 
                 </RadioGroup>
             </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/tempoSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="2.9"
-                android:max="60"
-                android:progress="1" />
-
-            <TextView
-                android:id="@+id/seekbarvalue"
+            <ImageButton
+                android:id="@+id/metronomeButton"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="0.6"
-                android:gravity="center_vertical"
-                android:text="@string/seekbar"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/buttonBack"
-                android:layout_width="68dp"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.07"
-                android:background="#484848"
-                android:text="@string/back"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="7dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:onClick="startMetronome"
+                android:scaleType="fitXY"
+                android:src="@drawable/metronome" />
 
-            <Button
-                android:id="@+id/buttonAddLyrics"
-                android:layout_width="68dp"
+            <!--<SeekBar-->
+                <!--android:id="@+id/tempoSeekBar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:max="60"-->
+                <!--android:progress="1" />-->
+
+            <NumberPicker
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:id="@+id/metroPicker" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/seekbarvalue"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_weight="0.6"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="@string/seekbar"-->
+                <!--android:textColor="#FFFFFF" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/buttonBack"-->
+                <!--android:layout_width="68dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_weight="0.07"-->
+                <!--android:background="#484848"-->
+                <!--android:text="@string/back"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textColor="#FFFFFF"-->
+                <!--android:textSize="15dp" />-->
+            <ImageButton
+                android:id="@+id/toolbox"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0.07"
-                android:background="#484848"
-                android:text="@string/addLyrics"
-                android:textColor="#FFFFFF"/>
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="7dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:scaleType="fitXY"
+                android:src="@drawable/toolbox" />
+
+            <!--<Button-->
+                <!--android:id="@+id/buttonAddLyrics"-->
+                <!--android:layout_width="68dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_weight="0.07"-->
+                <!--android:background="#484848"-->
+                <!--android:text="@string/addLyrics"-->
+                <!--android:textColor="#FFFFFF"/>-->
         </LinearLayout>
 
         <LinearLayout

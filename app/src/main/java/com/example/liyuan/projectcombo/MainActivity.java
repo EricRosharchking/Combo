@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -53,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //Button pausePlay;
     //Button stopPlay;
     Button buttonAddLyrics;
-    Button buttonBack;
+//    Button buttonBack;
     Button btnLogout;
     Button tempoButton;
     Button timeSignatureButton;
@@ -63,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     ImageButton keyboard;
     ImageButton recordButton;
     TextView textView;
-    TextView recordStatus;
+//    TextView recordStatus;
 
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
@@ -184,7 +185,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             textView = (TextView) findViewById(R.id.main_score);
             textView.setMovementMethod(new ScrollingMovementMethod());
-            recordStatus = (TextView) findViewById(R.id.record_status);
+//            recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
             recordButton = (ImageButton) findViewById(R.id.record_button);
             recordButton.setOnClickListener(this);
@@ -207,31 +208,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             displayThread = new DisplayThread();
 
-            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-            tempoSeekBar.setOnSeekBarChangeListener(this);
-            buttonBack = (Button) findViewById(R.id.buttonBack);
-            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
+//            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+//            tempoSeekBar.setOnSeekBarChangeListener(this);
+//            buttonBack = (Button) findViewById(R.id.buttonBack);
+//            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
 
+//
+//            buttonBack.setOnClickListener(new View.OnClickListener() {
+//
+//                public void onClick(View view) {
+//                    Intent i = new Intent(getApplicationContext(),
+//                            UserMainPage.class);
+//                    startActivity(i);
+//                    finish();
+//                }
+//            });
 
-            buttonBack.setOnClickListener(new View.OnClickListener() {
+//            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    addLyrics();
+//                }
+//            });
 
-                public void onClick(View view) {
-                    Intent i = new Intent(getApplicationContext(),
-                            UserMainPage.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
-
-            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    addLyrics();
-                }
-            });
-
+//Number Picker
+            NumberPicker metronumberpicker = (NumberPicker)findViewById(R.id.metroPicker);
+            metronumberpicker.setMaxValue(120);
+            metronumberpicker.setMinValue(60);
+            metronumberpicker.setWrapSelectorWheel(false);
 
             scoreFile = new ScoreFile();
             numericNotes = null;
@@ -310,7 +316,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (!onRecord) {
                 recordButton.setImageResource(R.drawable.stopbutton);
                 onRecord = true;
-                recordStatus.setText("Recording");
+//                recordStatus.setText("Recording");
                 resetScore = true;
                 textView.setText(R.string.main_score);
                 startRecordTime = System.currentTimeMillis();
@@ -328,7 +334,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 recordButton.setImageResource(R.drawable.startbutton);
                 onRecord = false;
-                recordStatus.setText("Click to start");
+//                recordStatus.setText("Click to start");
                 //textView.setText((String)getText(R.string.main_score));
                 resetScore = false;
                 stopRecordTime = System.currentTimeMillis();
@@ -799,9 +805,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (fromUser) {
             this.progress = progress + 60;
             Log.d("SeekBar Log", "The progress is " + this.progress);
-            seekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-            TextView seekBarValue = (TextView) findViewById(R.id.seekbarvalue);
-            seekBarValue.setText(String.valueOf(this.progress));
+//            seekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+//            TextView seekBarValue = (TextView) findViewById(R.id.seekbarvalue);
+//            seekBarValue.setText(String.valueOf(this.progress));
         }
     }
 
