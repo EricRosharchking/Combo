@@ -83,13 +83,12 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
     /**
      * function to verify login details in mysql db
-     *
      * */
     @Override
     public void onBackPressed() {
-//        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
-//        startActivity(i);
-//        finish();
+        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
+        startActivity(i);
+        finish();
     }
 
     private void login(){
@@ -153,9 +152,6 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     public void openProfile(){
         Intent intent = new Intent(welcomePage.this, UserMainPage.class);
         startActivity(intent);
-        Toast.makeText(getApplicationContext(),
-                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
-                .show();
     }
 
     @Override

@@ -14,7 +14,7 @@
     <string name="noteBb">Bb</string>
     <string name="noteB">B </string>
     <string name="highcsharp">1 </string>
-    <string name="main_score">Here is the notes you played.</string>
+    <string name="main_score">Here is the notes you played</string>
     <string name="record_status">Not Recording</string>
     <string name="tempo">4/4</string>
     <string name="time_signature">60</string>
@@ -35,6 +35,7 @@
     <string name="startmetro"><u>START METRONOME</u></string>
     <string name="timesig3"><u>3/4</u></string>
     <string name="timesig4"><u>4/4</u></string>
+
     <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="logout">LOG OUT</string>
     <string name="back">BACK</string>
@@ -46,8 +47,8 @@
     <string name="title_activity_add_lyrics">AddLyrics</string>
     <string name="addLyrics">Add Lyrics</string>
     <string name="saveLyrics">Save</string>
-    <string name="saveSongs">Save This Song</string>
-    <string name="openHistory">View History</string>
+    <string name="saveSongs">save</string>
+    <string name="openHistory">open</string>
     <string name="save">Save Your Creation</string>
     <string name="filename">New Score</string>
     <string name="authorname">Author</string>
@@ -55,5 +56,8 @@
     <string name="title_activity_save">SaveActivity</string>
     <string name="start">View History</string>
     <string name="tempoHint">Tempo</string>
-
+    <string name="my_keyboard">MyKeyboard</string>
+    <string name="sybtype_en_US">English (US)</string>
+    <string name="title_activity_keyboard">KeyboardActivity</string>
+    <string name="title_activity_try">TryActivity</string>
 </resources>

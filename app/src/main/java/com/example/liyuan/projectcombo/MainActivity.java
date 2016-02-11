@@ -1,19 +1,16 @@
 package com.example.liyuan.projectcombo;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.media.AudioManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,6 +21,8 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.liyuan.projectcombo.helper.SQLiteHandler;
+import com.example.liyuan.projectcombo.helper.SessionManager;
 
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -32,75 +31,84 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
-    
-	private final String BULLET = "&#8226\n";
-    private final String UNDERLINE = "<sub>\u0332</sub>";
-    private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
-    double noteBeats;
-    boolean opened;
-    double noteStartTime;
-    double noteEndTime;
-    double rest;
-    double restStartTime;
-    double restEndTime;
-    double elapse;
-    Score score;
-    int[] numericNotes;
-    double[] lengths;
-    ScoreFile scoreFile;
 
-    Button btnLogout;
-
-    int key;
-
-    Button buttonAddLyrics;
-//    Button buttonBack;
-    RadioButton radioButton;
+    private SQLiteHandler db;
+    private SessionManager session;
+    PlayBack playBackTrack;
+    DisplayThread displayThread;
     Metronome metronome;
-    Button tempoButton;
-    Button timeSignatureButton;
-    ImageButton UpperOctave;
-    ImageButton LowerOctave;
-    ImageButton keyboard;
-    ImageButton recordButton;
-    TextView textView;
-    TextView recordStatus;
+    ScoreFile scoreFile;
+    Score score;
+
     private AudioThread[] audioThreads = new AudioThread[14];
-    boolean isRunning;
     final int[] keys = {R.id.cnatural, R.id.csharp, R.id.dnatural, R.id.eflat, R.id.enatural,
             R.id.fnatural, R.id.fsharp, R.id.gnatural, R.id.gsharp, R.id.anatural, R.id.bflat,
             R.id.bnatural, R.id.highcnatural};
     final String[] notes = {"C", "Cs", "D", "Eb", "E", "F", "Fs", "G", "Gs", "A", "Bb", "B", "HighC"};
     final int[] numNotes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     final Note[] Notes = new Note[13];
+    int[] numericNotes;
+    double[] lengths;
+
+    //Button pausePlay;
+    //Button stopPlay;
+    Button buttonAddLyrics;
+    Button buttonBack;
+    Button btnLogout;
+    Button tempoButton;
+    Button timeSignatureButton;
+    RadioButton radioButton;
+    ImageButton UpperOctave;
+    ImageButton LowerOctave;
+    ImageButton keyboard;
+    ImageButton recordButton;
+    TextView textView;
+    TextView recordStatus;
+
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
+
+    String notesAndRest;
+    String lengthOfNotesAndRest;
+    DateFormat df;
+    Date now;
+
+    boolean metronomeRunning;
+    boolean isPlayBack;
     boolean onRecord;
     boolean resetScore;
     boolean onHold;
-    int timeSignature;
-    double secondsPerBeat;
     boolean onRest;
-    String notesAndRest;
-    String lengthOfNotesAndRest;
+    boolean isRunning;
+    boolean opened;
+
     double startRecordTime;
     double stopRecordTime;
     double recordTime;
-    DateFormat df;
-    Date now;
-    int octavefordisplay = 4;
-    DisplayThread displayThread;
+    double secondsPerBeat;
+    double noteBeats;
+    double noteStartTime;
+    double noteEndTime;
+    double rest;
+    double restStartTime;
+    double restEndTime;
+    double elapse;
 
+    int timeSignature;
     int noteID;
-
     int tempo;
+    int octavefordisplay = 4;
+    int lastNote;
+    int key;
+    int progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-//            getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -175,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             textView = (TextView) findViewById(R.id.main_score);
-            //textView.setMovementMethod(new ScrollingMovementMethod());
+            textView.setMovementMethod(new ScrollingMovementMethod());
             recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
             recordButton = (ImageButton) findViewById(R.id.record_button);
@@ -201,29 +209,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
-//            buttonBack = (Button) findViewById(R.id.buttonBack);
-//            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
+            buttonBack = (Button) findViewById(R.id.buttonBack);
+            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
 
 
-//            buttonBack.setOnClickListener(new View.OnClickListener() {
+            buttonBack.setOnClickListener(new View.OnClickListener() {
 
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(),
+                            UserMainPage.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
 
-//                public void onClick(View view) {
-//                    Intent i = new Intent(getApplicationContext(),
-//                            UserMainPage.class);
-//                    startActivity(i);
-//                    finish();
-//                }
-//            });
+            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
 
-//            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    addLyrics();
-//                }
-//            });
+                @Override
+                public void onClick(View v) {
+                    addLyrics();
+                }
+            });
 
 
             scoreFile = new ScoreFile();
@@ -238,6 +245,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             secondsPerBeat = 60.0 / timeSignature;
         }
     }
+
     /**
      * Directing the user to add lyrics page.
      * AddLyrics will share the scores user entered from MainActivity
@@ -246,7 +254,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Intent i = new Intent(MainActivity.this,
                 AddLyrics.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
-        i.putExtra("scores", displayThread.getArchived());
+        i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
         finish();
     }
@@ -268,16 +276,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (item.getItemId()) {
-            case R.id.openHistory:
-                openOrNew();
-                break;
-            case R.id.saveSong:
-                save();
-                break;
-            case R.id.deleteAll:
-                deleteAll();
-                break;
+        if (id == R.id.action_settings) {
+
+        } else if (id == R.id.saveSong) {
+            save();
+        } else if (id == R.id.openHistory) {
+            openOrNew();
+        } else if (id == R.id.addLyrics){
+            addLyrics();
         }
 
         return super.onOptionsItemSelected(item);
@@ -412,12 +418,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }*/
     }
 
+    int noteAddOn;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        boolean swipable = false;
+        noteAddOn = 1;
         if (v instanceof ImageButton) {
 
+            switch (octavefordisplay) {
+                case 3:
+                    noteAddOn = -1;
+                    break;
+                case 5:
+                    noteAddOn = 14;
+                    break;
+                default:
+                    noteAddOn = 1;
+                    break;
+            }
 
             switch (v.getId()) {
                 case R.id.cnatural:
@@ -479,7 +497,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                audioThreads[noteID].start();
 //            }
 
-            if (event.getAction() == MotionEvent.ACTION_DOWN && !onHold) {                                     //just press the key
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {                                     //just press the key
 
                 Log.d("Log@Main484", noteID + "AudioThread State is " + audioThreads[noteID].getState().toString());
                 //Play Part Start
@@ -495,10 +513,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 //Play Part End
 
                 onHold = true;
-                if (onRecord) {
+                if (onRecord == true) {
 
 
                     key = noteID;
+                    key = noteID * noteAddOn;
                     if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
                         displayThread.update(key);
                     }
@@ -509,7 +528,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                     noteStartTime = System.currentTimeMillis();
                     restEndTime = noteStartTime;                                                    //start count the time
-                    rest = (restEndTime - restStartTime) / 1000.0 / secondsPerBeat;
+                    rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
                     Log.d("RestLog", "Rest is " + rest + " beats long");
                     notesAndRest = notesAndRest + " " + "0";
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
@@ -532,7 +551,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
-				onHold = false;
                 audioThreads[noteID].stopPlaying();
 //                if (audioThreads[noteID] != null) {
 //                    audioThreads[noteID] = null;
@@ -546,14 +564,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //                    audioThreads[noteID].stopPlaying();
 
+                    onHold = false;
                     noteEndTime = System.currentTimeMillis();
                     restStartTime = noteEndTime;
                     elapse = noteEndTime - noteStartTime;
-                    elapse /= 1000.0;
+                    elapse /= 1000;
                     //Log.d("TouchLog", "The elapse is " + elapse);
                     noteBeats = elapse / secondsPerBeat;
                     Log.d("BeatsLog", "There are " + noteBeats + " beats in the note");
-                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    //notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
+                    notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId()) * noteAddOn;
                     lengthOfNotesAndRest = lengthOfNotesAndRest + " " + noteBeats;
                 }
             }
@@ -568,12 +588,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onTouchEvent(event);
     }
 
-    int progress;
 
     @Override
     protected void onPause() {
         super.onPause();
     }
+
 
     @Override
     protected void onResume() {
@@ -594,6 +614,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     protected void onDestroy() {
         for (AudioThread thread : audioThreads) {
@@ -605,10 +626,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+        metronome.stop();
         super.onDestroy();
     }
 
-    boolean metronomeRunning;
 
     public void startMetronome(View view) {
         if (!metronomeRunning) {
@@ -631,6 +652,48 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
+    private int[] prepareScore() {
+        int [] array;
+        if (!notesAndRest.isEmpty()) {
+            String[] scoreNotes = notesAndRest.trim().split(" ");
+            array = new int[scoreNotes.length];
+            for (int i = 0; i < scoreNotes.length; i++) {
+                array[i] = Integer.parseInt(scoreNotes[i]);
+            }
+        } else {
+            array = new int[] {1, 3, 5};
+        }
+        return array;
+    }
+
+
+    private double[] prepareLengths() {
+        double[] array;
+        if (!lengthOfNotesAndRest.isEmpty()) {
+            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
+            array = new double[scoreLength.length];
+            for (int i = 0; i < scoreLength.length; i++) {
+                array[i] = Double.parseDouble(scoreLength[i]);
+            }
+        } else {
+            array = new double[] {1.0, 1.0, 1.0};
+        }
+        return array;
+    }
+
+
+    private String extractScore(int[] notes, double[] lengths) {
+        String scoreString = "Score";
+        if (notes != null && lengths!= null && notes.length == lengths.length) {
+            for (int i = 0; i < notes.length; i++) {
+                String thisNote = notes[i] + " ";
+                scoreString += thisNote;
+            }
+        }
+        return scoreString;
+    }
+
+
     public void playBack(View view) {
         //// TODO: 10/18/2015 HashMap Key must be unique. . .
         //Log.d("PlayBack Log", "PlayBack Entered");
@@ -642,57 +705,92 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
 
-        for (int i = 0; i < notesAndRest.split(" ").length; i++) {
-            Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
-        }
-        //// TODO: 10/18/2015 Trim the two Strings before split
-        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
-            Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
-        }
-
-        numericNotes = prepareScore();
-        lengths = prepareLengths();
-
-        Log.i("Log@Main735", "score is null? " + (score == null));
-        if (opened) {
-            numericNotes = score.getScore();
-            lengths = score.getLengths();
-            opened = false;
-        }
-
-        if (numericNotes != null && lengths != null) {
-            Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
-        }
-        if (numericNotes.length == lengths.length) {
-
-
-            //写一下吧write到audioTrack里面 stream
-
-/*            numericNotes = new int[4];
-            numericNotes[0] = 1;
-            numericNotes[1] = 3;
-            numericNotes[2] = 0;
-            numericNotes[3] = 5;
-
-            scoreLength = new String[4];
-            scoreLength[0] = "1.000";
-            scoreLength[1] = "1.000";
-            scoreLength[2] = "1.000";
-            scoreLength[3] = "1.000";*/
-
-
-            PlayBack playBack = new PlayBack(numericNotes, lengths);
-            Log.d("PlayBack Log", "PlayBack initialised");
-            playBack.start();
-//                ImageButton imageButton = (ImageButton) findViewById(R.id.playBack);
-//                imageButton.setImageResource(R.drawable.playing);
-            try {
-                playBack.join();
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
+            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
+                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
             }
-//            imageButton.setImageResource(R.drawable.playback);
+            //// TODO: 10/18/2015 Trim the two Strings before split
+            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
+                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+            }
+
+            numericNotes = prepareScore();
+            lengths = prepareLengths();
+
+            Log.i("Log@Main735", "score is null? " + (score == null));
+            if (opened) {
+                numericNotes = score.getScore();
+                lengths = score.getLengths();
+                opened = false;
+            }
+
+            if (numericNotes != null && lengths != null) {
+                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+            }
+            if (numericNotes.length == lengths.length) {
+
+
+                //写一下吧write到audioTrack里面 stream
+
+            /*            numericNotes = new int[4];
+                        numericNotes[0] = 1;
+                        numericNotes[1] = 3;
+                        numericNotes[2] = 0;
+                        numericNotes[3] = 5;
+
+                        scoreLength = new String[4];
+                        scoreLength[0] = "1.000";
+                        scoreLength[1] = "1.000";
+                        scoreLength[2] = "1.000";
+                        scoreLength[3] = "1.000";*/
+
+
+                playBackTrack = new PlayBack(numericNotes, lengths, lastNote);
+                Log.d("PlayBack Log", "PlayBack initialised");
+                playBackTrack.start();
+
+                    /*try {
+                        Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
+                        playBack.join();
+                        //imageButton.setImageResource(R.drawable.playbackbutton);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
+            }
         }
+    }
+	
+	
+	public void pausePlay(View view) {
+        if (playBackTrack != null) {
+            playBackTrack.pausePlaying();
+            lastNote = playBackTrack.getJ();
+            if (lastNote == playBackTrack.getSize() - 1) {
+                lastNote = playBackTrack.getLast();
+            }
+        }
+        try {
+            playBackTrack.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+    }
+
+	
+    public void stopPlay(View view) {
+       if (playBackTrack != null) {
+           playBackTrack.stopPlaying();
+           lastNote = playBackTrack.getLast();
+       }
+        try {
+            playBackTrack.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
 
@@ -747,10 +845,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
-	
-	
+
+
     private void deleteAll() {
-        Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
+        //Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
     }
 
 
@@ -788,91 +886,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
-
-    private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "";
-        if (notes != null && lengths!= null && notes.length == lengths.length) {
-            for (int i = 0; i < notes.length; i++) {
-                String thisNote = Integer.toString(notes[i]);
-                double thisLength = lengths[i];
-                int q = (int) Math.round(thisLength / 0.25);
-                if (q == 0) {
-                    q = 1;
-                }
-                switch (q) {
-                    case 1:
-                        thisNote += DOUBLE_UNDERLINE;
-                        break;
-                    case 2:
-                        thisNote += UNDERLINE;
-                        break;
-                    case 3:
-                        thisNote += UNDERLINE;
-                        thisNote += BULLET;
-                        break;
-                    default:
-                        break;
-                }
-
-
-
-                scoreString += thisNote;
-            }
-        }
-
-        ////TODO:
-        return Html.fromHtml(scoreString.trim()) + "";
-    }
-
-
-    private int[] prepareScore() {
-        int [] array;
-        if (!notesAndRest.isEmpty()) {
-            String[] scoreNotes = notesAndRest.trim().split(" ");
-            array = new int[scoreNotes.length];
-            for (int i = 0; i < scoreNotes.length; i++) {
-                array[i] = Integer.parseInt(scoreNotes[i]);
-            }
-        } else {
-            array = new int[] {1, 3, 5};
-        }
-        return array;
-    }
-
-
-    private double[] prepareLengths() {
-        double[] array;
-        if (!lengthOfNotesAndRest.isEmpty()) {
-            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
-            array = new double[scoreLength.length];
-            for (int i = 0; i < scoreLength.length; i++) {
-                array[i] = Double.parseDouble(scoreLength[i]);
-            }
-        } else {
-            array = new double[] {1.0, 1.0, 1.0};
-        }
-        return array;
-    }
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-//        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
-//                && keyCode == KeyEvent.KEYCODE_BACK
-//                && event.getRepeatCount() == 0) {
-//            Log.d("CDA", "onKeyDown Called");
-//            onBackPressed();
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
-//
-//
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
-        startActivity(i);
-        finish();
-    }
 
 //    protected void open (Intent data) {
 //        Log.d("OnResultLog", "On Activity Result Entered");

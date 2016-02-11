@@ -17,34 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/authorname"
-            android:layout_below="@+id/name_Field"/><EditText
-        android:id="@+id/tempo_Field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/tempoHint"
-        android:inputType="number"
-        android:layout_below="@+id/author_Field"/>
-        <RadioGroup
-            android:id="@+id/timeSig_Field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tempo_Field">
-            <RadioButton
-                android:id="@+id/timeSig43"
-                android:onClick="changeTimeSig"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/timesig3"
-                android:textColor="#FFFFFF" />
-            <RadioButton
-                android:id="@+id/timeSig44"
-                android:onClick="changeTimeSig"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/timesig4"
-                android:textColor="#FFFFFF" />
-        </RadioGroup>
+            android:layout_below="@+id/name_Field"/>
     </RelativeLayout>
 </LinearLayout>
