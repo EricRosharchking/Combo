@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="70dp"
             android:background="#3A393A"
             android:alpha="0.7">
 

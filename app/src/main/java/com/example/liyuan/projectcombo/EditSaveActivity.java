@@ -64,7 +64,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
             // Set the dialog title
 
             builder.setTitle(R.string.save)
-                    .setView(inflater.inflate(R.layout.dialog_save, null))
+                    .setView(inflater.inflate(R.layout.edit_dialog_save, null))
                     .setPositiveButton("Save", this)
                     .setNegativeButton("Cancel", this);
 
