@@ -1007,11 +1007,11 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#ffeeeeee"/>
+        android:background="#CC000000"/>
     <ListView
         android:id="@+id/navigationList_right"
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="#ffeeeeee"/>
+        android:background="#CC000000"/>
 </android.support.v4.widget.DrawerLayout>

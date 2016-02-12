@@ -14,14 +14,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
@@ -116,6 +121,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,6 +288,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         String[] menuArray = getResources().getStringArray(R.array.navigation_menu);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
         mDrawerList.setAdapter(mAdapter);
+//        myAdapter = new MyAdapter(this);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -290,9 +297,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         });
     }
     private void addDrawerItems2() {
-        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
-        mDrawerList2.setAdapter(mAdapter);
+//        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
+//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
+//        mDrawerList2.setAdapter(mAdapter);
+        myAdapter = new MyAdapter(this);
+        mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -1025,4 +1034,46 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        Log.d("OnResult", "Notes and rest are " + notesAndRest);
 //    }
 
+}
+
+class MyAdapter extends BaseAdapter {
+    private Context context;
+    String[] tool_list;
+    int[] images = {R.drawable.save,R.drawable.edit,R.drawable.add,R.drawable.recordlists,R.drawable.share};
+
+    public MyAdapter(Context context){
+        this.context = context;
+        tool_list=context.getResources().getStringArray(R.array.navigation_toolbox);
+    }
+    @Override
+    public int getCount() {
+
+        return tool_list.length;
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return tool_list[i];
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        View row = null;
+        if(view==null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
+            row = inflater.inflate(R.layout.custom_row,viewGroup,false);
+        }else{
+            row = view;
+        }
+        TextView titleTextView2=(TextView)row.findViewById(R.id.textView);
+        ImageView titleImageView2 = (ImageView)row.findViewById(R.id.imageView);
+        titleTextView2.setText(tool_list[i]);
+        titleImageView2.setImageResource(images[i]);
+        return row;
+    }
 }
