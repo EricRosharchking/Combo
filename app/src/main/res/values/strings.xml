@@ -35,7 +35,6 @@
     <string name="startmetro"><u>START METRONOME</u></string>
     <string name="timesig3"><u>3/4</u></string>
     <string name="timesig4"><u>4/4</u></string>
-
     <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="logout">LOG OUT</string>
     <string name="back">BACK</string>
@@ -62,5 +61,17 @@
     <string name="title_activity_try">TryActivity</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string-array name="navigation_menu">
+        <item>Profile settings</item>
+        <item>logout</item>
+    </string-array>
+    <string-array name="navigation_toolbox">
+        <item>Save record</item>
+        <item>Edit record</item>
+        <item>Add lyrics</item>
+        <item>Record lists</item>
+        <item>Share</item>
+    </string-array>
+    <string name="profile">profile</string>
 </resources>
 

@@ -111,6 +111,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
     int progress;
     private ListView mDrawerList;
+    private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -122,11 +123,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            mDrawerList = (ListView)findViewById(R.id.navigationList);
+            mDrawerList = (ListView)findViewById(R.id.navigationList_left);
+            mDrawerList2 = (ListView)findViewById(R.id.navigationList_right);
             mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
             mActivityTitle = getTitle().toString();
 
             addDrawerItems();
+            addDrawerItems2();
             setupDrawer();
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -276,10 +279,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
     private void addDrawerItems() {
-        String[] osArray = { "Save record", "Edit record", "Add lyrics", "Record lists"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        String[] menuArray = getResources().getStringArray(R.array.navigation_menu);
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
         mDrawerList.setAdapter(mAdapter);
-
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -287,7 +289,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
     }
-
+    private void addDrawerItems2() {
+        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
+        mDrawerList2.setAdapter(mAdapter);
+        mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "hello its me", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 
@@ -304,6 +316,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
+
         };
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
@@ -363,27 +376,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-//old version
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-        } else if (id == R.id.saveSong) {
-            save();
-        } else if (id == R.id.openHistory) {
-            openOrNew();
-        } else if (id == R.id.addLyrics){
-            addLyrics();
+        if(mDrawerToggle.onOptionsItemSelected(item)){
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+    //old version
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//
+//        } else if (id == R.id.saveSong) {
+//            save();
+//        } else if (id == R.id.openHistory) {
+//            openOrNew();
+//        } else if (id == R.id.addLyrics){
+//            addLyrics();
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public void onClick(View v) {

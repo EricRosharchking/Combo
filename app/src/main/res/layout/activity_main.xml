@@ -26,11 +26,13 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="7dp"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:scaleType="fitXY"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:src="@drawable/menu" />
             <ImageButton
                 android:id="@+id/record_button"
@@ -46,6 +48,10 @@
                 android:maxHeight="70dp"
                 android:maxWidth="70dp"
                 android:scaleType="fitXY"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:src="@drawable/startbutton" />
 
             <!--<TextView-->
@@ -67,6 +73,10 @@
                 android:background="#00FFFFFF"
                 android:onClick="playBack"
                 android:scaleType="fitXY"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:src="@drawable/playback" />
 
             <ImageButton
@@ -78,6 +88,10 @@
                 android:background="#00FFFFFF"
                 android:onClick="playBack"
                 android:scaleType="fitXY"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:src="@drawable/pause" />
             <ImageButton
                 android:id="@+id/stop"
@@ -88,6 +102,10 @@
                 android:background="#00FFFFFF"
                 android:onClick="playBack"
                 android:scaleType="fitXY"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:src="@drawable/stop" />
 
 
@@ -129,10 +147,12 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="7dp"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:onClick="startMetronome"
                 android:scaleType="fitXY"
                 android:src="@drawable/metronome" />
@@ -151,6 +171,10 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.Picker"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:id="@+id/metroPicker"/>
 
             <!--<TextView-->
@@ -178,10 +202,12 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="7dp"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/toolbox" />
 
@@ -977,9 +1003,15 @@
 </RelativeLayout>
     <!-- Side navigation drawer UI -->
     <ListView
-        android:id="@+id/navigationList"
+        android:id="@+id/navigationList_left"
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left|start"
+        android:layout_gravity="start"
+        android:background="#ffeeeeee"/>
+    <ListView
+        android:id="@+id/navigationList_right"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
         android:background="#ffeeeeee"/>
 </android.support.v4.widget.DrawerLayout>
