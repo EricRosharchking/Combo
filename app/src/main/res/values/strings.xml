@@ -54,7 +54,6 @@
     <string name="authorname">Author</string>
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_save">SaveActivity</string>
-    <string name="start">View History</string>
     <string name="tempoHint">Tempo</string>
     <string name="deleteall">DeleteAll</string>
     <string name="my_keyboard">MyKeyboard</string>
@@ -90,4 +89,6 @@
         \n你\u0020在\u0020\u0020思\u0020\u0020\u0020念\u0020\u0020\u0020\u0020\u0020\u0020谁
     </string>
     <string name="title_activity_display">DisplayActivity</string>
+    <string name="start">Open A Score</string>
+    <string name="title_activity_editsave">EditSaveActivity</string>
 </resources>

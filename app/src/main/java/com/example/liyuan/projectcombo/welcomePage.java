@@ -83,18 +83,23 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
     /**
      * function to verify login details in mysql db
+     *
      * */
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
-        startActivity(i);
-        finish();
+//        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
+//        startActivity(i);
+//        finish();
     }
 
     private void login(){
         //Getting values from edit texts
         final String email = edEmail.getText().toString().trim();
         final String password = edPassword.getText().toString().trim();
+
+        if(email.equals("") || password.equals("")){
+            Toast.makeText(welcomePage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+        }
 
         //Creating a string request
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.LOGIN_URL,
@@ -152,6 +157,9 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     public void openProfile(){
         Intent intent = new Intent(welcomePage.this, UserMainPage.class);
         startActivity(intent);
+        Toast.makeText(getApplicationContext(),
+                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
+                .show();
     }
 
     @Override

@@ -38,7 +38,7 @@ public class register extends ActionBarActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        edUName = (EditText) findViewById(R.id.name);
+        edUName = (EditText) findViewById(R.id.username);
         edEmail = (EditText) findViewById(R.id.email);
         edPassword = (EditText) findViewById(R.id.password);
         edCPassword = (EditText) findViewById(R.id.confirm_password);
