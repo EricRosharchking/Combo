@@ -354,7 +354,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
             case R.id.button:
                 t = ""+Html.fromHtml("1"+underline);
-               // int index = getEditSelection();// The location of the cursor
+                // int index = getEditSelection();// The location of the cursor
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -902,7 +902,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         }
         if (numericNotes.length == lengths.length) {
 
-            PlayBack playBack = new PlayBack(numericNotes, lengths);
+            PlayBack playBack = new PlayBack(numericNotes, lengths, 0);
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
 

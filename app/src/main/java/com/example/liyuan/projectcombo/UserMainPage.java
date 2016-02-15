@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Vector;
@@ -66,6 +67,8 @@ public class UserMainPage extends FragmentActivity {
             }
         });
 
+
+
     }
 
 
@@ -76,6 +79,30 @@ public class UserMainPage extends FragmentActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
         alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                        //Putting blank value to email
+                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Saving the sharedpreferences
+                        editor.commit();
+
+                        //Starting login activity
+                        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
+                        startActivity(intent);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -114,29 +141,23 @@ public class UserMainPage extends FragmentActivity {
 
     }
 
+    //    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_user_main_page, menu);
+//        return true;
+//    }
+    public void onBackPressed() {
+        logout();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    public void onBackPressed() {
-        AlertDialog.Builder ald = new AlertDialog.Builder(UserMainPage.this);
-        ald.setTitle("WARNING");
-        ald.setMessage("Are you sure you want to log out as current user?");
-        ald.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Intent i = new Intent(getApplicationContext(),welcomePage.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        ald.setNegativeButton("Cancel", null);
-        ald.show();
-    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.media.AudioManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -31,67 +32,77 @@ import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
 
-    double noteBeats;
-    boolean opened;
-    double noteStartTime;
-    double noteEndTime;
-    double rest;
-    double restStartTime;
-    double restEndTime;
-    double elapse;
-    Score score;
-    int[] numericNotes;
-    double[] lengths;
-    ScoreFile scoreFile;
-
     private SQLiteHandler db;
     private SessionManager session;
-    Button btnLogout;
-
-    int key;
-
-    Button buttonAddLyrics;
-    Button buttonBack;
-    RadioButton radioButton;
+    PlayBack playBackTrack;
+    DisplayThread displayThread;
     Metronome metronome;
-    Button tempoButton;
-    Button timeSignatureButton;
-    ImageButton UpperOctave;
-    ImageButton LowerOctave;
-    ImageButton keyboard;
-    ImageButton recordButton;
-    TextView textView;
-    TextView recordStatus;
+    ScoreFile scoreFile;
+    Score score;
+
     private AudioThread[] audioThreads = new AudioThread[14];
-    boolean isRunning;
     final int[] keys = {R.id.cnatural, R.id.csharp, R.id.dnatural, R.id.eflat, R.id.enatural,
             R.id.fnatural, R.id.fsharp, R.id.gnatural, R.id.gsharp, R.id.anatural, R.id.bflat,
             R.id.bnatural, R.id.highcnatural};
     final String[] notes = {"C", "Cs", "D", "Eb", "E", "F", "Fs", "G", "Gs", "A", "Bb", "B", "HighC"};
     final int[] numNotes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     final Note[] Notes = new Note[13];
+    int[] numericNotes;
+    double[] lengths;
+
+    //Button pausePlay;
+    //Button stopPlay;
+    Button buttonAddLyrics;
+    Button buttonBack;
+    Button btnLogout;
+    Button tempoButton;
+    Button timeSignatureButton;
+    RadioButton radioButton;
+    ImageButton UpperOctave;
+    ImageButton LowerOctave;
+    ImageButton keyboard;
+    ImageButton recordButton;
+    TextView textView;
+    TextView recordStatus;
+
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
+
+    String notesAndRest;
+    String lengthOfNotesAndRest;
+    DateFormat df;
+    Date now;
+
+    boolean metronomeRunning;
+    boolean isPlayBack;
     boolean onRecord;
     boolean resetScore;
     boolean onHold;
-    int timeSignature;
-    double secondsPerBeat;
     boolean onRest;
-    String notesAndRest;
-    String lengthOfNotesAndRest;
+    boolean isRunning;
+    boolean opened;
+
     double startRecordTime;
     double stopRecordTime;
     double recordTime;
-    DateFormat df;
-    Date now;
-    int octavefordisplay = 4;
-    DisplayThread displayThread;
+    double secondsPerBeat;
+    double noteBeats;
+    double noteStartTime;
+    double noteEndTime;
+    double rest;
+    double restStartTime;
+    double restEndTime;
+    double elapse;
 
+    int timeSignature;
     int noteID;
-
     int tempo;
+    int octavefordisplay = 4;
+    int lastNote;
+    int key;
+    int progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -577,12 +588,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         return super.onTouchEvent(event);
     }
 
-    int progress;
 
     @Override
     protected void onPause() {
         super.onPause();
     }
+
 
     @Override
     protected void onResume() {
@@ -603,6 +614,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+
     @Override
     protected void onDestroy() {
         for (AudioThread thread : audioThreads) {
@@ -618,7 +630,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onDestroy();
     }
 
-    boolean metronomeRunning;
 
     public void startMetronome(View view) {
         if (!metronomeRunning) {
@@ -640,7 +651,48 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-    boolean isPlayBack;
+
+    private int[] prepareScore() {
+        int [] array;
+        if (!notesAndRest.isEmpty()) {
+            String[] scoreNotes = notesAndRest.trim().split(" ");
+            array = new int[scoreNotes.length];
+            for (int i = 0; i < scoreNotes.length; i++) {
+                array[i] = Integer.parseInt(scoreNotes[i]);
+            }
+        } else {
+            array = new int[] {1, 3, 5};
+        }
+        return array;
+    }
+
+
+    private double[] prepareLengths() {
+        double[] array;
+        if (!lengthOfNotesAndRest.isEmpty()) {
+            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
+            array = new double[scoreLength.length];
+            for (int i = 0; i < scoreLength.length; i++) {
+                array[i] = Double.parseDouble(scoreLength[i]);
+            }
+        } else {
+            array = new double[] {1.0, 1.0, 1.0};
+        }
+        return array;
+    }
+
+
+    private String extractScore(int[] notes, double[] lengths) {
+        String scoreString = "Score";
+        if (notes != null && lengths!= null && notes.length == lengths.length) {
+            for (int i = 0; i < notes.length; i++) {
+                String thisNote = notes[i] + " ";
+                scoreString += thisNote;
+            }
+        }
+        return scoreString;
+    }
+
 
     public void playBack(View view) {
         //// TODO: 10/18/2015 HashMap Key must be unique. . .
@@ -653,56 +705,92 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
 
-        for (int i = 0; i < notesAndRest.split(" ").length; i++) {
-            Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
-        }
-        //// TODO: 10/18/2015 Trim the two Strings before split
-        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
-            Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
-        }
+        if (playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
+            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
+                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
+            }
+            //// TODO: 10/18/2015 Trim the two Strings before split
+            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
+                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+            }
 
-        numericNotes = prepareScore();
-        lengths = prepareLengths();
+            numericNotes = prepareScore();
+            lengths = prepareLengths();
 
-        Log.i("Log@Main735", "score is null? " + (score == null));
-        if (opened) {
-            numericNotes = score.getScore();
-            lengths = score.getLengths();
-            opened = false;
-        }
+            Log.i("Log@Main735", "score is null? " + (score == null));
+            if (opened) {
+                numericNotes = score.getScore();
+                lengths = score.getLengths();
+                opened = false;
+            }
 
-        if (numericNotes != null && lengths != null) {
-            Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
-        }
-        if (numericNotes.length == lengths.length) {
+            if (numericNotes != null && lengths != null) {
+                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+            }
+            if (numericNotes.length == lengths.length) {
 
 
-            //写一下吧write到audioTrack里面 stream
+                //写一下吧write到audioTrack里面 stream
 
-/*            numericNotes = new int[4];
-            numericNotes[0] = 1;
-            numericNotes[1] = 3;
-            numericNotes[2] = 0;
-            numericNotes[3] = 5;
+            /*            numericNotes = new int[4];
+                        numericNotes[0] = 1;
+                        numericNotes[1] = 3;
+                        numericNotes[2] = 0;
+                        numericNotes[3] = 5;
 
-            scoreLength = new String[4];
-            scoreLength[0] = "1.000";
-            scoreLength[1] = "1.000";
-            scoreLength[2] = "1.000";
-            scoreLength[3] = "1.000";*/
+                        scoreLength = new String[4];
+                        scoreLength[0] = "1.000";
+                        scoreLength[1] = "1.000";
+                        scoreLength[2] = "1.000";
+                        scoreLength[3] = "1.000";*/
 
-            PlayBack playBack = new PlayBack(numericNotes, lengths);
-            Log.d("PlayBack Log", "PlayBack initialised");
-            playBack.start();
 
-            try {
-                //Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
-                playBack.join();
-                //imageButton.setImageResource(R.drawable.playbackbutton);
-            } catch (Exception e) {
-                e.printStackTrace();
+                playBackTrack = new PlayBack(numericNotes, lengths, lastNote);
+                Log.d("PlayBack Log", "PlayBack initialised");
+                playBackTrack.start();
+
+                    /*try {
+                        Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
+                        playBack.join();
+                        //imageButton.setImageResource(R.drawable.playbackbutton);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
             }
         }
+    }
+	
+	
+	public void pausePlay(View view) {
+        if (playBackTrack != null) {
+            playBackTrack.pausePlaying();
+            lastNote = playBackTrack.getJ();
+            if (lastNote == playBackTrack.getSize() - 1) {
+                lastNote = playBackTrack.getLast();
+            }
+        }
+        try {
+            playBackTrack.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+    }
+
+	
+    public void stopPlay(View view) {
+       if (playBackTrack != null) {
+           playBackTrack.stopPlaying();
+           lastNote = playBackTrack.getLast();
+       }
+        try {
+            playBackTrack.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
 
@@ -759,6 +847,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
+    private void deleteAll() {
+        //Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
+    }
+
+
     private void upOctave() {
         TextView keyBoardOctave2 = (TextView) findViewById(R.id.keyboardOctave2);
         if (octavefordisplay <= 4) {
@@ -792,49 +885,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         }
     }
-
-
-    private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "Score";
-        if (notes != null && lengths!= null && notes.length == lengths.length) {
-            for (int i = 0; i < notes.length; i++) {
-                String thisNote = notes[i] + " ";
-                scoreString += thisNote;
-            }
-        }
-        return scoreString;
-    }
-
-
-    private int[] prepareScore() {
-        int [] array;
-        if (!notesAndRest.isEmpty()) {
-            String[] scoreNotes = notesAndRest.trim().split(" ");
-            array = new int[scoreNotes.length];
-            for (int i = 0; i < scoreNotes.length; i++) {
-                array[i] = Integer.parseInt(scoreNotes[i]);
-            }
-        } else {
-            array = new int[] {1, 3, 5};
-        }
-        return array;
-    }
-
-
-    private double[] prepareLengths() {
-        double[] array;
-        if (!lengthOfNotesAndRest.isEmpty()) {
-            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
-            array = new double[scoreLength.length];
-            for (int i = 0; i < scoreLength.length; i++) {
-                array[i] = Double.parseDouble(scoreLength[i]);
-            }
-        } else {
-            array = new double[] {1.0, 1.0, 1.0};
-        }
-        return array;
-    }
-
 
 
 //    protected void open (Intent data) {
