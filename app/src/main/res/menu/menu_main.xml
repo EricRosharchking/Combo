@@ -17,4 +17,9 @@
         android:orderInCategory="100"
         android:title="@string/addLyrics"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/deleteAll"
+        android:orderInCategory="100"
+        android:title="@string/deleteall"
+        app:showAsAction="never"/>
 </menu>

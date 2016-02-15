@@ -56,8 +56,38 @@
     <string name="title_activity_save">SaveActivity</string>
     <string name="start">View History</string>
     <string name="tempoHint">Tempo</string>
+    <string name="deleteall">DeleteAll</string>
     <string name="my_keyboard">MyKeyboard</string>
     <string name="sybtype_en_US">English (US)</string>
     <string name="title_activity_keyboard">KeyboardActivity</string>
     <string name="title_activity_try">TryActivity</string>
+    <string-array name="scoreKeys">
+        <item>C</item>
+        <item>C#</item>
+        <item>D</item>
+        <item>Eb</item>
+        <item>E</item>
+        <item>F</item>
+        <item>F#</item>
+        <item>G</item>
+        <item>G#</item>
+        <item>A</item>
+        <item>Bb</item>
+        <item>B</item>
+    </string-array>
+	<string name="title_activity_display_score">DisplayScore</string>
+    <string name="example">|\u00203\u0020\u00203\u0332\u00203\u0332\u0020\u0020\u0020\u00204\u0020\u0020\u0020\u00205\u0020\u0020\u0020\u0020|
+        \u0020\u0020\u00203\u0020\u0020\u0020\u0020-\u0020\u0020\u0020\u0020\u00202\u0020\u0020\u0020\u0020-\u0020|
+        1\u0020\u0020\u00201\u0332\u00201\u0332\u0020\u0020\u0020\u00202\u0020\u0020\u0020\u00203\u0020\u0020\u0020\u0020|
+        \n黑\u0020黑的\u0020\u0020天\u0020\u0020空\u0020\u0020\u0020\u0020\u0020\u0020低\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020语\u0020\u0020\u0020\u0020
+        \u0020亮\u0020亮的\u0020\u0020星\u0020\u0020星
+        \n|\u00203\u2022\u0020\u00207\u0332\u0020\u0020\u0020\u0020\u0020\u0020\u00207\u0323\u0020\u0020\u0020\u0020\u0020-\u0020\u0020\u0020\u0020|
+        \u0020\u0020\u00206\u0323\u0020\u0020\u0020\u00203\u0020\u0020\u0020\u00202\u0020\u0020\u0020\u0020-\u0020|
+        \u0020\u00206\u0323\u0020\u0020\u0020\u00203\u0020\u0020\u0020\u00202\u0020\u0020\u0020\u0020-\u0020\u0020\u0020\u0020|
+        \n相\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020随\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020虫\u0020\u0020儿\u0020\u0020飞\u0020\u0020\u0020\u0020\u0020
+        \u0020虫\u0020\u0020\u0020儿\u0020\u0020飞
+        \n|\u00206\u0323\u0020\u0020\u00203\u0020\u0020\u00202\u2022\u0020\u0020\u0020\u00201\u0332\u0020\u0020\u0020\u0020|\u0020\u0020\u00201\u0020\u0020\u0020-\u0020\u0020\u0020\u0020-\u0020\u0020\u0020\u0020-\u0020\u0020\u0020\u0020\u0020\u2225
+        \n你\u0020在\u0020\u0020思\u0020\u0020\u0020念\u0020\u0020\u0020\u0020\u0020\u0020谁
+    </string>
+    <string name="title_activity_display">DisplayActivity</string>
 </resources>

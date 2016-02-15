@@ -49,6 +49,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     final Note[] Notes = new Note[13];
     int[] numericNotes;
     double[] lengths;
+    private final String BULLET = "&#8226\n";
+    private final String UNDERLINE = "<sub>\u0332</sub>";
+    private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
 
     //Button pausePlay;
     //Button stopPlay;
@@ -82,6 +85,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     boolean onRest;
     boolean isRunning;
     boolean opened;
+	boolean isOpened;
 
     double startRecordTime;
     double stopRecordTime;
@@ -284,7 +288,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             openOrNew();
         } else if (id == R.id.addLyrics){
             addLyrics();
-        }
+        } else if (id == R.id.deleteAll) {
+			deleteAll();
+		}
 
         return super.onOptionsItemSelected(item);
     }
@@ -349,6 +355,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
                 }
             }
+			isOpened = false;
         }
 
         if (v instanceof ImageButton) {
@@ -605,10 +612,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (thisScore != null && thisScore.getScore() != null) {
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
                 textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+                score = thisScore;
+                opened = true;
+                isOpened = true;
             }
-
-            score = thisScore;
-            opened = true;
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
         }
@@ -683,14 +690,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "Score";
+        String scoreString = "";
         if (notes != null && lengths!= null && notes.length == lengths.length) {
             for (int i = 0; i < notes.length; i++) {
-                String thisNote = notes[i] + " ";
+                String thisNote = Integer.toString(notes[i]);
+                double thisLength = lengths[i];
+                int q = (int) Math.round(thisLength / 0.25);
+                if (q == 0) {
+                    q = 1;
+                }
+                switch (q) {
+                    case 1:
+                        thisNote += DOUBLE_UNDERLINE;
+                        break;
+                    case 2:
+                        thisNote += UNDERLINE;
+                        break;
+                    case 3:
+                        thisNote += UNDERLINE;
+                        thisNote += BULLET;
+                        break;
+                    default:
+                        break;
+                }
                 scoreString += thisNote;
             }
         }
-        return scoreString;
+
+        ////TODO:
+        return Html.fromHtml(scoreString.trim()).toString();
     }
 
 
@@ -704,8 +732,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
-
-        if (playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
+        if (playBackTrack == null || playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
             for (int i = 0; i < notesAndRest.split(" ").length; i++) {
                 Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
             }
@@ -762,20 +789,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 	
 	
 	public void pausePlay(View view) {
-        if (playBackTrack != null) {
+		if (playBackTrack != null) {
             playBackTrack.pausePlaying();
             lastNote = playBackTrack.getJ();
             if (lastNote == playBackTrack.getSize() - 1) {
                 lastNote = playBackTrack.getLast();
             }
+            try {
+                playBackTrack.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
         }
-        try {
-            playBackTrack.join();
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
 	
@@ -848,7 +875,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private void deleteAll() {
-        //Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
+        Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
     }
 
 
@@ -906,5 +933,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //        Log.d("OnResult", "Notes and rest are " + notesAndRest);
 //    }
+
+    public void viewScore(View view) {
+        Intent intent = new Intent(this, DisplayActivity.class);
+        if (!isOpened) {
+            intent.putExtra("notes", prepareScore());
+            intent.putExtra("lengths", prepareLengths());
+        } else {
+            intent.putExtra("score", score);
+        }
+        startActivity(intent);
+    }
 
 }
