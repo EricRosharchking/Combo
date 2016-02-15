@@ -61,16 +61,13 @@
     <string name="title_activity_try">TryActivity</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string-array name="navigation_menu">
-        <item>Profile settings</item>
-        <item>logout</item>
-    </string-array>
+
     <string-array name="navigation_toolbox">
-        <item>Save record</item>
-        <item>Edit record</item>
-        <item>Add lyrics</item>
-        <item>Record lists</item>
-        <item>Share</item>
+        <item>SAVE RECORD</item>
+        <item>EDIT RECORD</item>
+        <item>ADD LYRICS</item>
+        <item>RECORD LISTS</item>
+        <item>EXPORT TO PDF</item>
     </string-array>
     <string name="profile">profile</string>
 </resources>

@@ -1,7 +1,10 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.media.AudioManager;
@@ -115,7 +118,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int lastNote;
     int key;
     int progress;
-    private ListView mDrawerList;
+
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -129,12 +132,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            mDrawerList = (ListView)findViewById(R.id.navigationList_left);
-            mDrawerList2 = (ListView)findViewById(R.id.navigationList_right);
+            mDrawerList2 = (ListView)findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
             mActivityTitle = getTitle().toString();
 
-            addDrawerItems();
             addDrawerItems2();
             setupDrawer();
 
@@ -142,6 +143,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             getSupportActionBar().setHomeButtonEnabled(true);
 //            super.onCreate(savedInstanceState);
 
+            LayoutInflater inflater = getLayoutInflater();
+
+            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header,null,false);
+
+            mDrawerList2.addHeaderView(listHeaderView);
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -245,7 +251,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
 
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
 //
 //            buttonBack.setOnClickListener(new View.OnClickListener() {
 //
@@ -284,23 +296,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             secondsPerBeat = 60.0 / timeSignature;
         }
     }
-    private void addDrawerItems() {
-        String[] menuArray = getResources().getStringArray(R.array.navigation_menu);
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
-        mDrawerList.setAdapter(mAdapter);
-//        myAdapter = new MyAdapter(this);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+
     private void addDrawerItems2() {
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        myAdapter = new MyAdapter(this);
+        myAdapter = new MyAdapter(this,"midterm@fyp.com","Cambo");
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -1033,16 +1034,61 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //        Log.d("OnResult", "Notes and rest are " + notesAndRest);
 //    }
+private void logout(){
+    //Creating an alert dialog to confirm logout
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    alertDialogBuilder.setMessage("Are you sure you want to logout?");
+    alertDialogBuilder.setPositiveButton("Yes",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
 
+                    //Getting out sharedpreferences
+                    SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                    //Getting editor
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    //Puting the value false for loggedin
+                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                    //Putting blank value to email
+                    editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                    //Saving the sharedpreferences
+                    editor.commit();
+
+                    //Starting login activity
+                    Intent intent = new Intent(MainActivity.this, welcomePage.class);
+                    startActivity(intent);
+                }
+            });
+
+    alertDialogBuilder.setNegativeButton("No",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+
+                }
+            });
+
+    //Showing the alert dialog
+    AlertDialog alertDialog = alertDialogBuilder.create();
+    alertDialog.show();
+
+}
 }
 
 class MyAdapter extends BaseAdapter {
+    private String att_email;
+    private String att_name;
     private Context context;
     String[] tool_list;
     int[] images = {R.drawable.save,R.drawable.edit,R.drawable.add,R.drawable.recordlists,R.drawable.share};
 
-    public MyAdapter(Context context){
+    public MyAdapter(Context context, String email, String name ){
         this.context = context;
+        this.att_name = name;
+        this.att_email = email;
         tool_list=context.getResources().getStringArray(R.array.navigation_toolbox);
     }
     @Override
@@ -1072,6 +1118,14 @@ class MyAdapter extends BaseAdapter {
         }
         TextView titleTextView2=(TextView)row.findViewById(R.id.textView);
         ImageView titleImageView2 = (ImageView)row.findViewById(R.id.imageView);
+        TextView t_name = (TextView)row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+        if(t_name!=null){
+                    t_name.setText("Cambo");
+//
+        }
+//        t_name.setText(att_name);
+        TextView t_email = (TextView)row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+//        t_email.setText(att_email);
         titleTextView2.setText(tool_list[i]);
         titleImageView2.setImageResource(images[i]);
         return row;
