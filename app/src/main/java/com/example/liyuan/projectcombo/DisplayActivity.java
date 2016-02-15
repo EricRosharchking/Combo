@@ -32,7 +32,8 @@ public class DisplayActivity extends ActionBarActivity {
             String key = score.getKey();
             scoreKey.setText(key);
             scoreTimeSig.setText(score.getTimeSignature());
-//            scoreTempo.setText(score.getTempo());
+            String tempo = "" + score.getTempo();
+            scoreTempo.setText(tempo.trim());
             scoreTitle.setText(score.getTitle());
             scoreAuthor.setText(score.getAuthor());
         }
