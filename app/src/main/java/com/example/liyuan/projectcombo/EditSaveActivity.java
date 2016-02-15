@@ -1,4 +1,3 @@
-//EditSaveActivity.java
 
 package com.example.liyuan.projectcombo;
 
