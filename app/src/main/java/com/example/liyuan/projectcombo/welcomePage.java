@@ -90,6 +90,9 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 //        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
 //        startActivity(i);
 //        finish();
+        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
+        startActivity(i);
+        finish();
     }
 
     private void login(){
