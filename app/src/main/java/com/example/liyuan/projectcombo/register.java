@@ -57,6 +57,11 @@ public class register extends ActionBarActivity implements View.OnClickListener 
             }
         });
     }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     private void registerUser(){
         final String username = edUName.getText().toString().trim();
         final String password = edPassword.getText().toString().trim();
@@ -65,6 +70,7 @@ public class register extends ActionBarActivity implements View.OnClickListener 
 
         boolean credentials = true;
         boolean passwordmatch = true;
+        boolean emailValid = true;
 
         if(!password.equals(cpassword) || password.equals("") || cpassword.equals("")){
             Toast.makeText(getApplicationContext(),
@@ -73,8 +79,16 @@ public class register extends ActionBarActivity implements View.OnClickListener 
             passwordmatch = false;
         }
 
+        emailValid = isEmailValid(email);
 
-        if (!username.isEmpty() && !email.isEmpty() && passwordmatch==true) {
+        if(emailValid == false){
+            Toast.makeText(getApplicationContext(),
+                    "Please enter a valid email!", Toast.LENGTH_LONG)
+                    .show();
+            emailValid = false;
+        }
+
+        if (!username.isEmpty() && !email.isEmpty() && passwordmatch==true && emailValid==true) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
                     new Response.Listener<String>() {
                         @Override
