@@ -90,15 +90,16 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 //        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
 //        startActivity(i);
 //        finish();
-        Intent i = new Intent(getApplicationContext(),UserMainPage.class);
-        startActivity(i);
-        finish();
     }
 
     private void login(){
         //Getting values from edit texts
         final String email = edEmail.getText().toString().trim();
         final String password = edPassword.getText().toString().trim();
+
+        if(email.equals("") || password.equals("")){
+            Toast.makeText(welcomePage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+        }
 
         //Creating a string request
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.LOGIN_URL,
