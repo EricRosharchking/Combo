@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,6 +35,10 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
     private Button btnLogin, btnRegister;
     private EditText edEmail, edPassword;
+    private CheckBox cbRememberMe;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private Boolean saveLogin;
 
     //boolean variable to check user is logged in or not
     //initially it is false
@@ -47,7 +52,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         edPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-
+        cbRememberMe = (CheckBox) findViewById(R.id.rememberMe);
         //Adding click listener
         btnLogin.setOnClickListener(this);
 
@@ -172,3 +177,4 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     }
 
 }
+//working login

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.text.InputType;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -96,6 +98,13 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             scores.setMovementMethod(new ScrollingMovementMethod());
 
             scores.setText(Html.fromHtml(rawScores) + "\u2225");
+
+            scores.setInputType(InputType.TYPE_NULL);
+            if (android.os.Build.VERSION.SDK_INT >= 11)
+            {
+                scores.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                scores.setTextIsSelectable(true);
+            }
 
             scoreFile = new ScoreFile();
             numericNotes = null;
@@ -225,8 +234,8 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 public void onClick(View v) {
 
                     scores.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                    int index = getEditSelection();// The location of the cursor
-                    deleteEditValue(index);
+//                    int index = getEditSelection();// The location of the cursor
+//                    deleteEditValue(index);
                 }
             });
 
@@ -294,6 +303,11 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+
+//        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(scores.getWindowToken(), 0);
+
         if (v == scores) {
             hideDefaultKeyboard();
         }
