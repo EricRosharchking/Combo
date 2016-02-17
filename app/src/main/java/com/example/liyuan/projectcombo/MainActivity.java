@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -34,6 +35,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,12 +127,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private MyAdapter myAdapter;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+
+
+    /* Assinging the toolbar object ot the view
+    and setting the the Action bar to our toolbar
+     */
+            toolbar = (Toolbar) findViewById(R.id.tool_bar);
+            setSupportActionBar(toolbar);
 
             mDrawerList2 = (ListView)findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -155,13 +164,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             decorView.setSystemUiVisibility(uiOptions);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                Log.d("ActionBar Log", "ActionBar is not Null");
-                actionBar.hide();
-            } else {
-                Log.d("ActionBar Log", "ActionBar is Null");
-            }
+//            ActionBar actionBar = getSupportActionBar();
+//            if (actionBar != null) {
+//                Log.d("ActionBar Log", "ActionBar is not Null");
+//                actionBar.hide();
+//            } else {
+//                Log.d("ActionBar Log", "ActionBar is Null");
+//            }
 
 
 //            setContentView(R.layout.activity_main);
@@ -283,6 +292,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
 
+            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+// Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
@@ -392,7 +409,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if(mDrawerToggle.onOptionsItemSelected(item)){
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.record_button_item:
+                // User chose the "Settings" item, show the app settings UI...
+//                Intent intent = new Intent(MainActivity.this, register.class);
+//                startActivity(intent);
+                return true;
+
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     //old version

@@ -14,12 +14,29 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+
+            <include
+                android:id="@+id/tool_bar"
+                layout="@layout/tool_bar">
+            </include>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello World" />
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:background="#3A393A">
             <ImageButton
                 android:id="@+id/menu"
@@ -211,15 +228,6 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/toolbox" />
 
-            <!--<Button-->
-                <!--android:id="@+id/buttonAddLyrics"-->
-                <!--android:layout_width="68dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_weight="0.07"-->
-                <!--android:background="#484848"-->
-                <!--android:text="@string/addLyrics"-->
-                <!--android:textColor="#FFFFFF"/>-->
         </LinearLayout>
 
         <LinearLayout
@@ -1005,8 +1013,9 @@
 
     <ListView
         android:id="@+id/navigationList_left"
-        android:layout_width="200dp"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
         android:layout_gravity="start"
         android:background="#CC000000"/>
 </android.support.v4.widget.DrawerLayout>
