@@ -236,6 +236,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                     scores.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
 //                    int index = getEditSelection();// The location of the cursor
 //                    deleteEditValue(index);
+
                 }
             });
 

@@ -72,9 +72,17 @@ public class register extends ActionBarActivity implements View.OnClickListener 
         boolean passwordmatch = true;
         boolean emailValid = true;
 
-        if(!password.equals(cpassword) || password.equals("") || cpassword.equals("")){
+
+        if(!password.equals(cpassword)){
             Toast.makeText(getApplicationContext(),
                     "Password and confirm password do not match!", Toast.LENGTH_LONG)
+                    .show();
+            passwordmatch = false;
+        }
+
+        if(password.length() < 6 || cpassword.length() < 6){
+            Toast.makeText(getApplicationContext(),
+                    "Password needs to have at least 6 characters!", Toast.LENGTH_LONG)
                     .show();
             passwordmatch = false;
         }
@@ -87,6 +95,8 @@ public class register extends ActionBarActivity implements View.OnClickListener 
                     .show();
             emailValid = false;
         }
+
+
 
         if (!username.isEmpty() && !email.isEmpty() && passwordmatch==true && emailValid==true) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
