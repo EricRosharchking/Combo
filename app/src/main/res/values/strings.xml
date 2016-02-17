@@ -35,7 +35,6 @@
     <string name="startmetro"><u>START METRONOME</u></string>
     <string name="timesig3"><u>3/4</u></string>
     <string name="timesig4"><u>4/4</u></string>
-
     <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="logout">LOG OUT</string>
     <string name="back">BACK</string>
@@ -60,6 +59,7 @@
     <string name="sybtype_en_US">English (US)</string>
     <string name="title_activity_keyboard">KeyboardActivity</string>
     <string name="title_activity_try">TryActivity</string>
+<<<<<<< HEAD
     <string-array name="scoreKeys">
         <item>C</item>
         <item>C#</item>
@@ -92,3 +92,33 @@
     <string name="start">Open A Score</string>
     <string name="title_activity_editsave">EditSaveActivity</string>
 </resources>
+=======
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string-array name="navigation_toolbox">
+        <item>SAVE RECORD</item>
+        <item>EDIT RECORD</item>
+        <item>ADD LYRICS</item>
+        <item>RECORD LISTS</item>
+        <item>EXPORT TO PDF</item>
+    </string-array>
+    <string name="profile">profile</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+        <string-array name="withmetro_array">
+            <item>record with metro</item>
+            <item>record without metro</item>
+        </string-array>
+</resources>
+
+>>>>>>> TJTJNEW_branch

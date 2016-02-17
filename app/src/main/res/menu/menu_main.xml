@@ -2,17 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+
     <item
-        android:id="@+id/saveSong"
+        android:id="@+id/record_button_item"
         android:orderInCategory="100"
-        android:title="@string/saveSongs"
-        app:showAsAction="never" />
+        android:title="@string/record_status"
+        android:icon="@drawable/startbutton"
+        app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/openHistory"
-        android:orderInCategory="100"
-        android:title="@string/openHistory"
-        app:showAsAction="never" />
+        android:id="@+id/playBack"
+        android:orderInCategory="200"
+        android:title="Playback"
+        android:icon="@drawable/playback"
+        app:showAsAction="ifRoom"
+        />
     <item
+<<<<<<< HEAD
         android:id="@+id/addLyrics"
         android:orderInCategory="100"
         android:title="@string/addLyrics"
@@ -22,4 +27,45 @@
         android:orderInCategory="100"
         android:title="@string/deleteall"
         app:showAsAction="never"/>
+=======
+        android:id="@+id/pause"
+        android:orderInCategory="300"
+        android:title="Pause"
+        android:icon="@drawable/pause"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/stop"
+        android:orderInCategory="300"
+        android:title="stop"
+        android:icon="@drawable/stop"
+        app:showAsAction="ifRoom"/>
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/metro"
+        android:orderInCategory="400"
+        android:title="metro"
+        android:icon="@drawable/metro"
+        app:showAsAction="ifRoom" />
+>>>>>>> TJTJNEW_branch
 </menu>
+
+
+<!--<item-->
+<!--android:id="@+id/saveSong"-->
+<!--android:orderInCategory="100"-->
+<!--android:title="@string/saveSongs"-->
+<!--app:showAsAction="never" />-->
+<!--<item-->
+<!--android:id="@+id/openHistory"-->
+<!--android:orderInCategory="100"-->
+<!--android:title="@string/openHistory"-->
+<!--app:showAsAction="never" />-->
+<!--<item-->
+<!--android:id="@+id/addLyrics"-->
+<!--android:orderInCategory="100"-->
+<!--android:title="@string/addLyrics"-->
+<!--app:showAsAction="never" />-->

@@ -1,25 +1,43 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.net.NetworkInfo;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
@@ -56,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //Button pausePlay;
     //Button stopPlay;
     Button buttonAddLyrics;
-    Button buttonBack;
+//    Button buttonBack;
     Button btnLogout;
     Button tempoButton;
     Button timeSignatureButton;
@@ -66,7 +84,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     ImageButton keyboard;
     ImageButton recordButton;
     TextView textView;
-    TextView recordStatus;
+//    TextView recordStatus;
 
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
@@ -107,12 +125,42 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
     int progress;
 
-
+    private ListView mDrawerList2;
+    private DrawerLayout mDrawerLayout;
+    private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String mActivityTitle;
+    private MyAdapter myAdapter;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
+
+    /* Assinging the toolbar object ot the view
+    and setting the the Action bar to our toolbar
+     */
+            toolbar = (Toolbar) findViewById(R.id.tool_bar);
+            setSupportActionBar(toolbar);
+
+            mDrawerList2 = (ListView)findViewById(R.id.navigationList_left);
+            mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+            mActivityTitle = getTitle().toString();
+
+            addDrawerItems2();
+            setupDrawer();
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+//            super.onCreate(savedInstanceState);
+
+            LayoutInflater inflater = getLayoutInflater();
+
+            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header,null,false);
+
+            mDrawerList2.addHeaderView(listHeaderView);
 
             View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -120,16 +168,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             decorView.setSystemUiVisibility(uiOptions);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                Log.d("ActionBar Log", "ActionBar is not Null");
-                actionBar.hide();
-            } else {
-                Log.d("ActionBar Log", "ActionBar is Null");
-            }
+//            ActionBar actionBar = getSupportActionBar();
+//            if (actionBar != null) {
+//                Log.d("ActionBar Log", "ActionBar is not Null");
+//                actionBar.hide();
+//            } else {
+//                Log.d("ActionBar Log", "ActionBar is Null");
+//            }
 
 
-            setContentView(R.layout.activity_main);
+//            setContentView(R.layout.activity_main);
             UpperOctave = (ImageButton) findViewById(R.id.upoctave);
             LowerOctave = (ImageButton) findViewById(R.id.loweroctave);
             UpperOctave.setOnClickListener(this);
@@ -188,7 +236,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             textView = (TextView) findViewById(R.id.main_score);
             textView.setMovementMethod(new ScrollingMovementMethod());
-            recordStatus = (TextView) findViewById(R.id.record_status);
+//            recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
             recordButton = (ImageButton) findViewById(R.id.record_button);
             recordButton.setOnClickListener(this);
@@ -211,37 +259,57 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             displayThread = new DisplayThread();
 
-            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-            tempoSeekBar.setOnSeekBarChangeListener(this);
-            buttonBack = (Button) findViewById(R.id.buttonBack);
-            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
+//            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+//            tempoSeekBar.setOnSeekBarChangeListener(this);
+//            buttonBack = (Button) findViewById(R.id.buttonBack);
+//            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
-
-
-            buttonBack.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View view) {
-                    Intent i = new Intent(getApplicationContext(),
-                            UserMainPage.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
-
-            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
+            btnLogout.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    addLyrics();
+                    logout();
                 }
             });
+//
+//            buttonBack.setOnClickListener(new View.OnClickListener() {
+//
+//                public void onClick(View view) {
+//                    Intent i = new Intent(getApplicationContext(),
+//                            UserMainPage.class);
+//                    startActivity(i);
+//                    finish();
+//                }
+//            });
 
+//            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    addLyrics();
+//                }
+//            });
 
+//Number Picker
+            NumberPicker metronumberpicker = (NumberPicker)findViewById(R.id.metroPicker);
+            metronumberpicker.setMaxValue(120);
+            metronumberpicker.setMinValue(60);
+            metronumberpicker.setWrapSelectorWheel(false);
+
+            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+// Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
 
             opened = false;
+
         } catch (NumberFormatException e) {
             timeSignature = 60;
             timeSignatureButton.setText("60");
@@ -250,6 +318,74 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    private void addDrawerItems2() {
+//        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
+//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
+//        mDrawerList2.setAdapter(mAdapter);
+        myAdapter = new MyAdapter(this,"midterm@fyp.com","Cambo");
+        mDrawerList2.setAdapter(myAdapter);
+        mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "hello its me", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        // Activate the navigation drawer toggle
+//        if (mDrawerToggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
     /**
      * Directing the user to add lyrics page.
      * AddLyrics will share the scores user entered from MainActivity
@@ -274,6 +410,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+<<<<<<< HEAD
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -291,9 +428,49 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } else if (id == R.id.deleteAll) {
 			deleteAll();
 		}
+=======
+        if(mDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.record_button_item:
+                // User chose the "Settings" item, show the app settings UI...
+//                Intent intent = new Intent(MainActivity.this, register.class);
+//                startActivity(intent);
+                return true;
 
-        return super.onOptionsItemSelected(item);
+
+>>>>>>> TJTJNEW_branch
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
+
+    //old version
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//
+//        } else if (id == R.id.saveSong) {
+//            save();
+//        } else if (id == R.id.openHistory) {
+//            openOrNew();
+//        } else if (id == R.id.addLyrics){
+//            addLyrics();
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public void onClick(View v) {
@@ -316,7 +493,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (!onRecord) {
                 recordButton.setImageResource(R.drawable.stopbutton);
                 onRecord = true;
-                recordStatus.setText("Recording");
+//                recordStatus.setText("Recording");
                 resetScore = true;
                 textView.setText(R.string.main_score);
                 startRecordTime = System.currentTimeMillis();
@@ -334,7 +511,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } else {
                 recordButton.setImageResource(R.drawable.startbutton);
                 onRecord = false;
-                recordStatus.setText("Click to start");
+//                recordStatus.setText("Click to start");
                 //textView.setText((String)getText(R.string.main_score));
                 resetScore = false;
                 stopRecordTime = System.currentTimeMillis();
@@ -826,9 +1003,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (fromUser) {
             this.progress = progress + 60;
             Log.d("SeekBar Log", "The progress is " + this.progress);
-            seekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-            TextView seekBarValue = (TextView) findViewById(R.id.seekbarvalue);
-            seekBarValue.setText(String.valueOf(this.progress));
+//            seekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+//            TextView seekBarValue = (TextView) findViewById(R.id.seekbarvalue);
+//            seekBarValue.setText(String.valueOf(this.progress));
         }
     }
 
@@ -933,7 +1110,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //        Log.d("OnResult", "Notes and rest are " + notesAndRest);
 //    }
+private void logout(){
+    //Creating an alert dialog to confirm logout
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    alertDialogBuilder.setMessage("Are you sure you want to logout?");
+    alertDialogBuilder.setPositiveButton("Yes",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
 
+                    //Getting out sharedpreferences
+                    SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                    //Getting editor
+                    SharedPreferences.Editor editor = preferences.edit();
+
+                    //Puting the value false for loggedin
+                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                    //Putting blank value to email
+                    editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                    //Saving the sharedpreferences
+                    editor.commit();
+
+                    //Starting login activity
+                    Intent intent = new Intent(MainActivity.this, welcomePage.class);
+                    startActivity(intent);
+                }
+            });
+
+<<<<<<< HEAD
     public void viewScore(View view) {
         Intent intent = new Intent(this, DisplayActivity.class);
         if (!isOpened) {
@@ -945,4 +1151,73 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+=======
+    alertDialogBuilder.setNegativeButton("No",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+
+                }
+            });
+
+    //Showing the alert dialog
+    AlertDialog alertDialog = alertDialogBuilder.create();
+    alertDialog.show();
+
+}
+}
+
+class MyAdapter extends BaseAdapter {
+    private String att_email;
+    private String att_name;
+    private Context context;
+    String[] tool_list;
+    int[] images = {R.drawable.save,R.drawable.edit,R.drawable.add,R.drawable.recordlists,R.drawable.share};
+
+    public MyAdapter(Context context, String email, String name ){
+        this.context = context;
+        this.att_name = name;
+        this.att_email = email;
+        tool_list=context.getResources().getStringArray(R.array.navigation_toolbox);
+    }
+    @Override
+    public int getCount() {
+
+        return tool_list.length;
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return tool_list[i];
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        View row = null;
+        if(view==null){
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
+            row = inflater.inflate(R.layout.custom_row,viewGroup,false);
+        }else{
+            row = view;
+        }
+        TextView titleTextView2=(TextView)row.findViewById(R.id.textView);
+        ImageView titleImageView2 = (ImageView)row.findViewById(R.id.imageView);
+        TextView t_name = (TextView)row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+        if(t_name!=null){
+                    t_name.setText("Cambo");
+//
+        }
+//        t_name.setText(att_name);
+        TextView t_email = (TextView)row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+//        t_email.setText(att_email);
+        titleTextView2.setText(tool_list[i]);
+        titleImageView2.setImageResource(images[i]);
+        return row;
+    }
+>>>>>>> TJTJNEW_branch
 }

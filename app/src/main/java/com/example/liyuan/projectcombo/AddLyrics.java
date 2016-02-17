@@ -902,7 +902,11 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         }
         if (numericNotes.length == lengths.length) {
 
+<<<<<<< HEAD
             PlayBack playBack = new PlayBack(numericNotes, lengths, 0);
+=======
+            PlayBack playBack = new PlayBack(numericNotes, lengths,0);
+>>>>>>> TJTJNEW_branch
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
 
