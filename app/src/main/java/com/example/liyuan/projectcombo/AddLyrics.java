@@ -11,6 +11,7 @@ import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -50,20 +51,24 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
     double[] lengths;
     ScoreFile scoreFile;
     ImageButton btBack;
-    Button btn;
+    int key;
     int[] numericNotes;
     Metronome metronome;
     boolean metronomeRunning;
+    Button timeSignatureButton;
+    int timeSignature;
+    double secondsPerBeat;
     private AudioThread[] audioThreads = new AudioThread[14];
     final Note[] Notes = new Note[13];
     boolean opened;
+    DisplayThread displayThread;
     final int[] buttons = {R.id.button, R.id.button2, R.id.button3, R.id.button4,
             R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,
             R.id.button10, R.id.button11, R.id.button12, R.id.button13,
             R.id.button14, R.id.button15, R.id.button16};
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
-            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50;
+            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51;
     TextView scores;
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
@@ -74,209 +79,216 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        setContentView(R.layout.activity_add_lyrics);
+        try{
+            super.onCreate(savedInstanceState);
+            View decorView = getWindow().getDecorView();
+            // Hide the status bar.
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+            setContentView(R.layout.activity_add_lyrics);
 
-        //retrieve scores (in String) from MainActivity
-        Intent intent = getIntent();
-        String rawScores = intent.getStringExtra("scores");
-        Log.d("rawScores", "The raw scores: " + rawScores);
+            //retrieve scores (in String) from MainActivity
+            Intent intent = getIntent();
+            String rawScores = intent.getStringExtra("scores");
+            Log.d("rawScores", "The raw scores: " + rawScores);
 
-        scores = (TextView) findViewById(R.id.score);
-        scores.setMovementMethod(new ScrollingMovementMethod());
+            scores = (TextView) findViewById(R.id.score);
+            scores.setMovementMethod(new ScrollingMovementMethod());
 
-        scores.setText(Html.fromHtml(rawScores)+ "\u2225");
-        numericNotes = null;
-        lengths = null;
-        notesAndRest = "";
-        lengthOfNotesAndRest = notesAndRest;
-        metronomeRunning = false;
-        metronome = new Metronome();
-        opened = false;
+            scores.setText(Html.fromHtml(rawScores) + "\u2225");
 
-        for (int i = 1; i < audioThreads.length; i++) {
-            audioThreads[i] = new AudioThread(Notes[i - 1]);
+            scoreFile = new ScoreFile();
+            numericNotes = null;
+            lengths = null;
+            notesAndRest = "";
+            lengthOfNotesAndRest = notesAndRest;
+            metronomeRunning = false;
+            metronome = new Metronome(60);
+            opened = false;
+
+            for (int i = 1; i < audioThreads.length; i++) {
+                audioThreads[i] = new AudioThread(Notes[i - 1]);
+            }
+
+            displayThread = new DisplayThread();
+
+            btBack = (ImageButton) findViewById(R.id.back);
+
+            b1 = (Button) findViewById(R.id.button);
+            b2 = (Button) findViewById(R.id.button2);
+            b3 = (Button) findViewById(R.id.button3);
+            b4 = (Button) findViewById(R.id.button4);
+            b5 = (Button) findViewById(R.id.button5);
+            b6 = (Button) findViewById(R.id.button6);
+            b7 = (Button) findViewById(R.id.button7);
+            b8 = (Button) findViewById(R.id.button8);
+            b9 = (Button) findViewById(R.id.button9);
+            b10 = (Button) findViewById(R.id.button10);
+            b11 = (Button) findViewById(R.id.button11);
+            b12 = (Button) findViewById(R.id.button12);
+            b13 = (Button) findViewById(R.id.button13);
+            b14 = (Button) findViewById(R.id.button14);
+            b15 = (Button) findViewById(R.id.button15);
+            b16 = (Button) findViewById(R.id.button16);
+            b17 = (Button) findViewById(R.id.button17);
+            b18 = (Button) findViewById(R.id.button18);
+            b19 = (Button) findViewById(R.id.button19);
+            b20 = (Button) findViewById(R.id.button20);
+            b21 = (Button) findViewById(R.id.button21);
+            b22 = (Button) findViewById(R.id.button22);
+            b23 = (Button) findViewById(R.id.button23);
+            b24 = (Button) findViewById(R.id.button24);
+            b25 = (Button) findViewById(R.id.button25);
+            b26 = (Button) findViewById(R.id.button26);
+            b27 = (Button) findViewById(R.id.button27);
+            b28 = (Button) findViewById(R.id.button28);
+            b29 = (Button) findViewById(R.id.button29);
+            b30 = (Button) findViewById(R.id.button30);
+            b31 = (Button) findViewById(R.id.button31);
+            b32 = (Button) findViewById(R.id.button32);
+            b33 = (Button) findViewById(R.id.button33);
+            b34 = (Button) findViewById(R.id.button34);
+            b35 = (Button) findViewById(R.id.button35);
+            b36 = (Button) findViewById(R.id.button36);
+            b37 = (Button) findViewById(R.id.button37);
+            b38 = (Button) findViewById(R.id.button38);
+            b39 = (Button) findViewById(R.id.button39);
+            b40 = (Button) findViewById(R.id.button40);
+            b41 = (Button) findViewById(R.id.button41);
+            b42 = (Button) findViewById(R.id.button42);
+            b43 = (Button) findViewById(R.id.button43);
+            b44 = (Button) findViewById(R.id.button44);
+            b45 = (Button) findViewById(R.id.button45);
+            b46 = (Button) findViewById(R.id.button46);
+            b47 = (Button) findViewById(R.id.button47);
+            b48 = (Button) findViewById(R.id.button48);
+            b49 = (Button) findViewById(R.id.button49);
+            b50 = (Button) findViewById(R.id.button50);
+            b51 = (Button) findViewById(R.id.button51);
+
+
+            b1.setText(Html.fromHtml("1" + underline));
+            b2.setText(Html.fromHtml("1" + double_underline));
+            b3.setText(Html.fromHtml("1" + curve));
+            b4.setText(Html.fromHtml("1" + bullet));
+            b5.setText(Html.fromHtml("1" + dot_above));
+            b6.setText(Html.fromHtml("1" + dot_below));
+            b7.setText(Html.fromHtml("2" + underline));
+            b8.setText(Html.fromHtml("2" + double_underline));
+            b9.setText(Html.fromHtml("2" + curve));
+            b10.setText(Html.fromHtml("2" + bullet));
+            b11.setText(Html.fromHtml("2" + dot_above));
+            b12.setText(Html.fromHtml("2" + dot_below));
+            b13.setText(Html.fromHtml("3" + underline));
+            b14.setText(Html.fromHtml("3" + double_underline));
+            b15.setText(Html.fromHtml("3" + curve));
+            b16.setText(Html.fromHtml("3" + bullet));
+            b17.setText(Html.fromHtml("3" + dot_above));
+            b18.setText(Html.fromHtml("3" + dot_below));
+            b19.setText(Html.fromHtml("4" + underline));
+            b20.setText(Html.fromHtml("4" + double_underline));
+            b21.setText(Html.fromHtml("4" + curve));
+            b22.setText(Html.fromHtml("4" + bullet));
+            b23.setText(Html.fromHtml("4" + dot_above));
+            b24.setText(Html.fromHtml("4" + dot_below));
+            b25.setText(Html.fromHtml("5" + underline));
+            b26.setText(Html.fromHtml("5" + double_underline));
+            b27.setText(Html.fromHtml("5" + curve));
+            b28.setText(Html.fromHtml("5" + bullet));
+            b29.setText(Html.fromHtml("5" + dot_above));
+            b30.setText(Html.fromHtml("5" + dot_below));
+            b31.setText(Html.fromHtml("6" + underline));
+            b32.setText(Html.fromHtml("6" + double_underline));
+            b33.setText(Html.fromHtml("6" + curve));
+            b34.setText(Html.fromHtml("6" + bullet));
+            b35.setText(Html.fromHtml("6" + dot_above));
+            b36.setText(Html.fromHtml("6" + dot_below));
+            b37.setText(Html.fromHtml("7" + underline));
+            b38.setText(Html.fromHtml("7" + double_underline));
+            b39.setText(Html.fromHtml("7" + curve));
+            b40.setText(Html.fromHtml("7" + bullet));
+            b41.setText(Html.fromHtml("7" + dot_above));
+            b42.setText(Html.fromHtml("7" + dot_below));
+            b43.setText("1");
+            b44.setText("2");
+            b45.setText("3");
+            b46.setText("4");
+            b47.setText("5");
+            b48.setText("6");
+            b49.setText("7");
+            b50.setText("0");
+            b51.setText("-");
+
+
+            btBack.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    scores.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                    int index = getEditSelection();// The location of the cursor
+                    deleteEditValue(index);
+                }
+            });
+
+
+            b1.setOnClickListener(this);
+            b2.setOnClickListener(this);
+            b3.setOnClickListener(this);
+            b4.setOnClickListener(this);
+            b5.setOnClickListener(this);
+            b6.setOnClickListener(this);
+            b7.setOnClickListener(this);
+            b8.setOnClickListener(this);
+            b9.setOnClickListener(this);
+            b10.setOnClickListener(this);
+            b11.setOnClickListener(this);
+            b12.setOnClickListener(this);
+            b13.setOnClickListener(this);
+            b14.setOnClickListener(this);
+            b15.setOnClickListener(this);
+            b16.setOnClickListener(this);
+            b17.setOnClickListener(this);
+            b18.setOnClickListener(this);
+            b19.setOnClickListener(this);
+            b20.setOnClickListener(this);
+            b21.setOnClickListener(this);
+            b22.setOnClickListener(this);
+            b23.setOnClickListener(this);
+            b24.setOnClickListener(this);
+            b25.setOnClickListener(this);
+            b26.setOnClickListener(this);
+            b27.setOnClickListener(this);
+            b28.setOnClickListener(this);
+            b29.setOnClickListener(this);
+            b30.setOnClickListener(this);
+            b31.setOnClickListener(this);
+            b32.setOnClickListener(this);
+            b33.setOnClickListener(this);
+            b34.setOnClickListener(this);
+            b35.setOnClickListener(this);
+            b36.setOnClickListener(this);
+            b37.setOnClickListener(this);
+            b38.setOnClickListener(this);
+            b39.setOnClickListener(this);
+            b40.setOnClickListener(this);
+            b41.setOnClickListener(this);
+            b42.setOnClickListener(this);
+            b43.setOnClickListener(this);
+            b44.setOnClickListener(this);
+            b45.setOnClickListener(this);
+            b46.setOnClickListener(this);
+            b47.setOnClickListener(this);
+            b48.setOnClickListener(this);
+            b49.setOnClickListener(this);
+            b50.setOnClickListener(this);
+            b51.setOnClickListener(this);
+        }catch(NumberFormatException e){
+            timeSignature = 60;
+            timeSignatureButton.setText("60");
+        }finally{
+            secondsPerBeat = 60.0 / timeSignature;
         }
 
-
-/*
-        for(int i : buttons){
-            btn = (Button) findViewById(i);
-            btn.setOnClickListener(this);
-        }*/
-
-
-        btBack = (ImageButton) findViewById(R.id.back);
-
-        b1 = (Button) findViewById(R.id.button);
-        b2 = (Button) findViewById(R.id.button2);
-        b3 = (Button) findViewById(R.id.button3);
-        b4 = (Button) findViewById(R.id.button4);
-        b5 = (Button) findViewById(R.id.button5);
-        b6 = (Button) findViewById(R.id.button6);
-        b7 = (Button) findViewById(R.id.button7);
-        b8 = (Button) findViewById(R.id.button8);
-        b9 = (Button) findViewById(R.id.button9);
-        b10 = (Button) findViewById(R.id.button10);
-        b11 = (Button) findViewById(R.id.button11);
-        b12 = (Button) findViewById(R.id.button12);
-        b13 = (Button) findViewById(R.id.button13);
-        b14 = (Button) findViewById(R.id.button14);
-        b15 = (Button) findViewById(R.id.button15);
-        b16 = (Button) findViewById(R.id.button16);
-        b17 = (Button) findViewById(R.id.button17);
-        b18 = (Button) findViewById(R.id.button18);
-        b19 = (Button) findViewById(R.id.button19);
-        b20 = (Button) findViewById(R.id.button20);
-        b21 = (Button) findViewById(R.id.button21);
-        b22 = (Button) findViewById(R.id.button22);
-        b23 = (Button) findViewById(R.id.button23);
-        b24 = (Button) findViewById(R.id.button24);
-        b25 = (Button) findViewById(R.id.button25);
-        b26 = (Button) findViewById(R.id.button26);
-        b27 = (Button) findViewById(R.id.button27);
-        b28 = (Button) findViewById(R.id.button28);
-        b29 = (Button) findViewById(R.id.button29);
-        b30 = (Button) findViewById(R.id.button30);
-        b31 = (Button) findViewById(R.id.button31);
-        b32 = (Button) findViewById(R.id.button32);
-        b33 = (Button) findViewById(R.id.button33);
-        b34 = (Button) findViewById(R.id.button34);
-        b35 = (Button) findViewById(R.id.button35);
-        b36 = (Button) findViewById(R.id.button36);
-        b37 = (Button) findViewById(R.id.button37);
-        b38 = (Button) findViewById(R.id.button38);
-        b39 = (Button) findViewById(R.id.button39);
-        b40 = (Button) findViewById(R.id.button40);
-        b41 = (Button) findViewById(R.id.button41);
-        b42 = (Button) findViewById(R.id.button42);
-        b43 = (Button) findViewById(R.id.button43);
-        b44 = (Button) findViewById(R.id.button44);
-        b45 = (Button) findViewById(R.id.button45);
-        b46 = (Button) findViewById(R.id.button46);
-        b47 = (Button) findViewById(R.id.button47);
-        b48 = (Button) findViewById(R.id.button48);
-        b49 = (Button) findViewById(R.id.button49);
-        b50 = (Button) findViewById(R.id.button50);
-
-
-        b1.setText(Html.fromHtml("1" + underline));
-        b2.setText(Html.fromHtml("1" + double_underline));
-        b3.setText(Html.fromHtml("1" + curve));
-        b4.setText(Html.fromHtml("1" + bullet));
-        b5.setText(Html.fromHtml("1" + dot_above));
-        b6.setText(Html.fromHtml("1" + dot_below));
-        b7.setText(Html.fromHtml("2" + underline));
-        b8.setText(Html.fromHtml("2" + double_underline));
-        b9.setText(Html.fromHtml("2" + curve));
-        b10.setText(Html.fromHtml("2" + bullet));
-        b11.setText(Html.fromHtml("2" + dot_above));
-        b12.setText(Html.fromHtml("2" + dot_below));
-        b13.setText(Html.fromHtml("3" + underline));
-        b14.setText(Html.fromHtml("3" + double_underline));
-        b15.setText(Html.fromHtml("3" + curve));
-        b16.setText(Html.fromHtml("3" + bullet));
-        b17.setText(Html.fromHtml("3" + dot_above));
-        b18.setText(Html.fromHtml("3" + dot_below));
-        b19.setText(Html.fromHtml("4" + underline));
-        b20.setText(Html.fromHtml("4" + double_underline));
-        b21.setText(Html.fromHtml("4" + curve));
-        b22.setText(Html.fromHtml("4" + bullet));
-        b23.setText(Html.fromHtml("4" + dot_above));
-        b24.setText(Html.fromHtml("4" + dot_below));
-        b25.setText(Html.fromHtml("5" + underline));
-        b26.setText(Html.fromHtml("5" + double_underline));
-        b27.setText(Html.fromHtml("5" + curve));
-        b28.setText(Html.fromHtml("5" + bullet));
-        b29.setText(Html.fromHtml("5" + dot_above));
-        b30.setText(Html.fromHtml("5" + dot_below));
-        b31.setText(Html.fromHtml("6" + underline));
-        b32.setText(Html.fromHtml("6" + double_underline));
-        b33.setText(Html.fromHtml("6" + curve));
-        b34.setText(Html.fromHtml("6" + bullet));
-        b35.setText(Html.fromHtml("6" + dot_above));
-        b36.setText(Html.fromHtml("6" + dot_below));
-        b37.setText(Html.fromHtml("7" + underline));
-        b38.setText(Html.fromHtml("7" + double_underline));
-        b39.setText(Html.fromHtml("7" + curve));
-        b40.setText(Html.fromHtml("7" + bullet));
-        b41.setText(Html.fromHtml("7" + dot_above));
-        b42.setText(Html.fromHtml("7" + dot_below));
-        b43.setText("1");
-        b44.setText("2");
-        b45.setText("3");
-        b46.setText("4");
-        b47.setText("5");
-        b48.setText("6");
-        b49.setText("7");
-        b50.setText("0");
-
-
-        btBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                scores.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                int index = getEditSelection();// The location of the cursor
-                deleteEditValue(index);
-            }
-        });
-
-
-        b1.setOnClickListener(this);
-        b2.setOnClickListener(this);
-        b3.setOnClickListener(this);
-        b4.setOnClickListener(this);
-        b5.setOnClickListener(this);
-        b6.setOnClickListener(this);
-        b7.setOnClickListener(this);
-        b8.setOnClickListener(this);
-        b9.setOnClickListener(this);
-        b10.setOnClickListener(this);
-        b11.setOnClickListener(this);
-        b12.setOnClickListener(this);
-        b13.setOnClickListener(this);
-        b14.setOnClickListener(this);
-        b15.setOnClickListener(this);
-        b16.setOnClickListener(this);
-        b17.setOnClickListener(this);
-        b18.setOnClickListener(this);
-        b19.setOnClickListener(this);
-        b20.setOnClickListener(this);
-        b21.setOnClickListener(this);
-        b22.setOnClickListener(this);
-        b23.setOnClickListener(this);
-        b24.setOnClickListener(this);
-        b25.setOnClickListener(this);
-        b26.setOnClickListener(this);
-        b27.setOnClickListener(this);
-        b28.setOnClickListener(this);
-        b29.setOnClickListener(this);
-        b30.setOnClickListener(this);
-        b31.setOnClickListener(this);
-        b32.setOnClickListener(this);
-        b33.setOnClickListener(this);
-        b34.setOnClickListener(this);
-        b35.setOnClickListener(this);
-        b36.setOnClickListener(this);
-        b37.setOnClickListener(this);
-        b38.setOnClickListener(this);
-        b39.setOnClickListener(this);
-        b40.setOnClickListener(this);
-        b41.setOnClickListener(this);
-        b42.setOnClickListener(this);
-        b43.setOnClickListener(this);
-        b44.setOnClickListener(this);
-        b45.setOnClickListener(this);
-        b46.setOnClickListener(this);
-        b47.setOnClickListener(this);
-        b48.setOnClickListener(this);
-        b49.setOnClickListener(this);
-        b50.setOnClickListener(this);
 
     }
 
@@ -287,6 +299,12 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         }
 
         return true;
+
+//        key = noteID;
+//        key = noteID * noteAddOn;
+//        if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
+//            displayThread.update(key);
+//        }
     }
 
     //hide the default keyboard
@@ -315,6 +333,15 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         String t = "";
         int index = getEditSelection();
         switch(v.getId()){
+            case R.id.button51:
+                t = "-";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
             case R.id.button50:
                 t = "0";
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -327,7 +354,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
             case R.id.button:
                 t = ""+Html.fromHtml("1"+underline);
-               // int index = getEditSelection();// The location of the cursor
+                // int index = getEditSelection();// The location of the cursor
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -777,51 +804,63 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//    }
+    private String extractScore(int[] notes, double[] lengths) {
+        String scoreString = "Score2";
+        if (notes != null && lengths!= null && notes.length == lengths.length) {
+            for (int i = 0; i < notes.length; i++) {
+                String thisNote = notes[i] + " ";
+                scoreString += thisNote;
+            }
+        }
+        return scoreString;
+    }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (getIntent().getSerializableExtra("Score") != null) {
-//            //open(getIntent());
-//            Score thisScore = (Score)getIntent().getSerializableExtra("Score");
-//            Log.d("Log@617", "Score is null? " + (thisScore == null));
-//            if (thisScore != null && thisScore.getScore() != null) {
-//                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-//                //textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
-//            }
-//
-//            score = thisScore;
-//            opened = true;
-//        } else {
-//            Log.e("onResumeLog@Main555", "Score is null");
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
-//    @Override
-//    protected void onDestroy() {
-//        for (AudioThread thread : audioThreads) {
-//            try {
-//                if(thread != null) {
-//                    thread.join();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        metronome.stop();
-//        super.onDestroy();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getSerializableExtra("Score2") != null) {
+            //open(getIntent());
+            Score thisScore = (Score)getIntent().getSerializableExtra("Score2");
+            Log.d("Log@617", "Score is null? " + (thisScore == null));
+            if (thisScore != null && thisScore.getScore() != null) {
+                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
+                //textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+                scores.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+            }
+
+            score = thisScore;
+            opened = true;
+        } else {
+            Log.e("onResumeLog@Main789", "Score is null");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        for (AudioThread thread : audioThreads) {
+            try {
+                if(thread != null) {
+                    thread.join();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        metronome.stop();
+        super.onDestroy();
+    }
 
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
                 metronome.start();
             } else {
-                metronome = new Metronome();
+                metronome = new Metronome(60);
                 metronome.start();
             }
             metronomeRunning = true;
@@ -863,7 +902,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         }
         if (numericNotes.length == lengths.length) {
 
-            PlayBack playBack = new PlayBack(numericNotes, lengths,0);
+            PlayBack playBack = new PlayBack(numericNotes, lengths, 0);
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
 
@@ -907,21 +946,28 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     public void openOrNew() {
         Intent intent = new Intent(this, NewActivity.class);
-        intent.putExtra("ScoreFile", scoreFile);
+        intent.putExtra("ScoreFile2", scoreFile);
         startActivity(intent);
     }
 
     private void save() {
-        Intent intent = new Intent(this, SaveActivity.class);
+        Intent intent = new Intent(this, EditSaveActivity.class);
         score = new Score();
         numericNotes = prepareScore();
         lengths = prepareLengths();
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         score.setScore(numericNotes, lengths);
-        intent.putExtra("Score", score);
-        intent.putExtra("ScoreFile", scoreFile);
+        intent.putExtra("Score2", score);
+        intent.putExtra("ScoreFile2", scoreFile);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override

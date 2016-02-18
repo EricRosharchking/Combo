@@ -36,6 +36,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
             Object[] objectArray = scoreFile.openAllFileNames().getAllFileNamesSet().toArray();
             Log.d("@NewActivity34", "Object Size is " + objectArray.length);
             names = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+			name = names[0];
         } else {
             //scoreFile = new ScoreFile(NewActivity.this);
             scoreFile = new ScoreFile();
@@ -64,7 +65,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
             builder.setTitle(R.string.start)
                     // Specify the list array, the items to be selected by default (null for none),
                     // and the listener through which to receive callbacks when items are selected
-                    .setSingleChoiceItems(names, 1,
+                    .setSingleChoiceItems(names, 0,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

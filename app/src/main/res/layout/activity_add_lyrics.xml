@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222222"
     android:orientation="horizontal"
+    android:background="@drawable/piano_pic"
     tools:context=".AddLyrics">
 
     <LinearLayout
@@ -14,8 +14,9 @@
         <LinearLayout
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
-            android:layout_height="79dp"
-            android:background="#3A393A">
+            android:layout_height="70dp"
+            android:background="#3A393A"
+            android:alpha="0.7">
 
             <ImageButton
                 android:id="@+id/record_button"
@@ -155,6 +156,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/button"
                             android:text="1"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button6" />
 
                         <Button
@@ -163,6 +165,7 @@
                             android:layout_height="wrap_content"
                             android:text="1"
                             android:id="@+id/button2"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button"
                             android:layout_toRightOf="@+id/button"
                             android:layout_toEndOf="@+id/button" />
@@ -173,6 +176,7 @@
                             android:layout_height="wrap_content"
                             android:text="1"
                             android:id="@+id/button3"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button2"
                             android:layout_toRightOf="@+id/button2"
                             android:layout_toEndOf="@+id/button2" />
@@ -183,6 +187,7 @@
                             android:layout_height="wrap_content"
                             android:text="1"
                             android:id="@+id/button4"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button3"
                             android:layout_toRightOf="@+id/button3"
                             android:layout_toEndOf="@+id/button3" />
@@ -193,6 +198,7 @@
                             android:layout_height="wrap_content"
                             android:text="1"
                             android:id="@+id/button5"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button4"
                             android:layout_toRightOf="@+id/button4"
                             android:layout_toEndOf="@+id/button4" />
@@ -202,6 +208,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1"
+                            android:background="@drawable/button"
                             android:id="@+id/button6"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/button5"
@@ -212,6 +219,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1"
+                            android:background="@drawable/button"
                             android:id="@+id/button43" />
 
                         <Button
@@ -219,12 +227,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
+                            android:background="@drawable/button"
                             android:id="@+id/button50" />
 
                         <ImageButton
                             android:layout_width="55dp"
                             android:layout_height="47dp"
                             android:id="@+id/back"
+                            android:background="@drawable/button"
                             android:layout_column="8"
                             android:src="@drawable/back" />
 
@@ -238,6 +248,7 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:id="@+id/button7"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button6"
                             android:layout_toRightOf="@+id/button6"
                             android:layout_toEndOf="@+id/button6" />
@@ -248,6 +259,7 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:id="@+id/button8"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button7"
                             android:layout_toRightOf="@+id/button7"
                             android:layout_toEndOf="@+id/button7" />
@@ -258,6 +270,7 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:id="@+id/button9"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button8"
                             android:layout_toRightOf="@+id/button8"
                             android:layout_toEndOf="@+id/button8" />
@@ -268,6 +281,7 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:id="@+id/button10"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button9"
                             android:layout_toRightOf="@+id/button9"
                             android:layout_toEndOf="@+id/button9" />
@@ -278,6 +292,7 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:id="@+id/button11"
+                            android:background="@drawable/button"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/button10"
                             android:layout_toEndOf="@+id/button10" />
@@ -288,6 +303,7 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:id="@+id/button12"
+                            android:background="@drawable/button"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/button11"
                             android:layout_toEndOf="@+id/button11" />
@@ -297,6 +313,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2"
+                            android:background="@drawable/button"
                             android:id="@+id/button44" />
 
                         <Button
@@ -304,6 +321,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="-"
+                            android:background="@drawable/button"
                             android:id="@+id/button51"
                             android:layout_column="7" />
 
@@ -317,6 +335,7 @@
                             android:layout_height="wrap_content"
                             android:text="3"
                             android:id="@+id/button13"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" />
@@ -327,6 +346,7 @@
                             android:layout_height="wrap_content"
                             android:text="3"
                             android:id="@+id/button14"
+                            android:background="@drawable/button"
                             android:layout_alignTop="@+id/button13"
                             android:layout_toRightOf="@+id/button13"
                             android:layout_toEndOf="@+id/button13" />
@@ -337,6 +357,7 @@
                             android:layout_height="wrap_content"
                             android:text="3"
                             android:id="@+id/button15"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button14"
                             android:layout_toRightOf="@+id/button14"
                             android:layout_toEndOf="@+id/button14" />
@@ -347,6 +368,7 @@
                             android:layout_height="wrap_content"
                             android:text="3"
                             android:id="@+id/button16"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button15"
                             android:layout_toRightOf="@+id/button15"
                             android:layout_toEndOf="@+id/button15" />
@@ -357,6 +379,7 @@
                             android:layout_height="wrap_content"
                             android:text="3"
                             android:id="@+id/button17"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button16"
                             android:layout_toRightOf="@+id/button16"
                             android:layout_toEndOf="@+id/button16" />
@@ -367,6 +390,7 @@
                             android:layout_height="wrap_content"
                             android:text="3"
                             android:id="@+id/button18"
+                            android:background="@drawable/button"
                             android:layout_alignBottom="@+id/button17"
                             android:layout_toRightOf="@+id/button17"
                             android:layout_toEndOf="@+id/button17" />
@@ -376,6 +400,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3"
+                            android:background="@drawable/button"
                             android:id="@+id/button45" />
 
                     </TableRow>
@@ -387,6 +412,7 @@
                             android:layout_height="wrap_content"
                             android:text="4"
                             android:id="@+id/button19"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button6"
                             android:layout_toRightOf="@+id/button6"
                             android:layout_toEndOf="@+id/button6" />
@@ -397,6 +423,7 @@
                             android:layout_height="wrap_content"
                             android:text="4"
                             android:id="@+id/button20"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button9"
                             android:layout_toRightOf="@+id/button19"
                             android:layout_toEndOf="@+id/button19" />
@@ -407,6 +434,7 @@
                             android:layout_height="wrap_content"
                             android:text="4"
                             android:id="@+id/button21"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button8"
                             android:layout_toRightOf="@+id/button20"
                             android:layout_toEndOf="@+id/button20" />
@@ -417,6 +445,7 @@
                             android:layout_height="wrap_content"
                             android:text="4"
                             android:id="@+id/button22"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button11"
                             android:layout_toRightOf="@+id/button21"
                             android:layout_toEndOf="@+id/button21" />
@@ -427,6 +456,7 @@
                             android:layout_height="wrap_content"
                             android:text="4"
                             android:id="@+id/button23"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button10"
                             android:layout_toRightOf="@+id/button22"
                             android:layout_toEndOf="@+id/button22" />
@@ -437,6 +467,7 @@
                             android:layout_height="wrap_content"
                             android:text="4"
                             android:id="@+id/button24"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button12"
                             android:layout_toRightOf="@+id/button11"
                             android:layout_toEndOf="@+id/button11" />
@@ -446,6 +477,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4"
+                            android:background="@drawable/button"
                             android:id="@+id/button46" />
                     </TableRow>
                     <TableRow>
@@ -456,6 +488,7 @@
                             android:layout_height="wrap_content"
                             android:text="5"
                             android:id="@+id/button25"
+                            android:background="@drawable/button"
                             android:layout_below="@+id/button6"
                             android:layout_toRightOf="@+id/button6"
                             android:layout_toEndOf="@+id/button6" />
@@ -465,6 +498,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:background="@drawable/button"
                             android:id="@+id/button26" />
 
                         <Button
@@ -472,6 +506,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:background="@drawable/button"
                             android:id="@+id/button27" />
 
                         <Button
@@ -479,6 +514,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:background="@drawable/button"
                             android:id="@+id/button28" />
 
                         <Button
@@ -486,6 +522,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:background="@drawable/button"
                             android:id="@+id/button29" />
 
                         <Button
@@ -493,6 +530,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:background="@drawable/button"
                             android:id="@+id/button30" />
 
                         <Button
@@ -500,6 +538,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:background="@drawable/button"
                             android:id="@+id/button47" />
                     </TableRow>
                     <TableRow>
@@ -509,6 +548,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button31" />
 
                         <Button
@@ -516,6 +556,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button32" />
 
                         <Button
@@ -523,6 +564,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button33" />
 
                         <Button
@@ -530,6 +572,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button34" />
 
                         <Button
@@ -537,6 +580,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button35" />
 
                         <Button
@@ -544,6 +588,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button36" />
 
                         <Button
@@ -551,6 +596,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6"
+                            android:background="@drawable/button"
                             android:id="@+id/button48" />
 
                     </TableRow>
@@ -562,6 +608,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button37" />
 
                         <Button
@@ -569,6 +616,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button38" />
 
                         <Button
@@ -576,6 +624,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button39" />
 
                         <Button
@@ -583,6 +632,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button40" />
 
                         <Button
@@ -590,6 +640,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button41" />
 
                         <Button
@@ -597,6 +648,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button42" />
 
                         <Button
@@ -604,14 +656,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7"
+                            android:background="@drawable/button"
                             android:id="@+id/button49" />
                     </TableRow>
 
                 </TableLayout>
             </ScrollView>
-
-
-
 
         </RelativeLayout>
 

@@ -32,7 +32,7 @@
                 android:text="Hello World" />
 
         </LinearLayout>
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/control_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -71,15 +71,15 @@
                 android:paddingRight="3dp"
                 android:src="@drawable/startbutton" />
 
-            <!--<TextView-->
-                <!--android:id="@+id/record_status"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_weight="1.6"-->
-                <!--android:padding="7dp"-->
-                <!--android:text="@string/record_status"-->
-                <!--android:textColor="#FFFFFF" />-->
+            &lt;!&ndash;<TextView&ndash;&gt;
+                &lt;!&ndash;android:id="@+id/record_status"&ndash;&gt;
+                &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                &lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:layout_weight="1.6"&ndash;&gt;
+                &lt;!&ndash;android:padding="7dp"&ndash;&gt;
+                &lt;!&ndash;android:text="@string/record_status"&ndash;&gt;
+                &lt;!&ndash;android:textColor="#FFFFFF" />&ndash;&gt;
 
             <ImageButton
                 android:id="@+id/playBack"
@@ -103,7 +103,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
-                android:onClick="playBack"
+                android:onClick="pausePlay"
                 android:scaleType="fitXY"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
@@ -117,7 +117,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
-                android:onClick="playBack"
+                android:onClick="stopPlay"
                 android:scaleType="fitXY"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
@@ -138,7 +138,7 @@
                     android:checkedButton="@+id/sound">
 
                     <RadioButton
-                        android:id="@+id/tempo3"
+                        android:id="@+id/timeSig3"
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -148,7 +148,7 @@
                         android:textColor="#FFFFFF" />
 
                     <RadioButton
-                        android:id="@+id/tempo4"
+                        android:id="@+id/timeSig4"
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -174,14 +174,14 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/metronome" />
 
-            <!--<SeekBar-->
-                <!--android:id="@+id/tempoSeekBar"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:max="60"-->
-                <!--android:progress="1" />-->
+            &lt;!&ndash;<SeekBar&ndash;&gt;
+                &lt;!&ndash;android:id="@+id/tempoSeekBar"&ndash;&gt;
+                &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                &lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:layout_marginLeft="10dp"&ndash;&gt;
+                &lt;!&ndash;android:max="60"&ndash;&gt;
+                &lt;!&ndash;android:progress="1" />&ndash;&gt;
 
             <NumberPicker
                 android:layout_width="0dp"
@@ -194,26 +194,26 @@
                 android:paddingRight="3dp"
                 android:id="@+id/metroPicker"/>
 
-            <!--<TextView-->
-                <!--android:id="@+id/seekbarvalue"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_weight="0.6"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:text="@string/seekbar"-->
-                <!--android:textColor="#FFFFFF" />-->
+            &lt;!&ndash;<TextView&ndash;&gt;
+                &lt;!&ndash;android:id="@+id/seekbarvalue"&ndash;&gt;
+                &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="fill_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_weight="0.6"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:text="@string/seekbar"&ndash;&gt;
+                &lt;!&ndash;android:textColor="#FFFFFF" />&ndash;&gt;
 
-            <!--<Button-->
-                <!--android:id="@+id/buttonBack"-->
-                <!--android:layout_width="68dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_weight="0.07"-->
-                <!--android:background="#484848"-->
-                <!--android:text="@string/back"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:textColor="#FFFFFF"-->
-                <!--android:textSize="15dp" />-->
+            &lt;!&ndash;<Button&ndash;&gt;
+                &lt;!&ndash;android:id="@+id/buttonBack"&ndash;&gt;
+                &lt;!&ndash;android:layout_width="68dp"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                &lt;!&ndash;android:layout_gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:layout_weight="0.07"&ndash;&gt;
+                &lt;!&ndash;android:background="#484848"&ndash;&gt;
+                &lt;!&ndash;android:text="@string/back"&ndash;&gt;
+                &lt;!&ndash;android:textAllCaps="false"&ndash;&gt;
+                &lt;!&ndash;android:textColor="#FFFFFF"&ndash;&gt;
+                &lt;!&ndash;android:textSize="15dp" />&ndash;&gt;
             <ImageButton
                 android:id="@+id/toolbox"
                 android:layout_width="0dp"
@@ -228,7 +228,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/toolbox" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/score"
