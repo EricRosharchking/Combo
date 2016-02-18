@@ -1,5 +1,7 @@
 package com.example.liyuan.projectcombo;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -136,6 +138,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Toolbar toolbar;
     private NumberPicker metronumberpicker;
 
+    TextView textView_countdown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -315,6 +318,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             withMetronome = true;
             opened = false;
             beatLength = 1.0;
+//count down
+            textView_countdown = (TextView) findViewById(R.id.countdown);
+            ValueAnimator animator = new ValueAnimator();
+            animator.setObjectValues(0, 10);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+                }
+            });
+            animator.setEvaluator(new TypeEvaluator<Integer>() {
+                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+                    return Math.round(startValue + (endValue - startValue) * fraction);
+                }
+            });
+            animator.setDuration(20000);
+            animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;

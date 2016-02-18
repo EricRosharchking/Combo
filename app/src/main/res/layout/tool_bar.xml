@@ -6,6 +6,19 @@
     android:layout_height="48dp"
     android:background="#424242"
     android:minHeight="?attr/actionBarSize">
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_gravity="end"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_gravity="start|center_vertical"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:textColor="@color/red"/>
 
     <NumberPicker
         android:layout_width="50dp"
@@ -13,6 +26,7 @@
         android:theme="@style/AppTheme.Picker"
         android:id="@+id/metroPicker"
         android:layout_gravity="end"/>
+</LinearLayout>
     <!--<Spinner-->
         <!--android:id="@+id/withmetro"-->
         <!--android:layout_width="100dp"-->
