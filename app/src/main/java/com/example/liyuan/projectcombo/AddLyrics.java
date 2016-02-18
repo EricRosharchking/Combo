@@ -3,23 +3,36 @@ package com.example.liyuan.projectcombo;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -28,8 +41,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,36 +57,26 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-public class AddLyrics extends ActionBarActivity implements OnClickListener, OnTouchListener{
-    private boolean isEdit = false, isEdit1 = false;
-    private String mUpper = "upper", mLower = "lower";
-    private int w, mWindowWidth;
+public class AddLyrics extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener{
+
     Score score;
-    String notesAndRest;
-    String lengthOfNotesAndRest;
     double[] lengths;
-    ScoreFile scoreFile;
-    ImageButton btBack;
-    int key;
-    int[] numericNotes;
     Metronome metronome;
-    boolean metronomeRunning;
-    Button timeSignatureButton;
-    int timeSignature;
-    double secondsPerBeat;
+    ScoreFile scoreFile;
+    PlayBack playBackTrack;
+    ImageButton btBack;
+    int[] numericNotes;
     private AudioThread[] audioThreads = new AudioThread[14];
     final Note[] Notes = new Note[13];
-    boolean opened;
     DisplayThread displayThread;
-    final int[] buttons = {R.id.button, R.id.button2, R.id.button3, R.id.button4,
-            R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,
-            R.id.button10, R.id.button11, R.id.button12, R.id.button13,
-            R.id.button14, R.id.button15, R.id.button16};
+
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
             b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51,b52,b53,b54,b55,b56,b57,b58;
     TextView scores;
+
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
     private final String curve = "<sup>\u0361</sup>";
@@ -80,15 +85,78 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
     private final String dot_below = "<sub>\u0323</sub>";
     private final String sharp = "&#9839;";
 
+    private ListView mDrawerList2;
+    private DrawerLayout mDrawerLayout;
+    private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String mActivityTitle;
+    private MyAdapter myAdapter;
+    private Toolbar toolbar;
+    private NumberPicker metronumberpicker;
+
+    String notesAndRest;
+    String lengthOfNotesAndRest;
+    DateFormat df;
+    Date now;
+
+    boolean withMetronome;
+    boolean metronomeRunning;
+    boolean isPlayBack;
+    boolean onRecord;
+    boolean resetScore;
+    boolean onHold;
+    boolean onRest;
+    boolean isRunning;
+    boolean opened;
+    boolean isOpened;
+
+    double startRecordTime;
+    double stopRecordTime;
+    double recordTime;
+    double secondsPerBeat;
+    double noteBeats;
+    double noteStartTime;
+    double noteEndTime;
+    double rest;
+    double restStartTime;
+    double restEndTime;
+    double elapse;
+    double beatLength;
+
+    int tempo;
+    int timeSig;
+    int lastNote;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_add_lyrics);
+
+            toolbar = (Toolbar) findViewById(R.id.tool_bar);
+            setSupportActionBar(toolbar);
+
+            mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            mActivityTitle = getTitle().toString();
+
+            addDrawerItems2();
+            setupDrawer();
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+//            super.onCreate(savedInstanceState);
+
+            LayoutInflater inflater = getLayoutInflater();
+
+            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+            mDrawerList2.addHeaderView(listHeaderView);
+
             View decorView = getWindow().getDecorView();
             // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
-            setContentView(R.layout.activity_add_lyrics);
 
             //retrieve scores (in String) from MainActivity
             Intent intent = getIntent();
@@ -315,14 +383,125 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             b57.setOnClickListener(this);
             b58.setOnClickListener(this);
 
+            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+            metronumberpicker.setFocusable(false);
+            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+            metronumberpicker.setMaxValue(120);
+            metronumberpicker.setMinValue(60);
+            metronumberpicker.setWrapSelectorWheel(false);
+
+            tempo = metronumberpicker.getValue();
+            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+// Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
+            scoreFile = new ScoreFile();
+            numericNotes = null;
+            lengths = null;
+            withMetronome = true;
+            opened = false;
+            beatLength = 1.0;
+
+
 
         }catch(NumberFormatException e){
-            timeSignature = 60;
-            timeSignatureButton.setText("60");
+            tempo = 60;
         }finally{
-            secondsPerBeat = 60.0 / timeSignature;
+            secondsPerBeat = 60.0 / tempo;
         }
 
+
+    }
+
+    private void addDrawerItems2() {
+//        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
+//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
+//        mDrawerList2.setAdapter(mAdapter);
+        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo");
+        mDrawerList2.setAdapter(myAdapter);
+        mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 1:
+                        save();
+                        break;
+                    case 2:
+                        editScore();
+                        break;
+                    case 3:
+                        addLyrics();
+                        break;
+                    case 4:
+                        openOrNew();
+                        break;
+                    case 5:
+//                    exportToPDF();
+                        break;
+                }
+                Toast.makeText(AddLyrics.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.i("Log@Main398", "position is " + position + " and id is " + id);
+        switch (position) {
+            case 1:
+                metronome.setWithMetronome(true);
+                break;
+            case 2:
+                metronome.setWithMetronome(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
@@ -357,6 +536,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
     public void deleteEditValue(int index) {
         scores.getEditableText().delete(index - 1, index);
     }
+
     // Gets the current position of the cursor
     public int getEditSelection() {
         return scores.getSelectionStart();
@@ -840,7 +1020,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button52:
-                t = "1#";
+                t = "" + Html.fromHtml("1"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -849,7 +1029,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button53:
-                t = "2#";
+                t = "" + Html.fromHtml("2"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -858,7 +1038,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button54:
-                t = "3#";
+                t = "" + Html.fromHtml("3"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -867,7 +1047,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button55:
-                t = "4#";
+                t = "" + Html.fromHtml("4"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -876,7 +1056,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button56:
-                t = "5#";
+                t = "" + Html.fromHtml("5"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -885,7 +1065,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button57:
-                t = "6#";
+                t = "" + Html.fromHtml("6"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -894,7 +1074,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 }
                 break;
             case R.id.button58:
-                t = "7#";
+                t = "" + Html.fromHtml("7"+sharp);
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -905,17 +1085,6 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
         }
 
-    }
-
-    private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "Score2";
-        if (notes != null && lengths!= null && notes.length == lengths.length) {
-            for (int i = 0; i < notes.length; i++) {
-                String thisNote = notes[i] + " ";
-                scoreString += thisNote;
-            }
-        }
-        return scoreString;
     }
 
     @Override
@@ -928,18 +1097,17 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         super.onResume();
         if (getIntent().getSerializableExtra("Score2") != null) {
             //open(getIntent());
-            Score thisScore = (Score)getIntent().getSerializableExtra("Score2");
+            Score thisScore = (Score) getIntent().getSerializableExtra("Score2");
             Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-                //textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
                 scores.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+                score = thisScore;
+                opened = true;
+                isOpened = true;
             }
-
-            score = thisScore;
-            opened = true;
         } else {
-            Log.e("onResumeLog@Main789", "Score is null");
+            Log.e("onResumeLog@Main555", "Score is null");
         }
     }
 
@@ -947,80 +1115,119 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
     protected void onDestroy() {
         for (AudioThread thread : audioThreads) {
             try {
-                if(thread != null) {
+                if (thread != null) {
                     thread.join();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        metronome.stop();
-        super.onDestroy();
+        try {
+            metronome.stop();
+        } catch (Exception e) {
+
+        }finally {
+            super.onDestroy();
+        }
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        tempo = newVal;
+        if (metronome != null)
+            metronome.changeTempo(tempo);
+        secondsPerBeat = 60 / tempo;
     }
 
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
+                metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
-                metronome = new Metronome(60);
+                metronome = new Metronome(metronumberpicker.getValue());
+                metronome.setWithMetronome(withMetronome);
                 metronome.start();
             }
             metronomeRunning = true;
-            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-            imageButton.setImageResource(R.drawable.stopmetro);
+//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+//            imageButton.setImageResource(R.drawable.stopmetro);
         } else {
             metronome.stop();
             metronomeRunning = false;
-            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-            imageButton.setImageResource(R.drawable.metronome);
+//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+//            imageButton.setImageResource(R.drawable.metronome);
         }
 
     }
 
     public void playBack(View view) {
+//// TODO: 10/18/2015 HashMap Key must be unique. . .
+        //Log.d("PlayBack Log", "PlayBack Entered");
+        //Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
+
+        //notesAndRest = notesAndRest.trim();
+        //lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
         Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
-        for (int i = 0; i < notesAndRest.split(" ").length; i++) {
-            Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
-        }
-        //// TODO: 10/18/2015 Trim the two Strings before split
-        for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
-            Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
-        }
+        if (playBackTrack == null || playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
+            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
+                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
+            }
+            //// TODO: 10/18/2015 Trim the two Strings before split
+            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
+                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+            }
 
-        numericNotes = prepareScore();
-        lengths = prepareLengths();
+            numericNotes = prepareScore();
+            lengths = prepareLengths();
 
-        Log.i("Log@Main735", "score is null? " + (score == null));
-        if (opened) {
-            numericNotes = score.getScore();
-            lengths = score.getLengths();
-            opened = false;
-        }
+            Log.i("Log@Main735", "score is null? " + (score == null));
+            if (opened) {
+                numericNotes = score.getScore();
+                lengths = score.getLengths();
+                opened = false;
+            }
 
-        if (numericNotes != null && lengths != null) {
-            Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
-        }
-        if (numericNotes.length == lengths.length) {
+            if (numericNotes != null && lengths != null) {
+                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+            }
+            if (numericNotes.length == lengths.length) {
 
-            PlayBack playBack = new PlayBack(numericNotes, lengths, 0);
-            Log.d("PlayBack Log", "PlayBack initialised");
-            playBack.start();
 
-            try {
-                //Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
-                playBack.join();
-                //imageButton.setImageResource(R.drawable.playbackbutton);
-            } catch (Exception e) {
-                e.printStackTrace();
+                //写一下吧write到audioTrack里面 stream
+
+            /*            numericNotes = new int[4];
+                        numericNotes[0] = 1;
+                        numericNotes[1] = 3;
+                        numericNotes[2] = 0;
+                        numericNotes[3] = 5;
+
+                        scoreLength = new String[4];
+                        scoreLength[0] = "1.000";
+                        scoreLength[1] = "1.000";
+                        scoreLength[2] = "1.000";
+                        scoreLength[3] = "1.000";*/
+
+
+                playBackTrack = new PlayBack(numericNotes, lengths, lastNote);
+                Log.d("PlayBack Log", "PlayBack initialised");
+                playBackTrack.start();
+
+                    /*try {
+                        Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
+                        playBack.join();
+                        //imageButton.setImageResource(R.drawable.playbackbutton);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
             }
         }
     }
 
-    private int[] prepareScore(){
-        int [] array;
+    private int[] prepareScore() {
+        int[] array;
         if (!notesAndRest.isEmpty()) {
             String[] scoreNotes = notesAndRest.trim().split(" ");
             array = new int[scoreNotes.length];
@@ -1028,7 +1235,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 array[i] = Integer.parseInt(scoreNotes[i]);
             }
         } else {
-            array = new int[] {1, 3, 5};
+            array = new int[]{1, 3, 5};
         }
         return array;
     }
@@ -1042,28 +1249,84 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                 array[i] = Double.parseDouble(scoreLength[i]);
             }
         } else {
-            array = new double[] {1.0, 1.0, 1.0};
+            array = new double[]{1.0, 1.0, 1.0};
         }
         return array;
     }
 
+    private String extractScore(int[] notes, double[] lengths) {
+        String scoreString = "";
+        if (notes != null && lengths != null && notes.length == lengths.length) {
+            for (int i = 0; i < notes.length; i++) {
+                String thisNote = Integer.toString(notes[i]);
+                double thisLength = lengths[i];
+                int q = (int) Math.round(thisLength / 0.25);
+                if (q == 0) {
+                    q = 1;
+                }
+                switch (q) {
+                    case 1:
+                        thisNote += double_underline;
+                        break;
+                    case 2:
+                        thisNote += underline;
+                        break;
+                    case 3:
+                        thisNote += underline;
+                        thisNote += bullet;
+                        break;
+                    default:
+                        break;
+                }
+                scoreString += thisNote;
+            }
+        }
+
+        ////TODO:
+        return Html.fromHtml(scoreString.trim()).toString();
+    }
+
     public void openOrNew() {
         Intent intent = new Intent(this, NewActivity.class);
-        intent.putExtra("ScoreFile2", scoreFile);
+        intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
 
     private void save() {
-        Intent intent = new Intent(this, EditSaveActivity.class);
+        Intent intent = new Intent(this, SaveActivity.class);
         score = new Score();
         numericNotes = prepareScore();
         lengths = prepareLengths();
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         score.setScore(numericNotes, lengths);
-        intent.putExtra("Score2", score);
-        intent.putExtra("ScoreFile2", scoreFile);
+        intent.putExtra("Score", score);
+        intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
+    }
+
+    private void addLyrics() {
+        Intent i = new Intent(AddLyrics.this,
+                AddLyrics.class);
+        //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
+        i.putExtra("scores", displayThread.getDisplay());
+        startActivity(i);
+        finish();
+    }
+
+    public void editScore() {
+        Intent intent = new Intent(this, DisplayActivity.class);
+        if (!isOpened) {
+            intent.putExtra("notes", prepareScore());
+            intent.putExtra("lengths", prepareLengths());
+        } else {
+            intent.putExtra("score", score);
+        }
+        startActivity(intent);
+    }
+
+    private void deleteAll() {
+        Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
     }
 
     @Override
@@ -1075,18 +1338,134 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == R.id.action_settings){
-
-        }else if (id == R.id.saveSong){
-            save();
-        }else if (id == R.id.openHistory){
-            openOrNew();
-
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        switch (id) {
+            case R.id.record_button_item:
+                // User chose the "Settings" item, show the app settings UI...
+//                Intent intent = new Intent(MainActivity.this, register.class);
+//                startActivity(intent);
+                record();
+                break;
+            case R.id.playBack:
+                playBack(null);
+                break;
+            case R.id.pause:
+                pausePlay(null);
+                break;
+            case R.id.stop:
+                stopPlay(null);
+                break;
+            case R.id.metro:
+                withMetronome = true;
+                startMetronome(null);
+                break;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+//                return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void pausePlay(View view) {
+        if (playBackTrack != null) {
+            playBackTrack.pausePlaying();
+            lastNote = playBackTrack.getJ();
+            if (lastNote == playBackTrack.getSize() - 1) {
+                lastNote = playBackTrack.getLast();
+            }
+            try {
+                playBackTrack.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+        }
+    }
+
+    public void stopPlay(View view) {
+        if (playBackTrack != null) {
+            playBackTrack.stopPlaying();
+            lastNote = playBackTrack.getLast();
+        }
+        try {
+            playBackTrack.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+    }
+
+    private int getTimeSignature() {
+        if (new Integer(timeSig) == null) {
+            timeSig = 4;
+        }
+        return timeSig;
+    }
+
+    public void record() {
+        if (!onRecord) {
+            //recordButton.setImageResource(R.drawable.stopbutton);
+            onRecord = true;
+//                recordStatus.setText("Recording");
+            resetScore = true;
+            scores.setText(R.string.main_score);
+            startRecordTime = System.currentTimeMillis() + 1000 * timeSig * secondsPerBeat;
+            restStartTime = startRecordTime;
+            now = new Date();
+            notesAndRest = "";
+            lengthOfNotesAndRest = notesAndRest;
+
+
+            if (displayThread.getState() != Thread.State.NEW) {
+                displayThread = new DisplayThread();
+            }
+            displayThread.setTimeSignature(getTimeSignature());
+            displayThread.setTempo(tempo);
+            startMetronome(null);
+            long delay = (long)(timeSig * 1000 * secondsPerBeat);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            displayThread.start();
+        } else {
+            //recordButton.setImageResource(R.drawable.startbutton);
+            onRecord = false;
+//                recordStatus.setText("Click to start");
+            //textView.setText((String)getText(R.string.main_score));
+            resetScore = false;
+            stopRecordTime = System.currentTimeMillis();
+            recordTime = stopRecordTime - startRecordTime;
+            restEndTime = stopRecordTime;
+            rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
+            notesAndRest = notesAndRest + " " + "0";
+            lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
+            Log.d("RecordingLog", "The Record Time is " + recordTime);
+//                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
+
+
+            if (displayThread != null) {
+                displayThread.stopThread();
+//                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
+//                    textView.setText(displayThread.getArchived());
+                scores.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause in html
+//                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
+            }
+            if (metronome != null && metronomeRunning) {
+                metronome.stop();
+            }
+        }
+    }
+
 
     //split the String to String[] for use to split into multiple arrays
     //split the String to String[] to ensure alignment with the lyrics text box
@@ -1096,6 +1475,61 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
         finish();
+    }
+
+    class MyAdapter extends BaseAdapter {
+        private String att_email;
+        private String att_name;
+        private Context context;
+        String[] tool_list;
+        int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+
+        public MyAdapter(Context context, String email, String name) {
+            this.context = context;
+            this.att_name = name;
+            this.att_email = email;
+            tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
+        }
+
+        @Override
+        public int getCount() {
+
+            return tool_list.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return tool_list[i];
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            View row = null;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
+                row = inflater.inflate(R.layout.custom_row, viewGroup, false);
+            } else {
+                row = view;
+            }
+            TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
+            ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
+            TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null) {
+                t_name.setText("Cambo");
+//
+            }
+//        t_name.setText(att_name);
+            TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+//        t_email.setText(att_email);
+            titleTextView2.setText(tool_list[i]);
+            titleImageView2.setImageResource(images[i]);
+            return row;
+        }
     }
 
     private static String[] split(String string)
