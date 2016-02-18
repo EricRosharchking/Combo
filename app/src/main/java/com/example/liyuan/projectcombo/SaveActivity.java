@@ -29,7 +29,6 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
         names = new String[]{"1", "2", "3"};

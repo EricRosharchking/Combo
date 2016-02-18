@@ -162,6 +162,9 @@ public class DisplayThread extends Thread {
     public void update(int strike) {
         int thisKey = 1;
         switch (strike) {
+            case 0:
+                thisKey = 0;
+                break;
             case -3:
             case 3:
             case 42:
