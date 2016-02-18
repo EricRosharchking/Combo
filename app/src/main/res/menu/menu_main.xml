@@ -45,9 +45,9 @@
         <!--app:showAsAction="never" />-->
     <item
         android:id="@+id/metro"
-        android:orderInCategory="400"
+        android:orderInCategory="99"
         android:title="metro"
-        android:icon="@drawable/metro"
+        android:icon="@drawable/metro_off"
         app:showAsAction="ifRoom" />
 </menu>
 

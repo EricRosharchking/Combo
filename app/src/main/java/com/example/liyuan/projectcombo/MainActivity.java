@@ -148,11 +148,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
-
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mActivityTitle = getTitle().toString();
-
+            mActivityTitle = "Create new song";
+            getSupportActionBar().setTitle(mActivityTitle);
             addDrawerItems2();
             setupDrawer();
 
@@ -300,16 +299,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
 
-            metronome = new Metronome(metronumberpicker.getValue());
-            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
-// Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(this);
+//            metronome = new Metronome(metronumberpicker.getValue());
+//            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+//// Create an ArrayAdapter using the string array and a default spinner layout
+//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+//// Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//// Apply the adapter to the spinner
+//            spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
@@ -364,14 +363,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
+                getSupportActionBar().setTitle("Menu");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle("Create new song");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 

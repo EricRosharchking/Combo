@@ -14,7 +14,7 @@
     <string name="noteBb">Bb</string>
     <string name="noteB">B </string>
     <string name="highcsharp">1 </string>
-    <string name="main_score">Here is the notes you played</string>
+    <string name="main_score">Here are the notes you played</string>
     <string name="record_status">Not Recording</string>
     <string name="tempo">4/4</string>
     <string name="time_signature">60</string>
