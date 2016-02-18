@@ -59,7 +59,6 @@
     <string name="sybtype_en_US">English (US)</string>
     <string name="title_activity_keyboard">KeyboardActivity</string>
     <string name="title_activity_try">TryActivity</string>
-<<<<<<< HEAD
     <string-array name="scoreKeys">
         <item>C</item>
         <item>C#</item>
@@ -91,8 +90,7 @@
     <string name="title_activity_display">DisplayActivity</string>
     <string name="start">Open A Score</string>
     <string name="title_activity_editsave">EditSaveActivity</string>
-</resources>
-=======
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
@@ -120,5 +118,3 @@
             <item>record without metro</item>
         </string-array>
 </resources>
-
->>>>>>> TJTJNEW_branch

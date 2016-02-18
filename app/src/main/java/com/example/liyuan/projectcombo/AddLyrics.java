@@ -103,7 +103,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             notesAndRest = "";
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
-            metronome = new Metronome();
+            metronome = new Metronome(60);
             opened = false;
 
             for (int i = 1; i < audioThreads.length; i++) {
@@ -860,7 +860,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             if (metronome != null) {
                 metronome.start();
             } else {
-                metronome = new Metronome();
+                metronome = new Metronome(60);
                 metronome.start();
             }
             metronomeRunning = true;
@@ -902,11 +902,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
         }
         if (numericNotes.length == lengths.length) {
 
-<<<<<<< HEAD
             PlayBack playBack = new PlayBack(numericNotes, lengths, 0);
-=======
-            PlayBack playBack = new PlayBack(numericNotes, lengths,0);
->>>>>>> TJTJNEW_branch
             Log.d("PlayBack Log", "PlayBack initialised");
             playBack.start();
 

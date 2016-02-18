@@ -15,8 +15,10 @@ import android.widget.SeekBar;
  */
 public class Metronome extends Activity {
 
+    int beats;
     private final int SAMPLE_RATE = 22050;
     boolean isRunning = true;
+    boolean withMetronome;
     int sound  = 4410;
     int count;
     int timeSignature;
@@ -29,8 +31,9 @@ public class Metronome extends Activity {
     SeekBar tempoSeekBar;
 
 
-    public Metronome() {
+    public Metronome(int tempo) {
         timeSignature = 4;
+        withMetronome = true;
         t = new Thread() {
             public void run() {
                 // set process priority
@@ -53,9 +56,14 @@ public class Metronome extends Activity {
                 // start audio
                 audioTrack.play();
                 count = 1;
+                beats = 0;
 
                 // synthesis loop
                 while(isRunning){
+                    if (withMetronome) {
+                        if (beats == timeSignature)
+                            break;
+                    }
                     if (count == 1) {
                         frequency = frequency1;
                         count = 2;
@@ -124,9 +132,15 @@ public class Metronome extends Activity {
 
                     // start audio
                     audioTrack.play();
+                    count = 1;
+                    beats = 0;
 
                     // synthesis loop
                     while(isRunning){
+                        if (withMetronome) {
+                            if (beats == timeSignature)
+                                break;
+                        }
                         if (count == 1) {
                             frequency = frequency1;
                             count = 2;
@@ -182,6 +196,10 @@ public class Metronome extends Activity {
     public void changeTempo(int newSize) {
         metronomeTempo = newSize;
         size = 44100 * 60 / metronomeTempo / 2;
+    }
+
+    public void setWithMetronome(boolean withMetronome) {
+        this.withMetronome = withMetronome;
     }
 
     public void changeTimeSignature(int timeSignature) {
