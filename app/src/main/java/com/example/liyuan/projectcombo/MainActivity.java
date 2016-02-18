@@ -71,18 +71,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private final String UNDERLINE = "<sub>\u0332</sub>";
     private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
 
-    //Button pausePlay;
-    //Button stopPlay;
-    Button buttonAddLyrics;
-    //    Button buttonBack;
-    Button btnLogout;
-    Button tempoButton;
-    Button timeSignatureButton;
-    RadioButton radioButton;
+//  Button pausePlay;
+//  Button stopPlay;
+//    Button buttonAddLyrics;
+//    Button buttonBack;
+//    Button btnLogout;
+//    Button tempoButton;
+//    Button timeSignatureButton;
+//    RadioButton radioButton;
     ImageButton UpperOctave;
     ImageButton LowerOctave;
     ImageButton keyboard;
-    ImageButton recordButton;
+//    ImageButton recordButton;
     TextView textView;
 //    TextView recordStatus;
 
@@ -242,9 +242,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             textView.setMovementMethod(new ScrollingMovementMethod());
 //            recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
-            recordButton = (ImageButton) findViewById(R.id.record_button);
-            if (recordButton != null)
-                recordButton.setOnClickListener(this);
+//            recordButton = (ImageButton) findViewById(R.id.record_button);
+//            if (recordButton != null)
+//                recordButton.setOnClickListener(this);
             resetScore = false;
             onHold = false;
             onRest = true;
@@ -267,14 +267,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            tempoSeekBar.setOnSeekBarChangeListener(this);
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
-            btnLogout = (Button) findViewById(R.id.btnLogout);
-            btnLogout.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    logout();
-                }
-            });
+//            btnLogout = (Button) findViewById(R.id.btnLogout);
+//            btnLogout.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    logout();
+//                }
+//            });
 //
 //            buttonBack.setOnClickListener(new View.OnClickListener() {
 //
@@ -296,11 +296,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //Number Picker
             metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+            metronumberpicker.setFocusable(false);
+            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
             metronumberpicker.setMaxValue(120);
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
 
-            metronome = new Metronome(metronumberpicker.getValue());
+            tempo = metronumberpicker.getValue();
             Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -319,7 +321,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         } catch (NumberFormatException e) {
             tempo = 60;
-            tempoButton.setText("60");
+//            tempoButton.setText("60");
         } finally {
             secondsPerBeat = 60.0 / tempo;
         }
@@ -510,12 +512,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void record() {
         if (!onRecord) {
-            recordButton.setImageResource(R.drawable.stopbutton);
+            //recordButton.setImageResource(R.drawable.stopbutton);
             onRecord = true;
 //                recordStatus.setText("Recording");
             resetScore = true;
             textView.setText(R.string.main_score);
-            startRecordTime = System.currentTimeMillis();
+            startRecordTime = System.currentTimeMillis() + 1000 * timeSig * secondsPerBeat;
             restStartTime = startRecordTime;
             now = new Date();
             notesAndRest = "";
@@ -528,9 +530,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             displayThread.setTimeSignature(getTimeSignature());
             displayThread.setTempo(tempo);
             startMetronome(null);
+            long delay = (long)(timeSig * 1000 * secondsPerBeat);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             displayThread.start();
         } else {
-            recordButton.setImageResource(R.drawable.startbutton);
+            //recordButton.setImageResource(R.drawable.startbutton);
             onRecord = false;
 //                recordStatus.setText("Click to start");
             //textView.setText((String)getText(R.string.main_score));
@@ -594,7 +602,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
 
-        if (v.getId() == recordButton.getId()) {
+        /*if (v.getId() == recordButton.getId()) {
 //            Log.d("ButtonLog","This is the record button");
 //            Log.d("Log","OnRecord is " + onRecord);
             if (!onRecord) {
@@ -640,7 +648,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             }
             isOpened = false;
-        }
+        }*/
 
         if (v instanceof ImageButton) {
 //            Log.d("what", String.valueOf(textView.getText()) + "* compared to *"+ getText(R.string.main_score));
@@ -716,6 +724,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         noteAddOn = 1;
         if (v instanceof ImageButton) {
 
+		if (System.currentTimeMillis() < startRecordTime)
+			return super.onTouchEvent(event);
+		
             switch (octavefordisplay) {
                 case 3:
                     noteAddOn = -1;
@@ -917,8 +928,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
-        metronome.stop();
-        super.onDestroy();
+        try {
+            metronome.stop();
+        } catch (Exception e) {
+
+        }finally {
+            super.onDestroy();
+        }
     }
 
 
@@ -933,13 +949,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 metronome.start();
             }
             metronomeRunning = true;
-            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-            imageButton.setImageResource(R.drawable.stopmetro);
+//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+//            imageButton.setImageResource(R.drawable.stopmetro);
         } else {
             metronome.stop();
             metronomeRunning = false;
-            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-            imageButton.setImageResource(R.drawable.metronome);
+//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
+//            imageButton.setImageResource(R.drawable.metronome);
         }
 
     }

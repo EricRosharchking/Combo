@@ -95,6 +95,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name=".DisplayActivity"
+            android:label="@string/title_activity_display"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_Activity"
+                android:value=".MainActivity"/>
+        </activity>
 
     </application>
 

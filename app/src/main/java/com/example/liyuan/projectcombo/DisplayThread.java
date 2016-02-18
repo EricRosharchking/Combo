@@ -223,6 +223,10 @@ public class DisplayThread extends Thread {
         this.tempo = tempo;
     }
 
+    public void setDelay(int delay) {
+
+    }
+
     public void setOctave(int octave) {
         this.octave = octave;
     }
