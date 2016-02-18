@@ -13,12 +13,14 @@ public class Score implements Serializable {
     private String timeSignature;
     private int[] notes;
     private double[] lengths;
+    private String key;
 
     public Score() {
         author = "Anonymous";
         title = "New Score";
         tempo = 60;
         timeSignature = "4/4";
+        key = "C";
     }
 
     public void appendScore(int[] newScore, double[] newLengths){
@@ -63,12 +65,20 @@ public class Score implements Serializable {
         this.tempo = tempo;
     }
 
-    public void setTimeSignature(String timeSignature) {
-        this.timeSignature = timeSignature;
+    public void setTimeSignatureFF() {
+        this.timeSignature = "4/4";
+    }
+
+    public void setTimeSignatureFT() {
+        this.timeSignature = "3/4";
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getTempo() {
@@ -91,5 +101,11 @@ public class Score implements Serializable {
         return notes;
     }
 
-    public double[] getLengths() { return lengths; }
+    public double[] getLengths() {
+        return lengths;
+    }
+
+    public String getKey() {
+        return key;
+    }
 }

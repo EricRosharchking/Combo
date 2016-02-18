@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.liyuan.projectcombo.DisplayActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+		
+		<RelativeLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_marginBottom="25dp">
+			
+			<RelativeLayout
+				android:id="@+id/score_misc"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				
+				<TextView
+					android:id="@+id/score_key_misc"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentStart="true"
+					android:text="1 = "
+					android:textColor="#000000"
+					android:textSize="30sp"/>
+					
+				<TextView
+					android:id="@+id/score_key"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@+id/score_key_misc"
+					android:layout_toEndOf="@+id/score_key_misc"
+					android:text="C"
+					android:textColor="#000000"
+					android:textSize="30sp"/>
+					
+				<TextView
+					android:id="@+id/score_timeSig"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@+id/score_key"
+					android:layout_toEndOf="@id/score_key"
+					android:layout_marginLeft="5dp"
+					android:layout_marginStart="5dp"
+					android:text="4/4"
+					android:textColor="#000000"
+					android:textSize="30sp"/>
+					
+				<TextView
+					android:id="@+id/score_tempo"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@id/score_timeSig"
+					android:layout_toEndOf="@+id/score_timeSig"
+					android:layout_marginLeft="5dp"
+					android:layout_marginStart="5dp"
+					android:text="60"
+					android:textColor="#000000"
+					android:textSize="30sp"/>
+					
+				<TextView
+					android:id="@+id/score_title"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerHorizontal="true"
+					android:text="虫儿飞"
+					android:textColor="#000000"
+					android:textSize="48sp"/>
+					
+				<TextView
+					android:id="@+id/score_author"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentEnd="true"
+					android:text="Anonymous"
+					android:textColor="#000000"
+					android:textSize="30sp"/>
+			</RelativeLayout>
+
+			<TextView
+				android:id="@+id/score_content"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/score_misc"
+				android:gravity="left"
+				android:layout_marginTop="15dp"
+				android:layout_marginLeft="10dp"
+				android:textColor="#000000"
+				android:textSize="28sp"/>
+
+			<TextView
+				android:id="@+id/unicode_test"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/score_content"
+				android:layout_marginStart="10dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginTop="15dp"
+				android:textColor="#000000"
+				android:textSize="28sp"/>
+		</RelativeLayout>
+    </ScrollView>
+</LinearLayout>

@@ -113,7 +113,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             notesAndRest = "";
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
-            metronome = new Metronome();
+            metronome = new Metronome(60);
             opened = false;
 
             for (int i = 1; i < audioThreads.length; i++) {
@@ -963,7 +963,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             if (metronome != null) {
                 metronome.start();
             } else {
-                metronome = new Metronome();
+                metronome = new Metronome(60);
                 metronome.start();
             }
             metronomeRunning = true;
