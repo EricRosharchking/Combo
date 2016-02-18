@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener {
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -303,15 +303,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setWrapSelectorWheel(false);
 
             tempo = metronumberpicker.getValue();
-            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+//            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(this);
+//            spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
@@ -399,25 +399,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Log@Main398", "position is " + position + " and id is " + id);
-        switch (position) {
-            case 1:
-                metronome.setWithMetronome(true);
-                break;
-            case 2:
-                metronome.setWithMetronome(false);
-                break;
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        Log.i("Log@Main398", "position is " + position + " and id is " + id);
+//        switch (position) {
+//            case 1:
+//                metronome.setWithMetronome(true);
+//                break;
+//            case 2:
+//                metronome.setWithMetronome(false);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//
+//    }
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        // Handle action bar item clicks here. The action bar will

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:background="#424242"
     android:minHeight="?attr/actionBarSize">
 
@@ -11,9 +11,18 @@
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:theme="@style/AppTheme.Picker"
-        android:id="@+id/metroPicker"/>
-    <Spinner
-        android:id="@+id/withmetro"
-        android:layout_width="100dp"
-        android:layout_height="match_parent" />
+        android:id="@+id/metroPicker"
+        android:layout_gravity="end"/>
+    <!--<Spinner-->
+    <!--android:id="@+id/withmetro"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="match_parent" />-->
+    <!--<SeekBar-->
+    <!--android:id="@+id/tempoSeekBar"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:max="60"-->
+    <!--android:progress="1" />-->
 </android.support.v7.widget.Toolbar>
