@@ -70,7 +70,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             R.id.button14, R.id.button15, R.id.button16};
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
-            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51;
+            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51,b52,b53,b54,b55,b56,b57,b58;
     TextView scores;
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
@@ -78,6 +78,7 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
     private final String bullet = "&#8226\n";
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
+    private final String sharp = "&#9839;";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +175,13 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             b49 = (Button) findViewById(R.id.button49);
             b50 = (Button) findViewById(R.id.button50);
             b51 = (Button) findViewById(R.id.button51);
+            b52 = (Button) findViewById(R.id.button52);
+            b53 = (Button) findViewById(R.id.button53);
+            b54 = (Button) findViewById(R.id.button54);
+            b55 = (Button) findViewById(R.id.button55);
+            b56 = (Button) findViewById(R.id.button56);
+            b57 = (Button) findViewById(R.id.button57);
+            b58 = (Button) findViewById(R.id.button58);
 
 
             b1.setText(Html.fromHtml("1" + underline));
@@ -227,6 +235,13 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             b49.setText("7");
             b50.setText("0");
             b51.setText("-");
+            b52.setText(Html.fromHtml("1" + sharp));
+            b53.setText(Html.fromHtml("2" + sharp));
+            b54.setText(Html.fromHtml("3" + sharp));
+            b55.setText(Html.fromHtml("4" + sharp));
+            b56.setText(Html.fromHtml("5" + sharp));
+            b57.setText(Html.fromHtml("6" + sharp));
+            b58.setText(Html.fromHtml("7" + sharp));
 
 
             btBack.setOnClickListener(new OnClickListener() {
@@ -292,6 +307,15 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
             b49.setOnClickListener(this);
             b50.setOnClickListener(this);
             b51.setOnClickListener(this);
+            b52.setOnClickListener(this);
+            b53.setOnClickListener(this);
+            b54.setOnClickListener(this);
+            b55.setOnClickListener(this);
+            b56.setOnClickListener(this);
+            b57.setOnClickListener(this);
+            b58.setOnClickListener(this);
+
+
         }catch(NumberFormatException e){
             timeSignature = 60;
             timeSignatureButton.setText("60");
@@ -815,6 +839,70 @@ public class AddLyrics extends ActionBarActivity implements OnClickListener, OnT
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
+            case R.id.button52:
+                t = "1#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.button53:
+                t = "2#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.button54:
+                t = "3#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.button55:
+                t = "4#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.button56:
+                t = "5#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.button57:
+                t = "6#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.button58:
+                t = "7#";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+
         }
 
     }

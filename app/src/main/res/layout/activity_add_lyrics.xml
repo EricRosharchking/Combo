@@ -226,6 +226,14 @@
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="1"
+                            android:background="@drawable/button"
+                            android:id="@+id/button52" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="0"
                             android:background="@drawable/button"
                             android:id="@+id/button50" />
@@ -320,6 +328,14 @@
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="2"
+                            android:background="@drawable/button"
+                            android:id="@+id/button53" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="-"
                             android:background="@drawable/button"
                             android:id="@+id/button51"
@@ -403,6 +419,14 @@
                             android:background="@drawable/button"
                             android:id="@+id/button45" />
 
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3"
+                            android:background="@drawable/button"
+                            android:id="@+id/button54" />
+
                     </TableRow>
                     <TableRow>
 
@@ -479,6 +503,14 @@
                             android:text="4"
                             android:background="@drawable/button"
                             android:id="@+id/button46" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4"
+                            android:background="@drawable/button"
+                            android:id="@+id/button55" />
                     </TableRow>
                     <TableRow>
 
@@ -540,7 +572,16 @@
                             android:text="5"
                             android:background="@drawable/button"
                             android:id="@+id/button47" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:background="@drawable/button"
+                            android:id="@+id/button56" />
                     </TableRow>
+
                     <TableRow>
 
                         <Button
@@ -598,6 +639,14 @@
                             android:text="6"
                             android:background="@drawable/button"
                             android:id="@+id/button48" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6"
+                            android:background="@drawable/button"
+                            android:id="@+id/button57" />
 
                     </TableRow>
 
@@ -658,6 +707,14 @@
                             android:text="7"
                             android:background="@drawable/button"
                             android:id="@+id/button49" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7"
+                            android:background="@drawable/button"
+                            android:id="@+id/button58" />
                     </TableRow>
 
                 </TableLayout>

@@ -228,7 +228,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 @Override
                 public void onClick(View v) {
-                    addLyrics();
+                    addLyricsForScores();
                 }
             });
 
@@ -255,6 +255,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 AddLyrics.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
+        startActivity(i);
+        finish();
+    }
+
+    private void addLyricsForScores(){
+        Intent i = new Intent(MainActivity.this,
+                AddLyricsActivity.class);
+        //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
+        i.putExtra("scoresForAddLyrics", displayThread.getDisplay());
         startActivity(i);
         finish();
     }
