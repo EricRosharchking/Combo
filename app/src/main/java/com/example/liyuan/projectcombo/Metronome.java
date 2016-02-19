@@ -155,10 +155,12 @@ public class Metronome extends Activity {
                 // synthesis loop
                 whileLoop:
                 while (isRunning) {
-//                    if (!withMetronome) {
-//                        if (beats >= timeSignature)
-//                            break whileLoop;
-//                    }
+
+                    Log.i("Log@Metronome162", "WithMetronome is " + withMetronome);
+                    if (!withMetronome) {
+                        if (beats >= timeSignature)
+                            break whileLoop;
+                    }
                     if (count == 1) {
                         array = peep;
                         count = 2;
@@ -186,6 +188,7 @@ public class Metronome extends Activity {
                         e.printStackTrace();
                         break;
                     }
+                    beats ++;
 
 //                        try {
 //                            for (int i = 0; i < sound; i++) {
