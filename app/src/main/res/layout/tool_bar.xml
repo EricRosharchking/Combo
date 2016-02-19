@@ -6,11 +6,22 @@
     android:layout_height="48dp"
     android:background="#424242"
     android:minHeight="?attr/actionBarSize">
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:orientation="horizontal">
+    <Spinner
+        android:layout_width="70dp"
+        android:id="@+id/time_signature"
+        android:popupBackground="#424242"
+        android:layout_height="match_parent"
+        android:gravity="center"/>
     <NumberPicker
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:theme="@style/AppTheme.Picker"
         android:id="@+id/metroPicker"
-        android:gravity="center_horizontal"/>
+        android:gravity="end"/>
+    </LinearLayout>
 </android.support.v7.widget.Toolbar>

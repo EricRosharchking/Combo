@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener {
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -304,15 +304,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setOnValueChangedListener(this);
 
             tempo = metronumberpicker.getValue();
-//            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+            Spinner spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
-//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+            R.array.time_signature_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
-//            spinner.setAdapter(adapter);
-//            spinner.setOnItemSelectedListener(this);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
@@ -958,10 +958,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
                 metronome = new Metronome(metronumberpicker.getValue());
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             }
@@ -1323,6 +1325,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 1:
+                timeSig = 3;
+                break;
+            case 2:
+                timeSig = 4;
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 
 class MyAdapter extends BaseAdapter {
