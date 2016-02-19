@@ -304,6 +304,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setMaxValue(120);
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
+<<<<<<< HEAD
+=======
+            metronumberpicker.setOnValueChangedListener(this);
+>>>>>>> master
 
             tempo = metronumberpicker.getValue();
             Spinner spinner = (Spinner) findViewById(R.id.time_signature);
@@ -314,7 +318,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
+<<<<<<< HEAD
 //            spinner.setOnItemSelectedListener(adapter);
+=======
+            spinner.setOnItemSelectedListener(this);
+>>>>>>> master
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
@@ -462,7 +470,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      **/
     private void addLyrics() {
         Intent i = new Intent(MainActivity.this,
-                AddLyrics.class);
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
@@ -976,10 +984,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
                 metronome = new Metronome(metronumberpicker.getValue());
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             }
@@ -1341,6 +1351,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 1:
+                timeSig = 3;
+                break;
+            case 2:
+                timeSig = 4;
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 
 class MyAdapter extends BaseAdapter {
