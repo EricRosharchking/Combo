@@ -14,7 +14,7 @@ public class DisplayActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         TextView textView = (TextView)findViewById(R.id.score_content);
         TextView scoreKey = (TextView) findViewById(R.id.score_key);
         TextView scoreTimeSig = (TextView)findViewById(R.id.score_timeSig);

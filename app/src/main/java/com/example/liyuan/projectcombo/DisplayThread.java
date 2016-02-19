@@ -162,6 +162,9 @@ public class DisplayThread extends Thread {
     public void update(int strike) {
         int thisKey = 1;
         switch (strike) {
+            case 0:
+                thisKey = 0;
+                break;
             case -3:
             case 3:
             case 42:
@@ -221,6 +224,10 @@ public class DisplayThread extends Thread {
 
     public void setTempo(int tempo) {
         this.tempo = tempo;
+    }
+
+    public void setDelay(int delay) {
+
     }
 
     public void setOctave(int octave) {

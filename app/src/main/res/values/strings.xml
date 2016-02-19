@@ -113,8 +113,8 @@
 
     <string name="action_example">Example action</string>
 
-        <string-array name="withmetro_array">
-            <item>record with metro</item>
-            <item>record without metro</item>
+        <string-array name="time_signature_array">
+            <item>3/4</item>
+            <item>4/4</item>
         </string-array>
 </resources>

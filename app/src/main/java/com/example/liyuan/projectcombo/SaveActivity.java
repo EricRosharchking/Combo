@@ -21,12 +21,14 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     String[] names;
     String name;
     String author;
+    int tempo;
+    int timeSig;
+    Score score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
         names = new String[]{"1", "2", "3"};
@@ -73,6 +75,20 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         }
 
         return builder.create();
+    }
+
+    public void changeTimeSig(View view) {
+        if (score != null) {
+            switch (view.getId()) {
+                case R.id.timeSig43:
+                    timeSig = 3;
+                case R.id.timeSig44:
+                    timeSig = 4;
+                    break;
+                default:
+                    timeSig = 4;
+            }
+        }
     }
 
 /*
@@ -125,6 +141,9 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
             CharSequence sequence1 = nameField.getText();
             CharSequence sequence2 = authorField.getText();
 
+            EditText tempoField = (EditText) view.findViewById(R.id.tempo_Field);
+            CharSequence sequence3 = tempoField.getText();
+
             name = sequence1.toString();
 
             Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
@@ -132,10 +151,30 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
                 author = sequence2.toString();
             }
 
-            Score score = (Score) getIntent().getSerializableExtra("Score");
+            score = (Score) getIntent().getSerializableExtra("Score");
             Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
             score.setAuthor(author);
+
+            if (sequence3.length() > 0) {
+                try {
+                    tempo = Integer.getInteger(sequence3.toString().trim());
+                } catch (Exception e) {
+                    tempo = 60;
+                }
+            }
+            score.setTempo(tempo);
+
+            switch (timeSig) {
+                case 3:
+                    score.setTimeSignatureFT();
+                    break;
+                case 4:
+                    score.setTimeSignatureFF();
+                    break;
+                default:
+                    break;
+            }
             int[] array = score.getScore();
             Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
