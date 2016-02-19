@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,9 +17,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.List;
+import java.util.Vector;
 
-public class UserMainPage extends ActionBarActivity {
 
+public class UserMainPage extends FragmentActivity {
+
+    private PagerAdapter mPagerAdapter;
     Button btnLogout;
     Button createNewSong;
     Button viewHistory;
@@ -62,6 +70,9 @@ public class UserMainPage extends ActionBarActivity {
 
 
     }
+
+
+
     //Logout function
     private void logout(){
         //Creating an alert dialog to confirm logout

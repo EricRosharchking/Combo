@@ -12,5 +12,5 @@
         android:layout_height="match_parent"
         android:theme="@style/AppTheme.Picker"
         android:id="@+id/metroPicker"
-        android:layout_gravity="end"/>
+        android:gravity="center_horizontal"/>
 </android.support.v7.widget.Toolbar>

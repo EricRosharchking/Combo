@@ -43,7 +43,8 @@
     <string name="seekbar">60</string>
     <string name="keyboard">keyboard</string>
     <string name="keyboard2">C4</string>
-    <string name="title_activity_add_lyrics">AddLyrics</string>
+    <string name="title_activity_add_lyrics">EditScores</string>
+    <string name="title_activity_add_lyrics_scores">AddLyrics</string>
     <string name="addLyrics">Add Lyrics</string>
     <string name="saveLyrics">Save</string>
     <string name="saveSongs">save</string>
@@ -53,6 +54,7 @@
     <string name="authorname">Author</string>
     <string name="title_activity_new">NewActivity</string>
     <string name="title_activity_save">SaveActivity</string>
+    <string name="title_activity_editsave">EditSaveActivity</string>
     <string name="tempoHint">Tempo</string>
     <string name="deleteall">DeleteAll</string>
     <string name="my_keyboard">MyKeyboard</string>
@@ -89,7 +91,6 @@
     </string>
     <string name="title_activity_display">DisplayActivity</string>
     <string name="start">Open A Score</string>
-    <string name="title_activity_editsave">EditSaveActivity</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

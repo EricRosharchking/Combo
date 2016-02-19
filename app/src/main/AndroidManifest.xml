@@ -63,6 +63,7 @@
         <activity
             android:name=".AddLyrics"
             android:label="@string/title_activity_add_lyrics"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -102,6 +103,14 @@
             <meta-data
                 android:name="android.support.PARENT_Activity"
                 android:value=".MainActivity"/>
+        </activity>
+        <activity
+            android:name=".AddLyricsActivity"
+            android:label="@string/title_activity_add_lyrics"
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
     </application>

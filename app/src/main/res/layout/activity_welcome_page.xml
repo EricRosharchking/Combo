@@ -43,7 +43,7 @@
             android:paddingRight="0dp"/>
 
         <CheckBox
-            android:id="@+id/checkboxrememberme"
+            android:id="@+id/rememberMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"

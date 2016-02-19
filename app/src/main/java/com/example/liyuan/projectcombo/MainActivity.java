@@ -301,6 +301,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setMaxValue(120);
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
+            metronumberpicker.setOnValueChangedListener(this);
 
             tempo = metronumberpicker.getValue();
 //            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
@@ -443,7 +444,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      **/
     private void addLyrics() {
         Intent i = new Intent(MainActivity.this,
-                AddLyrics.class);
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
