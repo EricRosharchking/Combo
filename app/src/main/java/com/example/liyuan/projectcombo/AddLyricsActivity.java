@@ -484,7 +484,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     private void addLyrics() {
         Intent i = new Intent(AddLyricsActivity.this,
-                AddLyrics.class);
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
@@ -492,7 +492,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, AddLyrics.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());

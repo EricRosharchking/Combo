@@ -50,7 +50,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener {
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -304,10 +304,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             metronumberpicker.setMaxValue(120);
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
-<<<<<<< HEAD
-=======
             metronumberpicker.setOnValueChangedListener(this);
->>>>>>> master
 
             tempo = metronumberpicker.getValue();
             Spinner spinner = (Spinner) findViewById(R.id.time_signature);
@@ -318,11 +315,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
-<<<<<<< HEAD
 //            spinner.setOnItemSelectedListener(adapter);
-=======
             spinner.setOnItemSelectedListener(this);
->>>>>>> master
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
@@ -330,21 +324,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             opened = false;
             beatLength = 1.0;
 //count down
-            textView_countdown = (TextView) findViewById(R.id.countdown);
-            ValueAnimator animator = new ValueAnimator();
-            animator.setObjectValues(0, 10);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
-                }
-            });
-            animator.setEvaluator(new TypeEvaluator<Integer>() {
-                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
-                    return Math.round(startValue + (endValue - startValue) * fraction);
-                }
-            });
-            animator.setDuration(20000);
-            animator.start();
+//            textView_countdown = (TextView) findViewById(R.id.countdown);
+//            ValueAnimator animator = new ValueAnimator();
+//            animator.setObjectValues(0, 10);
+//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+//                }
+//            });
+//            animator.setEvaluator(new TypeEvaluator<Integer>() {
+//                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+//                    return Math.round(startValue + (endValue - startValue) * fraction);
+//                }
+//            });
+//            animator.setDuration(20000);
+//            animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;
@@ -1231,7 +1225,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, AddLyrics.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());

@@ -1,54 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="#424242"
     android:minHeight="?attr/actionBarSize">
-<<<<<<< HEAD
-<LinearLayout
-    android:orientation="horizontal"
-    android:layout_gravity="end"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
-    <Spinner
-        android:id="@+id/time_signature"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/countdown"
-        android:layout_gravity="start|center_vertical"
-        android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textSize="20sp"
-        android:textColor="@color/red"/>
 
-=======
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="end"
         android:orientation="horizontal">
-    <Spinner
-        android:layout_width="70dp"
-        android:id="@+id/time_signature"
-        android:popupBackground="#424242"
-        android:layout_height="match_parent"
-        android:gravity="center"/>
->>>>>>> master
-    <NumberPicker
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:theme="@style/AppTheme.Picker"
-        android:id="@+id/metroPicker"
-<<<<<<< HEAD
-        android:layout_gravity="end"/>
-</LinearLayout>
 
-=======
-        android:gravity="end"/>
+        <Spinner
+            android:id="@+id/time_signature"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:popupBackground="#424242" />
+
+        <NumberPicker
+            android:id="@+id/metroPicker"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:theme="@style/AppTheme.Picker" />
     </LinearLayout>
->>>>>>> master
 </android.support.v7.widget.Toolbar>

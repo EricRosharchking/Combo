@@ -166,7 +166,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+//            scores.setText(Html.fromHtml(rawScores) + "\u2225");
 
             scores.setInputType(InputType.TYPE_NULL);
             if (android.os.Build.VERSION.SDK_INT >= 11)
@@ -1307,7 +1307,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
 
     private void addLyrics() {
         Intent i = new Intent(AddLyrics.this,
-                AddLyrics.class);
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
@@ -1315,7 +1315,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
     }
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, AddLyrics.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());

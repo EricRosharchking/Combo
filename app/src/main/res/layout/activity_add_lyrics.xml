@@ -1,24 +1,14 @@
-<<<<<<< HEAD
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/piano_pic"
-    tools:context=".AddLyrics">
-=======
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
->>>>>>> master
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/piano_pic"
+        android:background="#757575"
         android:orientation="horizontal"
         tools:context=".AddLyrics">
 
@@ -37,10 +27,7 @@
                     layout="@layout/tool_bar">
                 </include>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World" />
+
 
             </LinearLayout>
 
