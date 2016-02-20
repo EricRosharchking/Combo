@@ -20,6 +20,8 @@ import java.util.HashSet;
 public class NewActivity extends ActionBarActivity implements DialogInterface.OnClickListener {
     String name;
     String[] names;
+    private final int EXPORT = 1;
+    private int action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
         setContentView(R.layout.activity_main);
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
+        action = getIntent().getIntExtra("action", 0);
         names = new String[]{"1", "2", "3"};
         Context context = App.getAppContext();
         //scoreFile.setContext(NewActivity.this);
@@ -114,6 +117,8 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
                 int[] array = score.getScore();
                 Log.i("Log@New108", "array is null? " + (array == null));
                 Intent intent = new Intent(this, MainActivity.class);
+                if (action == EXPORT)
+                    intent = new Intent(this, DisplayActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("Score", score);
                 Log.d("Log@NewActivity102", "Starting Activity for Result");

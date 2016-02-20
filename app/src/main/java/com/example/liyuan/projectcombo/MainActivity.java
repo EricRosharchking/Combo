@@ -380,12 +380,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         openOrNew();
                         break;
                     case 6:
-//                    exportToPDF();
+                    exportToPDF();
                         break;
                 }
                 //Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void exportToPDF() {
+        Intent intent = new Intent(this, NewActivity.class);
+        intent.putExtra("action", 1);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
     }
 
 
@@ -1248,7 +1255,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
         } else {
-            intent.putExtra("score", score);
+            intent.putExtra("Score", score);
         }
         startActivity(intent);
     }
