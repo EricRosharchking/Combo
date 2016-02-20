@@ -298,15 +298,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            });
 
 //Number Picker
-            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
 //            metronumberpicker.setFocusable(false);
-            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            metronumberpicker.setMaxValue(120);
-            metronumberpicker.setMinValue(60);
-            metronumberpicker.setWrapSelectorWheel(false);
-            metronumberpicker.setOnValueChangedListener(this);
-
-            tempo = metronumberpicker.getValue();
+//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//            metronumberpicker.setMaxValue(120);
+//            metronumberpicker.setMinValue(60);
+//            metronumberpicker.setWrapSelectorWheel(false);
+//            metronumberpicker.setOnValueChangedListener(this);
+//
+//            tempo = metronumberpicker.getValue();
             Spinner spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,

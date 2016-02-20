@@ -18,12 +18,25 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:popupBackground="#424242" />
-
-        <NumberPicker
-            android:id="@+id/metroPicker"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:theme="@style/AppTheme.Picker" />
+        <SeekBar
+            android:id="@+id/tempoSeekBar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="60"
+            android:progress="1" />
+        <TextView
+            android:id="@+id/seekbarvalue"
+            android:layout_width="20dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="60"
+            android:textColor="#FFFFFF" />
+        <!--<NumberPicker-->
+            <!--android:id="@+id/metroPicker"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:theme="@style/AppTheme.Picker" />-->
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

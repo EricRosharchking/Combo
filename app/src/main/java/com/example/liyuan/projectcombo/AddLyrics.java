@@ -383,14 +383,14 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             b57.setOnClickListener(this);
             b58.setOnClickListener(this);
 
-            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
-            metronumberpicker.setFocusable(false);
-            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            metronumberpicker.setMaxValue(120);
-            metronumberpicker.setMinValue(60);
-            metronumberpicker.setWrapSelectorWheel(false);
-
-            tempo = metronumberpicker.getValue();
+//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+//            metronumberpicker.setFocusable(false);
+//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//            metronumberpicker.setMaxValue(120);
+//            metronumberpicker.setMinValue(60);
+//            metronumberpicker.setWrapSelectorWheel(false);
+//
+//            tempo = metronumberpicker.getValue();
 //            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
 //            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
