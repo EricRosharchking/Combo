@@ -952,9 +952,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getSerializableExtra("Score") != null) {
+        if (getIntent().getSerializableExtra("score") != null) {
             //open(getIntent());
-            Score thisScore = (Score) getIntent().getSerializableExtra("Score");
+            Score thisScore = (Score) getIntent().getSerializableExtra("score");
             Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
@@ -1243,7 +1243,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         score.setTempo(tempo);
         score.setAuthor(userName);
-        intent.putExtra("Score", score);
+        intent.putExtra("score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
@@ -1255,7 +1255,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
         } else {
-            intent.putExtra("Score", score);
+            intent.putExtra("score", score);
         }
         startActivity(intent);
     }
@@ -1304,7 +1304,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //    protected void open (Intent data) {
 //        Log.d("OnResultLog", "On Activity Result Entered");
 //        try {
-//            Score score = (Score) data.getSerializableExtra("Score");
+//            Score score = (Score) data.getSerializableExtra("score");
 //            displayThread.setArchived(score.getScore());
 //            for (String s: score.getScore().trim().split("_")) {
 //                if (!s.isEmpty()) {

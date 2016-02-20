@@ -157,7 +157,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 //                author = sequence2.toString();
 //            }
 
-            score = (Score) getIntent().getSerializableExtra("Score");
+            score = (Score) getIntent().getSerializableExtra("score");
             Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
 //            score.setAuthor(author);

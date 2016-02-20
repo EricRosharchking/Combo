@@ -120,7 +120,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
                 if (action == EXPORT)
                     intent = new Intent(this, DisplayActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("Score", score);
+                intent.putExtra("score", score);
                 Log.d("Log@NewActivity102", "Starting Activity for Result");
                 //startActivityForResult(intent, 1);
                 startActivity(intent);

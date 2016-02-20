@@ -474,7 +474,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         score.setScore(numericNotes, lengths);
-        intent.putExtra("Score", score);
+        intent.putExtra("score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
