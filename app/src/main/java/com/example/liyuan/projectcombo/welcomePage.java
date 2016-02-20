@@ -35,13 +35,9 @@ import java.util.Map;
 
 public class welcomePage extends ActionBarActivity implements View.OnClickListener {
 
-    private String userEmail;
+    private String userEmail, userName;
     private Button btnLogin, btnRegister;
     private EditText edEmail, edPassword;
-    private CheckBox cbRememberMe;
-    private SharedPreferences loginPreferences;
-    private SharedPreferences.Editor loginPrefsEditor;
-    private Boolean saveLogin;
 
     //boolean variable to check user is logged in or not
     //initially it is false
@@ -51,12 +47,12 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userEmail = "";
+        userName = "";
         setContentView(R.layout.activity_welcome_page);
         edEmail = (EditText) findViewById(R.id.email);
         edPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        cbRememberMe = (CheckBox) findViewById(R.id.rememberMe);
         //Adding click listener
         btnLogin.setOnClickListener(this);
 
@@ -123,7 +119,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                     @Override
                     public void onResponse(String response) {
                         //If we are getting success from server
-                        if(response.trim().equals("success")){
+                        if(response.contains("success")){
                             //Creating a shared preference
                             SharedPreferences sharedPreferences = welcomePage.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -139,6 +135,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
                             //Starting profile activity
                             userEmail = email;
+                            userName = response.substring(7);
                             openProfile();
 
                         }else{
@@ -175,6 +172,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         Intent intent = new Intent(welcomePage.this, UserMainPage.class);
         if (userEmail != null)
             intent.putExtra("userEmail", userEmail);
+        if (userName != null)
+            intent.putExtra("userEmail",userEmail);
         startActivity(intent);
         Toast.makeText(getApplicationContext(),
                 "Welcome! Now you can create your song!", Toast.LENGTH_LONG)

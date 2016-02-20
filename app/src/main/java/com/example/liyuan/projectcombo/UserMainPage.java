@@ -78,9 +78,8 @@ public class UserMainPage extends FragmentActivity {
     }
 
 
-
     //Logout function
-    private void logout(){
+    private void logout() {
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -88,8 +87,9 @@ public class UserMainPage extends FragmentActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+
                         //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                         //Getting editor
                         SharedPreferences.Editor editor = preferences.edit();
 
@@ -108,30 +108,6 @@ public class UserMainPage extends FragmentActivity {
                     }
                 });
 
-        alertDialogBuilder.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                        //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
-                        //Getting editor
-                        SharedPreferences.Editor editor = preferences.edit();
-
-                        //Puting the value false for loggedin
-                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
-
-                        //Putting blank value to email
-                        editor.putString(Config.EMAIL_SHARED_PREF, "");
-
-                        //Saving the sharedpreferences
-                        editor.commit();
-
-                        //Starting login activity
-                        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
-                        startActivity(intent);
-                    }
-                });
 
         alertDialogBuilder.setNegativeButton("No",
                 new DialogInterface.OnClickListener() {
@@ -156,13 +132,13 @@ public class UserMainPage extends FragmentActivity {
     public void onBackPressed() {
         logout();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
 
     @Override
