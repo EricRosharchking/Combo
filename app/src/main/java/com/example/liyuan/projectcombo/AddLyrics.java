@@ -166,7 +166,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+//            scores.setText(Html.fromHtml(rawScores) + "\u2225");
 
             scores.setInputType(InputType.TYPE_NULL);
             if (android.os.Build.VERSION.SDK_INT >= 11)
@@ -383,14 +383,14 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             b57.setOnClickListener(this);
             b58.setOnClickListener(this);
 
-            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
-            metronumberpicker.setFocusable(false);
-            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            metronumberpicker.setMaxValue(120);
-            metronumberpicker.setMinValue(60);
-            metronumberpicker.setWrapSelectorWheel(false);
-
-            tempo = metronumberpicker.getValue();
+//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+//            metronumberpicker.setFocusable(false);
+//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//            metronumberpicker.setMaxValue(120);
+//            metronumberpicker.setMinValue(60);
+//            metronumberpicker.setWrapSelectorWheel(false);
+//
+//            tempo = metronumberpicker.getValue();
 //            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
 //            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -1307,7 +1307,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
 
     private void addLyrics() {
         Intent i = new Intent(AddLyrics.this,
-                AddLyrics.class);
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
@@ -1315,7 +1315,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
     }
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, AddLyrics.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
@@ -1482,7 +1482,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
         private String att_name;
         private Context context;
         String[] tool_list;
-        int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
         public MyAdapter(Context context, String email, String name) {
             this.context = context;

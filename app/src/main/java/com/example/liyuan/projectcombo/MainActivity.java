@@ -1,5 +1,7 @@
 package com.example.liyuan.projectcombo;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -139,6 +141,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private NumberPicker metronumberpicker;
     private static Menu topMenu;
 
+    TextView textView_countdown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -310,15 +313,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            });
 
 //Number Picker
-            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
 //            metronumberpicker.setFocusable(false);
-            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            metronumberpicker.setMaxValue(120);
-            metronumberpicker.setMinValue(60);
-            metronumberpicker.setWrapSelectorWheel(false);
-            metronumberpicker.setOnValueChangedListener(this);
-
-            tempo = metronumberpicker.getValue();
+//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//            metronumberpicker.setMaxValue(120);
+//            metronumberpicker.setMinValue(60);
+//            metronumberpicker.setWrapSelectorWheel(false);
+//            metronumberpicker.setOnValueChangedListener(this);
+//
+//            tempo = metronumberpicker.getValue();
             Spinner spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -327,6 +330,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(adapter);
             spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
             numericNotes = null;
@@ -334,6 +338,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             withMetronome = false;
             opened = false;
             beatLength = 1.0;
+//count down
+//            textView_countdown = (TextView) findViewById(R.id.countdown);
+//            ValueAnimator animator = new ValueAnimator();
+//            animator.setObjectValues(0, 10);
+//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+//                }
+//            });
+//            animator.setEvaluator(new TypeEvaluator<Integer>() {
+//                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+//                    return Math.round(startValue + (endValue - startValue) * fraction);
+//                }
+//            });
+//            animator.setDuration(20000);
+//            animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;
@@ -355,18 +375,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 1:
-                        save();
                         break;
                     case 2:
-                        editScore();
+                        save();
                         break;
                     case 3:
-                        addLyrics();
+                        editScore();
                         break;
                     case 4:
-                        openOrNew();
+                        addLyrics();
                         break;
                     case 5:
+                        openOrNew();
+                        break;
+                    case 6:
 //                    exportToPDF();
                         break;
                 }
@@ -1230,7 +1252,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, AddLyrics.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
@@ -1378,7 +1400,7 @@ class MyAdapter extends BaseAdapter {
     private String att_name;
     private Context context;
     String[] tool_list;
-    int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+    int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
     public MyAdapter(Context context, String email, String name) {
         this.context = context;
@@ -1392,7 +1414,18 @@ class MyAdapter extends BaseAdapter {
 
         return tool_list.length;
     }
-
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+    @Override
+    public boolean isEnabled(int position) {
+        if (position == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     @Override
     public Object getItem(int i) {
         return tool_list[i];
