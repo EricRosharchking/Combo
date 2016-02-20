@@ -6,12 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Paint;
 import android.media.AudioManager;
-import android.net.NetworkInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +21,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -33,11 +29,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
@@ -75,7 +68,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //  Button stopPlay;
 //    Button buttonAddLyrics;
 //    Button buttonBack;
-//    Button btnLogout;
+    Button btnLogout;
 //    Button tempoButton;
 //    Button timeSignatureButton;
 //    RadioButton radioButton;
@@ -90,6 +83,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
 
+    private String userEmail;
+    private String userName;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -137,6 +132,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private NumberPicker metronumberpicker;
     private static Menu topMenu;
 
+    TextView textView_countdown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -163,6 +159,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             LayoutInflater inflater = getLayoutInflater();
 
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+            userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
+            userName = "UserName here";//(String) getIntent().getSerializableExtra("userName");
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
 
             mDrawerList2.addHeaderView(listHeaderView);
 
@@ -267,7 +276,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            tempoSeekBar.setOnSeekBarChangeListener(this);
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
-            Button btnLogout;
             btnLogout = (Button) findViewById(R.id.btnLogout);
             btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -296,15 +304,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            });
 
 //Number Picker
-            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
 //            metronumberpicker.setFocusable(false);
-            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            metronumberpicker.setMaxValue(120);
-            metronumberpicker.setMinValue(60);
-            metronumberpicker.setWrapSelectorWheel(false);
-            metronumberpicker.setOnValueChangedListener(this);
-
-            tempo = metronumberpicker.getValue();
+//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//            metronumberpicker.setMaxValue(120);
+//            metronumberpicker.setMinValue(60);
+//            metronumberpicker.setWrapSelectorWheel(false);
+//            metronumberpicker.setOnValueChangedListener(this);
+//
+//            tempo = metronumberpicker.getValue();
             Spinner spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -313,6 +321,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(adapter);
             spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
             numericNotes = null;
@@ -320,6 +329,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             withMetronome = false;
             opened = false;
             beatLength = 1.0;
+//count down
+//            textView_countdown = (TextView) findViewById(R.id.countdown);
+//            ValueAnimator animator = new ValueAnimator();
+//            animator.setObjectValues(0, 10);
+//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+//                }
+//            });
+//            animator.setEvaluator(new TypeEvaluator<Integer>() {
+//                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+//                    return Math.round(startValue + (endValue - startValue) * fraction);
+//                }
+//            });
+//            animator.setDuration(20000);
+//            animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;
@@ -334,31 +359,40 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo");
+        myAdapter = new MyAdapter(this, userName, "Cambo");
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 1:
-                        save();
                         break;
                     case 2:
-                        editScore();
+                        save();
                         break;
                     case 3:
-                        addLyrics();
+                        editScore();
                         break;
                     case 4:
-                        openOrNew();
+                        addLyrics();
                         break;
                     case 5:
-//                    exportToPDF();
+                        openOrNew();
+                        break;
+                    case 6:
+                    exportToPDF();
                         break;
                 }
                 //Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void exportToPDF() {
+        Intent intent = new Intent(this, NewActivity.class);
+        intent.putExtra("action", 1);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
     }
 
 
@@ -441,7 +475,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     /**
      * Directing the user to add lyrics page.
-     * AddLyrics will share the scores user entered from MainActivity
+     * EditScoreActivity will share the scores user entered from MainActivity
      **/
     private void addLyrics() {
         Intent i = new Intent(MainActivity.this,
@@ -1199,6 +1233,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         score.setScore(numericNotes, lengths);
+        switch (timeSig) {
+            case 3:
+                score.setTimeSignatureFT();
+                break;
+            case 4:
+                score.setTimeSignatureFF();
+                break;
+        }
+        score.setTempo(tempo);
+        score.setAuthor(userName);
         intent.putExtra("Score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
@@ -1206,12 +1250,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, EditScoreActivity.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
         } else {
-            intent.putExtra("score", score);
+            intent.putExtra("Score", score);
         }
         startActivity(intent);
     }
@@ -1276,6 +1320,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //        Log.d("OnResult", "Notes and rest are " + notesAndRest);
 //    }
+
+    public void onBackPressed() {
+        logout();
+    }
+
     private void logout() {
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -1349,7 +1398,7 @@ class MyAdapter extends BaseAdapter {
     private String att_name;
     private Context context;
     String[] tool_list;
-    int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+    int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
     public MyAdapter(Context context, String email, String name) {
         this.context = context;
@@ -1363,7 +1412,18 @@ class MyAdapter extends BaseAdapter {
 
         return tool_list.length;
     }
-
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+    @Override
+    public boolean isEnabled(int position) {
+        if (position == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     @Override
     public Object getItem(int i) {
         return tool_list[i];
@@ -1377,22 +1437,14 @@ class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View row = null;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
             row = inflater.inflate(R.layout.custom_row, viewGroup, false);
         } else {
             row = view;
         }
         TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
         ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
-        TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-        if (t_name != null) {
-            t_name.setText("Cambo");
-//
-        }
-//        t_name.setText(att_name);
-        TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-//        t_email.setText(att_email);
         titleTextView2.setText(tool_list[i]);
         titleImageView2.setImageResource(images[i]);
         return row;

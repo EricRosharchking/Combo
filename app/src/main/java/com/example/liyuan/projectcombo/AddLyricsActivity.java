@@ -28,8 +28,6 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.liyuan.projectcombo.R;
-
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -105,7 +103,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
         try{
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_add_lyrics2);
+            setContentView(R.layout.activity_add_lyrics);
 
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
@@ -258,9 +256,8 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     }
 
+    @Override
     public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
         finish();
     }
 
@@ -484,7 +481,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     private void addLyrics() {
         Intent i = new Intent(AddLyricsActivity.this,
-                AddLyrics.class);
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
@@ -492,7 +489,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, EditScoreActivity.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
@@ -648,7 +645,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
         private String att_name;
         private Context context;
         String[] tool_list;
-        int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
         public MyAdapter(Context context, String email, String name) {
             this.context = context;

@@ -1,10 +1,8 @@
 package com.example.liyuan.projectcombo;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,45 +18,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import android.os.Bundle;
-import android.util.Log;
+
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class AddLyrics extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener{
+public class EditScoreActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener{
 
     Score score;
     double[] lengths;
@@ -131,7 +111,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         try{
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_add_lyrics);
+            setContentView(R.layout.activity_editscore);
 
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
@@ -166,7 +146,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+//            scores.setText(Html.fromHtml(rawScores) + "\u2225");
 
             scores.setInputType(InputType.TYPE_NULL);
             if (android.os.Build.VERSION.SDK_INT >= 11)
@@ -383,14 +363,14 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             b57.setOnClickListener(this);
             b58.setOnClickListener(this);
 
-            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
-            metronumberpicker.setFocusable(false);
-            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-            metronumberpicker.setMaxValue(120);
-            metronumberpicker.setMinValue(60);
-            metronumberpicker.setWrapSelectorWheel(false);
-
-            tempo = metronumberpicker.getValue();
+//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
+//            metronumberpicker.setFocusable(false);
+//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//            metronumberpicker.setMaxValue(120);
+//            metronumberpicker.setMinValue(60);
+//            metronumberpicker.setWrapSelectorWheel(false);
+//
+//            tempo = metronumberpicker.getValue();
 //            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
 //            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -444,7 +424,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
 //                    exportToPDF();
                         break;
                 }
-                Toast.makeText(AddLyrics.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditScoreActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -1306,8 +1286,8 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
     }
 
     private void addLyrics() {
-        Intent i = new Intent(AddLyrics.this,
-                AddLyrics.class);
+        Intent i = new Intent(EditScoreActivity.this,
+                AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
@@ -1315,7 +1295,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
     }
 
     public void editScore() {
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, EditScoreActivity.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
@@ -1472,8 +1452,6 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
     //(i.e. one lyrics tb under one score)
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
         finish();
     }
 
@@ -1482,7 +1460,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
         private String att_name;
         private Context context;
         String[] tool_list;
-        int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
         public MyAdapter(Context context, String email, String name) {
             this.context = context;

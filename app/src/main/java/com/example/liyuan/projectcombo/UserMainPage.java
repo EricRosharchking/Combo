@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -25,40 +24,23 @@ import java.util.Vector;
 
 public class UserMainPage extends FragmentActivity {
 
-
+    private PagerAdapter mPagerAdapter;
     Button btnLogout;
     Button createNewSong;
     Button viewHistory;
-    String userName, userEmail;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main_page);
-
-        //Fetching email from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
-
-
-
-//        textEmail = (TextView) findViewById(R.id.textEmail);
-//
-//        textEmail.setText(email.toString());
-
-        userName = getIntent().getSerializableExtra("userName").toString();
-        userEmail = getIntent().getSerializableExtra("userEmail").toString();
-
-
-        Log.d("username", "this username is " + userName);
-
         createNewSong = (Button)findViewById(R.id.createNewSong);
         createNewSong.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
                         MainActivity.class);
+                String userEmail = (String) getIntent().getSerializableExtra("userEmail");
+                String userName = (String) getIntent().getSerializableExtra("userEmail");
+//                Log.i("Log@UserMain", userName);
                 i.putExtra("userName", userName);
                 i.putExtra("userEmail", userEmail);
                 startActivity(i);
@@ -77,9 +59,9 @@ public class UserMainPage extends FragmentActivity {
                 finish();
             }
         });
-
-
-
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         btnLogout = (Button) findViewById(R.id.btnLogout);
 
         // Logout button click event
@@ -97,7 +79,8 @@ public class UserMainPage extends FragmentActivity {
 
 
 
-    private void logout() {
+    //Logout function
+    private void logout(){
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -105,9 +88,8 @@ public class UserMainPage extends FragmentActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-
                         //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                         //Getting editor
                         SharedPreferences.Editor editor = preferences.edit();
 
@@ -126,6 +108,30 @@ public class UserMainPage extends FragmentActivity {
                     }
                 });
 
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                        //Putting blank value to email
+                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Saving the sharedpreferences
+                        editor.commit();
+
+                        //Starting login activity
+                        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
+                        startActivity(intent);
+                    }
+                });
 
         alertDialogBuilder.setNegativeButton("No",
                 new DialogInterface.OnClickListener() {
