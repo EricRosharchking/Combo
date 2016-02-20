@@ -96,10 +96,11 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="navigation_toolbox">
+        <item>CREATE NEW SONG</item>
         <item>SAVE RECORD</item>
         <item>EDIT RECORD</item>
         <item>ADD LYRICS</item>
-        <item>RECORD LISTS</item>
+        <item>VIEW RECORD LISTS</item>
         <item>EXPORT TO PDF</item>
     </string-array>
     <string name="profile">profile</string>

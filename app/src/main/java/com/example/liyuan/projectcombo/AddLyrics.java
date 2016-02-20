@@ -1482,7 +1482,7 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
         private String att_name;
         private Context context;
         String[] tool_list;
-        int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
         public MyAdapter(Context context, String email, String name) {
             this.context = context;

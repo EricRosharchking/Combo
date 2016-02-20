@@ -59,7 +59,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
             Log.d("Log@SaveActivity56", "Context is not null");
-            builder = new AlertDialog.Builder(context);
+            builder = new AlertDialog.Builder(context, R.style.MyDialog);
 
             LayoutInflater inflater = LayoutInflater.from(context);
             // Set the dialog title

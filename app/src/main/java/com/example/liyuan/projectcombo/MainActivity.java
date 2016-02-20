@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //  Button stopPlay;
 //    Button buttonAddLyrics;
 //    Button buttonBack;
-//    Button btnLogout;
+    Button btnLogout;
 //    Button tempoButton;
 //    Button timeSignatureButton;
 //    RadioButton radioButton;
@@ -270,14 +270,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            tempoSeekBar.setOnSeekBarChangeListener(this);
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
-//            btnLogout = (Button) findViewById(R.id.btnLogout);
-//            btnLogout.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    logout();
-//                }
-//            });
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
 //
 //            buttonBack.setOnClickListener(new View.OnClickListener() {
 //
@@ -360,18 +360,20 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 1:
-                        save();
                         break;
                     case 2:
-                        editScore();
+                        save();
                         break;
                     case 3:
-                        addLyrics();
+                        editScore();
                         break;
                     case 4:
-                        openOrNew();
+                        addLyrics();
                         break;
                     case 5:
+                        openOrNew();
+                        break;
+                    case 6:
 //                    exportToPDF();
                         break;
                 }
@@ -1368,7 +1370,7 @@ class MyAdapter extends BaseAdapter {
     private String att_name;
     private Context context;
     String[] tool_list;
-    int[] images = {R.drawable.save, R.drawable.edit, R.drawable.add, R.drawable.recordlists, R.drawable.share};
+    int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
     public MyAdapter(Context context, String email, String name) {
         this.context = context;
@@ -1382,7 +1384,18 @@ class MyAdapter extends BaseAdapter {
 
         return tool_list.length;
     }
-
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+    @Override
+    public boolean isEnabled(int position) {
+        if (position == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     @Override
     public Object getItem(int i) {
         return tool_list[i];
