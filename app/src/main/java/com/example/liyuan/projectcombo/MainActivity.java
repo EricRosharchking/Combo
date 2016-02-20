@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //  Button stopPlay;
 //    Button buttonAddLyrics;
 //    Button buttonBack;
-//    Button btnLogout;
+    Button btnLogout;
 //    Button tempoButton;
 //    Button timeSignatureButton;
 //    RadioButton radioButton;
@@ -90,6 +90,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
 
+    private String userEmail;
+    private String userName;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -163,6 +165,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             LayoutInflater inflater = getLayoutInflater();
 
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+            userEmail = (String) getIntent().getSerializableExtra("userEmail");;//userEmail = (String) getIntent().getSerializableExtra("userEmail");
+            userName = "UserName here";
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
 
             mDrawerList2.addHeaderView(listHeaderView);
 
@@ -267,14 +282,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            tempoSeekBar.setOnSeekBarChangeListener(this);
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
-//            btnLogout = (Button) findViewById(R.id.btnLogout);
-//            btnLogout.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    logout();
-//                }
-//            });
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
 //
 //            buttonBack.setOnClickListener(new View.OnClickListener() {
 //
@@ -333,7 +348,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo");
+        myAdapter = new MyAdapter(this, userName, "Cambo");
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -1198,6 +1213,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         score.setScore(numericNotes, lengths);
+        switch (timeSig) {
+            case 3:
+                score.setTimeSignatureFT();
+                break;
+            case 4:
+                score.setTimeSignatureFF();
+                break;
+        }
+        score.setTempo(tempo);
+        score.setAuthor(userName);
         intent.putExtra("Score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
@@ -1275,6 +1300,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //        Log.d("OnResult", "Notes and rest are " + notesAndRest);
 //    }
+
+    public void onBackPressed() {
+        logout();
+    }
+
     private void logout() {
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -1376,22 +1406,14 @@ class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View row = null;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
             row = inflater.inflate(R.layout.custom_row, viewGroup, false);
         } else {
             row = view;
         }
         TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
         ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
-        TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-        if (t_name != null) {
-            t_name.setText("Cambo");
-//
-        }
-//        t_name.setText(att_name);
-        TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-//        t_email.setText(att_email);
         titleTextView2.setText(tool_list[i]);
         titleImageView2.setImageResource(images[i]);
         return row;
