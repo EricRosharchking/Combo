@@ -94,7 +94,7 @@
 				android:textColor="#000000"
 				android:textSize="28sp"/>
 
-			<TextView
+<!--			<TextView
 				android:id="@+id/unicode_test"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -102,8 +102,9 @@
 				android:layout_marginStart="10dp"
 				android:layout_marginLeft="10dp"
 				android:layout_marginTop="15dp"
+				android:text="@string/example"
 				android:textColor="#000000"
-				android:textSize="28sp"/>
+				android:textSize="28sp"/>-->
 		</RelativeLayout>
     </ScrollView>
 </LinearLayout>

@@ -9,14 +9,10 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.zip.Inflater;
 
 public class EditSaveActivity extends ActionBarActivity implements Serializable, DialogInterface.OnClickListener {
 
@@ -27,7 +23,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_lyrics);
+        setContentView(R.layout.activity_editscore);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile2");
@@ -91,16 +87,16 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
 
             Dialog view = (Dialog) dialog;
             EditText nameField = (EditText)view.findViewById(R.id.name_Field);
-            EditText authorField = (EditText)view.findViewById(R.id.author_Field);
+//            EditText authorField = (EditText)view.findViewById(R.id.author_Field);
             CharSequence sequence1 = nameField.getText();
-            CharSequence sequence2 = authorField.getText();
+//            CharSequence sequence2 = authorField.getText();
 
             name = sequence1.toString();
 
-            Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
-            if (sequence2.length() > 0) {
-                author = sequence2.toString();
-            }
+//            Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
+//            if (sequence2.length() > 0) {
+//                author = sequence2.toString();
+//            }
 
             Score score = (Score) getIntent().getSerializableExtra("Score2");
             Log.i("Log@Save136", "score is null? " + (score == null));
@@ -120,5 +116,10 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
         } else if (which == -2) {
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

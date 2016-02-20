@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ public class UserMainPage extends FragmentActivity {
     Button createNewSong;
     Button viewHistory;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main_page);
         createNewSong = (Button)findViewById(R.id.createNewSong);
@@ -37,6 +38,11 @@ public class UserMainPage extends FragmentActivity {
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
                         MainActivity.class);
+                String userEmail = (String) getIntent().getSerializableExtra("userEmail");
+                String userName = (String) getIntent().getSerializableExtra("userEmail");
+//                Log.i("Log@UserMain", userName);
+                i.putExtra("userName", userName);
+                i.putExtra("userEmail", userEmail);
                 startActivity(i);
                 finish();
             }
