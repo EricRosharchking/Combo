@@ -58,6 +58,7 @@
             android:layout_gravity="bottom"
             android:background="#D6A0A0A0"
             android:textColor="#FFFFFF" />
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="fill_parent"

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,37 +29,46 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class welcomePage extends ActionBarActivity implements View.OnClickListener {
 
+    public static final String USER_URL = "http://cambo.atwebpages.com/android_login_api/getusers.php?email=\";";
     private Button btnLogin, btnRegister;
     private EditText edEmail, edPassword;
-    private CheckBox cbRememberMe;
-    private SharedPreferences loginPreferences;
-    private SharedPreferences.Editor loginPrefsEditor;
-    private Boolean saveLogin;
 
     //boolean variable to check user is logged in or not
     //initially it is false
     private boolean loggedIn = false;
 
+    private String userEmail;
+    private String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
+        userEmail = "";
+        userName = "";
         edEmail = (EditText) findViewById(R.id.email);
         edPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        cbRememberMe = (CheckBox) findViewById(R.id.rememberMe);
+        //cbRememberMe = (CheckBox) findViewById(R.id.rememberMe);
         //Adding click listener
         btnLogin.setOnClickListener(this);
+
 
         // Link to Register Screen
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +111,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 //        finish();
     }
 
+
     private void login(){
         //Getting values from edit texts
         final String email = edEmail.getText().toString().trim();
@@ -112,7 +127,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                     @Override
                     public void onResponse(String response) {
                         //If we are getting success from server
-                        if(response.trim().equals("success")){
+                        //response.trim().equals("success")
+                        if(response.contains("success")){
                             //Creating a shared preference
                             SharedPreferences sharedPreferences = welcomePage.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -126,6 +142,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                             //Saving values to editor
                             editor.commit();
 
+                            userEmail = email;
+                            userName = response.substring(7);
                             //Starting profile activity
                             openProfile();
 
@@ -161,6 +179,9 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
     public void openProfile(){
         Intent intent = new Intent(welcomePage.this, UserMainPage.class);
+
+        intent.putExtra("userName", userName);
+        intent.putExtra("userEmail",userEmail);
         startActivity(intent);
         Toast.makeText(getApplicationContext(),
                 "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
@@ -172,9 +193,12 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         //Calling the login function
         if(v == btnLogin){
             login();
+            //getJSON();
         }
 
     }
+
+
 
 }
 //working login

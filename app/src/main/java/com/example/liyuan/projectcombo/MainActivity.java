@@ -267,14 +267,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            tempoSeekBar.setOnSeekBarChangeListener(this);
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
-//            btnLogout = (Button) findViewById(R.id.btnLogout);
-//            btnLogout.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    logout();
-//                }
-//            });
+            Button btnLogout;
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
 //
 //            buttonBack.setOnClickListener(new View.OnClickListener() {
 //
