@@ -180,24 +180,34 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 1:
-                        save();
+                        finish();
                         break;
                     case 2:
-                        editScore();
+                        save();
                         break;
                     case 3:
-                        addLyrics();
+                        editScore();
                         break;
                     case 4:
-                        openOrNew();
+                        addLyrics();
                         break;
                     case 5:
-//                    exportToPDF();
+                        openOrNew();
+                        break;
+                    case 6:
+                        exportToPDF();
                         break;
                 }
                 Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void exportToPDF() {
+        Intent intent = new Intent(this, NewActivity.class);
+        intent.putExtra("action", 1);
+        intent.putExtra("ScoreFile", scoreFile);
+        startActivity(intent);
     }
 
     private void setupDrawer() {
@@ -385,7 +395,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                         scoreLength[3] = "1.000";*/
 
 
-                playBackTrack = new PlayBack(numericNotes, lengths, lastNote);
+                playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
                 Log.d("PlayBack Log", "PlayBack initialised");
                 playBackTrack.start();
 
