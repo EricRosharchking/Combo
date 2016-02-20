@@ -166,7 +166,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
 
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
-            userName = "UserName here";//(String) getIntent().getSerializableExtra("userName");
+            userName = (String) getIntent().getSerializableExtra("userName");
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
                 t_name.setText(userName);
@@ -629,6 +629,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 metronomeRunning = false;
             }
         }
+        opened = false;
     }
     //old version
 //    @Override
@@ -1212,6 +1213,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             Log.i("Log@Main735", "score is null? " + (score == null));
+            Log.i("Log@Main1215", "opened is " + opened);
             if (opened) {
                 numericNotes = score.getScore();
                 lengths = score.getLengths();
@@ -1446,7 +1448,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //    }
 
     public void onBackPressed() {
-        logout();
+        finish();
     }
 
     private void logout() {

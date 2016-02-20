@@ -145,4 +145,9 @@ public class register extends ActionBarActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 }
