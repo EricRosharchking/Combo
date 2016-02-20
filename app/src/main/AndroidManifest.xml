@@ -61,7 +61,7 @@
                 android:value=".welcomePage" />
         </activity>
         <activity
-            android:name=".AddLyrics"
+            android:name=".EditScoreActivity"
             android:label="@string/title_activity_add_lyrics"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" >

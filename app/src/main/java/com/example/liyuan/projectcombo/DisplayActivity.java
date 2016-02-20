@@ -145,4 +145,8 @@ public class DisplayActivity extends ActionBarActivity {
         ////TODO: behaviour of back button on screen will start a new MainActivity instead of resuming the old one
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

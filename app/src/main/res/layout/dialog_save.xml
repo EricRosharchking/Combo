@@ -11,8 +11,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/filename"
+            android:textColorHint="#666666"
+            android:textColor="#000000"
             />
-        <EditText
+<!--        <EditText
             android:id="@+id/author_Field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +48,7 @@
                 android:checked="true"
                 android:text="@string/timesig4"
                 android:textColor="#000000" />
-        </RadioGroup>
+        </RadioGroup>-->
         <!--<Spinner-->
         <!--android:id="@+id/keySpinner"-->
         <!--android:layout_width="wrap_content"-->

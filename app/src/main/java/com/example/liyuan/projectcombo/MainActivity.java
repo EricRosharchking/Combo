@@ -1,19 +1,14 @@
 package com.example.liyuan.projectcombo;
 
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Paint;
 import android.media.AudioManager;
-import android.net.NetworkInfo;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +21,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -35,11 +29,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
@@ -169,8 +160,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
 
-            userEmail = (String) getIntent().getSerializableExtra("userEmail");;//userEmail = (String) getIntent().getSerializableExtra("userEmail");
-            userName = "UserName here";
+            userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
+            userName = "UserName here";//(String) getIntent().getSerializableExtra("userName");
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
                 t_name.setText(userName);
@@ -477,7 +468,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     /**
      * Directing the user to add lyrics page.
-     * AddLyrics will share the scores user entered from MainActivity
+     * EditScoreActivity will share the scores user entered from MainActivity
      **/
     private void addLyrics() {
         Intent i = new Intent(MainActivity.this,
@@ -1252,7 +1243,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     public void editScore() {
-        Intent intent = new Intent(this, AddLyrics.class);
+        Intent intent = new Intent(this, EditScoreActivity.class);
         if (!isOpened) {
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());

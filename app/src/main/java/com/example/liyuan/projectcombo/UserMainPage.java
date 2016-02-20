@@ -39,7 +39,9 @@ public class UserMainPage extends FragmentActivity {
                 Intent i = new Intent(getApplicationContext(),
                         MainActivity.class);
                 String userEmail = (String) getIntent().getSerializableExtra("userEmail");
+                String userName = (String) getIntent().getSerializableExtra("userEmail");
 //                Log.i("Log@UserMain", userName);
+                i.putExtra("userName", userName);
                 i.putExtra("userEmail", userEmail);
                 startActivity(i);
                 finish();

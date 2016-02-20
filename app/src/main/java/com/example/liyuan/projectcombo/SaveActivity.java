@@ -77,19 +77,19 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         return builder.create();
     }
 
-    public void changeTimeSig(View view) {
-        if (score != null) {
-            switch (view.getId()) {
-                case R.id.timeSig43:
-                    timeSig = 3;
-                case R.id.timeSig44:
-                    timeSig = 4;
-                    break;
-                default:
-                    timeSig = 4;
-            }
-        }
-    }
+//    public void changeTimeSig(View view) {
+//        if (score != null) {
+//            switch (view.getId()) {
+//                case R.id.timeSig43:
+//                    timeSig = 3;
+//                case R.id.timeSig44:
+//                    timeSig = 4;
+//                    break;
+//                default:
+//                    timeSig = 4;
+//            }
+//        }
+//    }
 
 /*
     public class SaveDialogFragment extends DialogFragment {
@@ -189,5 +189,10 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         } else if (which == -2) {
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

@@ -45,6 +45,12 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
 
         try {
             Dialog d = onCreateDialog(savedInstanceState);
+            d.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    NewActivity.this.finish();
+                }
+            });
             d.show();
         } catch (NullPointerException e) {
             e.printStackTrace();
