@@ -4,6 +4,8 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import java.util.HashMap;
 
@@ -143,6 +145,7 @@ public class PlayBack extends Thread{
             } catch(Exception e) {
                 e.printStackTrace();
             }
+
             audioTrack.stop();
             audioTrack.flush();
             audioTrack.release();

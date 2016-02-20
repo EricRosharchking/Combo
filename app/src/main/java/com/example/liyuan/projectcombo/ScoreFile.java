@@ -21,7 +21,7 @@ import java.util.HashSet;
 public class ScoreFile implements Serializable {
     private String title;
     private String artist;
-    //private Context context;
+    private Context context;
     private HashSet<String> fileSet;////TODO all names in the set do not include the file format(".SCORE")
 
     private final String allFileNames = "ALL_FILE_NAMES.DATA";
@@ -36,7 +36,19 @@ public class ScoreFile implements Serializable {
         //} else {
         //Log.e("Error@ScoreFile36", "the Object is not a Context");
         //}
-        fileSet = openAllFileNames().getAllFileNamesSet();
+        context = App.getAppContext();
+        String filePath = context.getFilesDir().getPath() + "/" + allFileNames;
+        File file = new File(filePath);
+        if (file.exists()) {
+            fileSet = openAllFileNames().getAllFileNamesSet();
+        } else {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            fileSet = new HashSet<>();
+        }
         Log.d("File size Log", "" + fileSet.size());
     }
 

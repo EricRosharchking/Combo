@@ -391,15 +391,15 @@ public class AddLyrics extends ActionBarActivity implements View.OnClickListener
             metronumberpicker.setWrapSelectorWheel(false);
 
             tempo = metronumberpicker.getValue();
-            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+//            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(this);
+//            spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;

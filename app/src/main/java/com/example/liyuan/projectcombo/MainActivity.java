@@ -135,6 +135,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private MyAdapter myAdapter;
     private Toolbar toolbar;
     private NumberPicker metronumberpicker;
+    private static Menu topMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,11 +149,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
-
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mActivityTitle = getTitle().toString();
-
+            mActivityTitle = "Create new song";
+            getSupportActionBar().setTitle(mActivityTitle);
             addDrawerItems2();
             setupDrawer();
 
@@ -296,17 +296,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //Number Picker
             metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
-            metronumberpicker.setFocusable(false);
+//            metronumberpicker.setFocusable(false);
             metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
             metronumberpicker.setMaxValue(120);
             metronumberpicker.setMinValue(60);
             metronumberpicker.setWrapSelectorWheel(false);
+            metronumberpicker.setOnValueChangedListener(this);
 
             tempo = metronumberpicker.getValue();
-            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
+            Spinner spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
+            R.array.time_signature_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
@@ -315,7 +316,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             scoreFile = new ScoreFile();
             numericNotes = null;
             lengths = null;
-            withMetronome = true;
+            withMetronome = false;
             opened = false;
             beatLength = 1.0;
 
@@ -354,7 +355,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                    exportToPDF();
                         break;
                 }
-                Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -366,14 +367,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
+                getSupportActionBar().setTitle("Menu");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle("Create new song");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -399,25 +399,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Log@Main398", "position is " + position + " and id is " + id);
-        switch (position) {
-            case 1:
-                metronome.setWithMetronome(true);
-                break;
-            case 2:
-                metronome.setWithMetronome(false);
-                break;
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        Log.i("Log@Main398", "position is " + position + " and id is " + id);
+//        switch (position) {
+//            case 1:
+//                metronome.setWithMetronome(true);
+//                break;
+//            case 2:
+//                metronome.setWithMetronome(false);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//
+//    }
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        // Handle action bar item clicks here. The action bar will
@@ -448,7 +448,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
-        finish();
     }
 
 
@@ -456,6 +455,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        topMenu = menu;
         return true;
     }
 
@@ -487,20 +487,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 // User chose the "Settings" item, show the app settings UI...
 //                Intent intent = new Intent(MainActivity.this, register.class);
 //                startActivity(intent);
+                if (!onRecord) {
+                    item.setIcon(R.drawable.stopbutton);
+                } else {
+                    item.setIcon(R.drawable.startbutton);
+                }
                 record();
                 break;
             case R.id.playBack:
-                playBack(null);
+                if (!isPlayBack) {
+                    playBack(null);
+                    item.setIcon(R.drawable.onplay);
+                }
                 break;
             case R.id.pause:
                 pausePlay(null);
+                changePlayBackIcon();
                 break;
             case R.id.stop:
                 stopPlay(null);
+                changePlayBackIcon();
                 break;
             case R.id.metro:
-                withMetronome = true;
-                startMetronome(null);
+                if (!withMetronome) {
+                    withMetronome = true;
+                    item.setIcon(R.drawable.metro_on);
+                } else {
+                    withMetronome = false;
+                    item.setIcon(R.drawable.metro_off);
+                }
+//                startMetronome(null);
                 break;
             default:
                 // If we got here, the user's action was not recognized.
@@ -562,6 +578,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
+                metronomeRunning = false;
             }
         }
     }
@@ -941,16 +958,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
                 metronome = new Metronome(metronumberpicker.getValue());
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             }
             metronomeRunning = true;
 //            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
 //            imageButton.setImageResource(R.drawable.stopmetro);
+
         } else {
             metronome.stop();
             metronomeRunning = false;
@@ -1099,6 +1119,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
             try {
                 playBackTrack.join();
+                changePlayBackIcon();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -1111,13 +1132,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (playBackTrack != null) {
             playBackTrack.stopPlaying();
             lastNote = playBackTrack.getLast();
+            try {
+                playBackTrack.join();
+                changePlayBackIcon();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
         }
-        try {
-            playBackTrack.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
     @Override
@@ -1297,7 +1319,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+    public static void changePlayBackIcon() {
+        MenuItem item = topMenu.findItem(R.id.playBack);
+        item.setIcon(R.drawable.playback);
+    }
 
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 1:
+                timeSig = 3;
+                break;
+            case 2:
+                timeSig = 4;
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 
 class MyAdapter extends BaseAdapter {

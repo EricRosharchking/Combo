@@ -1,8 +1,7 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent" >
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -11,12 +10,10 @@
         android:orientation="horizontal"
         tools:context=".MainActivity">
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -26,12 +23,17 @@
 
                 <include
                     android:id="@+id/tool_bar"
-                    layout="@layout/tool_bar"></include>
+                    layout="@layout/tool_bar">
+                </include>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World" />
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Hello World" />-->
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Hello World" />-->
 
             </LinearLayout>
             <!--<LinearLayout
@@ -405,8 +407,8 @@
                                 android:layout_weight="2"
                                 android:background="#00FFFFFF"
                                 android:padding="0dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/selector_blackkey" />
+                                android:src="@drawable/selector_blackkey"
+                                android:scaleType="fitXY" />
 
                             <ImageButton
                                 android:id="@+id/csharp"
@@ -514,7 +516,6 @@
                                 android:src="@drawable/highcsharp"
                                 android:text="@string/noteBb" />
                         </LinearLayout>
-
                         <LinearLayout
                             android:id="@+id/black_keys_plusspace"
                             android:layout_width="match_parent"
@@ -874,14 +875,14 @@
                                 android:textColor="#888888"
                                 android:textSize="20sp" />
                         </LinearLayout>
-
                         <LinearLayout
                             android:id="@+id/black_keys_text_space"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_gravity="bottom"
                             android:layout_weight="1"
-                            android:orientation="horizontal"></LinearLayout>
+                            android:layout_gravity="bottom"
+                            android:orientation="horizontal">
+                        </LinearLayout>
                     </LinearLayout>
                     <!--<LinearLayout
                         android:layout_width="fill_parent"
@@ -1018,7 +1019,7 @@
         android:id="@+id/navigationList_left"
         android:layout_width="240dp"
         android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
         android:layout_gravity="start"
-        android:background="#CC000000"
-        android:choiceMode="singleChoice" />
+        android:background="#CC000000"/>
 </android.support.v4.widget.DrawerLayout>

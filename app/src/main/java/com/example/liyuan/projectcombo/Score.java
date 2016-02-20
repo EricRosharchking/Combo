@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
  * Created by Liyuan on 1/5/2016.
  */
 public class Score implements Serializable {
+    private String lyrics;
     private String author;
     private String title;
     private int tempo;
@@ -16,6 +17,7 @@ public class Score implements Serializable {
     private String key;
 
     public Score() {
+        lyrics = "";
         author = "Anonymous";
         title = "New Score";
         tempo = 60;
@@ -81,6 +83,10 @@ public class Score implements Serializable {
         this.key = key;
     }
 
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
+    }
+
     public int getTempo() {
         return tempo;
     }
@@ -107,5 +113,9 @@ public class Score implements Serializable {
 
     public String getKey() {
         return key;
+    }
+
+    public String getLyrics() {
+        return lyrics;
     }
 }
