@@ -6,4 +6,5 @@
     <color name="red">#FF3D00</color>
     <color name="green">#00ACC1</color>
     <color name="black">#000000</color>
+    <color name="toolbarcolor">#424242</color>
 </resources>
