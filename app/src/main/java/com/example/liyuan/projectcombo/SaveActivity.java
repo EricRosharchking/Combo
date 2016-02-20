@@ -46,6 +46,12 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 
         try {
             Dialog d = onCreateDialog(savedInstanceState);
+            d.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    SaveActivity.this.finish();
+                }
+            });
             d.show();
         } catch (NullPointerException e) {
             e.printStackTrace();
