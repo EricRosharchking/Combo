@@ -4,6 +4,10 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
+    repositories {
+        mavenCentral()
+    }
+
     defaultConfig {
         applicationId "com.cambo.liyuan.projectcombo"
         minSdkVersion 15
@@ -25,4 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 }

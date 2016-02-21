@@ -50,6 +50,15 @@
             android:layout_gravity="bottom"
             android:background="#D6A0A0A0"
             android:textColor="#FFFFFF" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="fill_parent"

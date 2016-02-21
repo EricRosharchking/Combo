@@ -19,6 +19,7 @@
             android:layout_weight="5"
             android:orientation="horizontal">
 
+
             <Button
                 android:id="@+id/createNewSong"
                 android:layout_width="0dp"

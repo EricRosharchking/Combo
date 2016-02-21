@@ -7,8 +7,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.media.tv.TvInputService;
+import android.service.textservice.SpellCheckerService;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,8 +38,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 public class welcomePage extends ActionBarActivity implements View.OnClickListener {
 
@@ -39,25 +63,77 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     private String userEmail;
     private Button btnLogin, btnRegister;
     private EditText edEmail, edPassword;
-    private CheckBox cbRememberMe;
-    private SharedPreferences loginPreferences;
-    private SharedPreferences.Editor loginPrefsEditor;
-    private Boolean saveLogin;
+    TextView tv;
 
     //boolean variable to check user is logged in or not
     //initially it is false
     private boolean loggedIn = false;
+    private CallbackManager callbackManager;
+    private ProfileTracker mProfileTracker;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         userEmail = "";
+        userName = "";
         setContentView(R.layout.activity_welcome_page);
         edEmail = (EditText) findViewById(R.id.email);
         edPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        cbRememberMe = (CheckBox) findViewById(R.id.rememberMe);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions("public_profile");
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d("LOGIN_SUCCESS", "Success");
+                        AccessToken accessToken = loginResult.getAccessToken();
+                        Profile profile = Profile.getCurrentProfile();
+
+                        Intent intent = new Intent(welcomePage.this, UserMainPage.class);
+                        displayWelcomeMessage(profile);
+                        if (userEmail != null)
+                            intent.putExtra("userEmail", userEmail);
+                        if (userName != null)
+                            intent.putExtra("userName",userName);
+                        startActivity(intent);
+
+
+
+//                        Toast.makeText(getApplicationContext(),
+//                                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
+//                                .show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d("LOGIN_CANCEL", "Cancel");
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Log.d("LOGIN_ERROR", "Error");
+                    }
+                });
+
+        mProfileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                displayWelcomeMessage(newProfile);
+            }
+        };
+
+        mProfileTracker.startTracking();
+
         //Adding click listener
         btnLogin.setOnClickListener(this);
 
@@ -73,10 +149,48 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+
+    }
+
+    private void displayWelcomeMessage(Profile profile){
+        if(profile!=null){
+            userName = profile.getName();
+            userEmail = "";
+            Toast.makeText(welcomePage.this, "Welcome " + profile.getName(), Toast.LENGTH_LONG).show();
+            //text.setText("Welcome " + profile.getName());
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mProfileTracker.stopTracking();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        AppEventsLogger.activateApp(this);
+        Profile profile = Profile.getCurrentProfile();
+
+        if(profile!=null){
+            //We will start the Profile Activity
+            Intent intent = new Intent(welcomePage.this, MainActivity.class);
+            startActivity(intent);
+        }
+
         //In onresume fetching value from sharedpreference
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -141,6 +255,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                             //Starting profile activity
                             userEmail = email;
                             userName = response.trim().substring(7);
+
                             openProfile();
 
                         }else{
@@ -180,9 +295,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         if (userName != null)
             intent.putExtra("userName", userName);
         startActivity(intent);
-        Toast.makeText(getApplicationContext(),
-                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
-                .show();
+        Toast.makeText(welcomePage.this, "Welcome " + userName, Toast.LENGTH_LONG).show();
     }
 
     @Override
