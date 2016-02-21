@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
+import com.facebook.login.LoginManager;
 
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -1326,6 +1327,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void logout() {
+
+
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -1333,6 +1336,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+                        //logout from fb
+                        LoginManager.getInstance().logOut();
+//                        Intent in = new Intent(MainActivity.this, welcomePage.class);
+//                        startActivity(in);
+//                        finish();
+
 
                         //Getting out sharedpreferences
                         SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -1351,6 +1360,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         //Starting login activity
                         Intent intent = new Intent(MainActivity.this, welcomePage.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
 

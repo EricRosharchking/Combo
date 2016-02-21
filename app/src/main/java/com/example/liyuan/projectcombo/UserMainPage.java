@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -39,8 +41,8 @@ public class UserMainPage extends FragmentActivity {
                 Intent i = new Intent(getApplicationContext(),
                         MainActivity.class);
                 String userEmail = (String) getIntent().getSerializableExtra("userEmail");
-                String userName = (String) getIntent().getSerializableExtra("userEmail");
-//                Log.i("Log@UserMain", userName);
+                String userName = (String) getIntent().getSerializableExtra("userName");
+
                 i.putExtra("userName", userName);
                 i.putExtra("userEmail", userEmail);
                 startActivity(i);
@@ -73,13 +75,12 @@ public class UserMainPage extends FragmentActivity {
             }
         });
 
-
-
     }
 
 
     //Logout function
     private void logout() {
+
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -87,6 +88,11 @@ public class UserMainPage extends FragmentActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+//logout from fb
+                        LoginManager.getInstance().logOut();
+//                        Intent in = new Intent(UserMainPage.this, welcomePage.class);
+//                        startActivity(in);
+//                        finish();
 
                         //Getting out sharedpreferences
                         SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -105,6 +111,7 @@ public class UserMainPage extends FragmentActivity {
                         //Starting login activity
                         Intent intent = new Intent(UserMainPage.this, welcomePage.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
 

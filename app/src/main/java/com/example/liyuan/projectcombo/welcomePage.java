@@ -52,6 +52,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -67,7 +68,6 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     //initially it is false
     private boolean loggedIn = false;
     private CallbackManager callbackManager;
-    private AccessTokenTracker mTokenTracker;
     private ProfileTracker mProfileTracker;
 
 
@@ -84,9 +84,10 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         edPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
-        tv = (TextView) findViewById(R.id.textView2);
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("user_friends");
+        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions("public_profile");
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -96,11 +97,19 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                         AccessToken accessToken = loginResult.getAccessToken();
                         Profile profile = Profile.getCurrentProfile();
 
-                        //tv.setText("You are logged in as " + profile.getName());
                         Intent intent = new Intent(welcomePage.this, UserMainPage.class);
-
-                        startActivity(intent);
                         displayWelcomeMessage(profile);
+                        if (userEmail != null)
+                            intent.putExtra("userEmail", userEmail);
+                        if (userName != null)
+                            intent.putExtra("userName",userName);
+                        startActivity(intent);
+
+
+
+//                        Toast.makeText(getApplicationContext(),
+//                                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
+//                                .show();
                         finish();
                     }
 
@@ -115,27 +124,14 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                     }
                 });
 
-        //loginButton.registerCallback(callbackManager, mCallBack);
+        mProfileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                displayWelcomeMessage(newProfile);
+            }
+        };
 
-//        AccessTokenTracker tracker = new AccessTokenTracker() {
-//            @Override
-//            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-//
-//            }
-//        };
-//
-//        ProfileTracker profileTracker = new ProfileTracker() {
-//           @Override
-//            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile){
-//
-//            }
-//        };
-
-//        tracker.startTracking();
-//        profileTracker.startTracking();
-
-//        Intent i = new Intent(this, welcomePage.class);
-//        startActivityForResult(i, 2000);
+        mProfileTracker.startTracking();
 
         //Adding click listener
         btnLogin.setOnClickListener(this);
@@ -152,65 +148,40 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         });
     }
 
-//    private FacebookCallback<LoginResult> mCallBack = new FacebookCallback<LoginResult>() {
-//        @Override
-//        public void onSuccess(LoginResult loginResult) {
-//            Log.d("LOGIN_SUCCESS", "Success");
-//            AccessToken accessToken = loginResult.getAccessToken();
-//            Profile profile = Profile.getCurrentProfile();
-//            displayWelcomeMessage(profile);
-//            tv.setText("You are logged in as " + profile.getName());
-//            Intent intent = new Intent(welcomePage.this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//
-//        @Override
-//        public void onCancel() {
-//            Log.d("LOGIN_CANCEL", "Cancel");
-//        }
-//
-//        @Override
-//        public void onError(FacebookException error) {
-//            Log.d("LOGIN_ERROR", "Error");
-//        }
-//    };
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
 
-//        if(requestCode == 2000){
-//            Intent in = new Intent(welcomePage.this, MainActivity.class);
-//            startActivity(in);
-//            finish();
-//        }
     }
 
     private void displayWelcomeMessage(Profile profile){
         if(profile!=null){
-            Toast.makeText(welcomePage.this, "Welcome" + profile.getName(), Toast.LENGTH_LONG).show();
+            userName = profile.getName();
+            userEmail = "";
+            Toast.makeText(welcomePage.this, "Welcome " + profile.getName(), Toast.LENGTH_LONG).show();
             //text.setText("Welcome " + profile.getName());
         }
     }
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-////        if(mTokenTracker != null){
-//            mTokenTracker.stopTracking();
-////        }
-////        if(mProfileTracker!=null){
-//            mProfileTracker.stopTracking();
-////        }
-//
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mProfileTracker.stopTracking();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        AppEventsLogger.activateApp(this);
         Profile profile = Profile.getCurrentProfile();
 
         if(profile!=null){
@@ -322,9 +293,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         if (userName != null)
             intent.putExtra("userEmail",userEmail);
         startActivity(intent);
-        Toast.makeText(getApplicationContext(),
-                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
-                .show();
+        Toast.makeText(welcomePage.this, "Welcome " + userName, Toast.LENGTH_LONG).show();
     }
 
     @Override
