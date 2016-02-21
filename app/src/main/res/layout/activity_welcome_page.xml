@@ -63,7 +63,7 @@
             android:id="@+id/btnRegister"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
+            android:layout_marginTop="40dp"
             android:background="@null"
             android:text="Register here"
             android:textAllCaps="false"
