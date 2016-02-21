@@ -42,13 +42,6 @@
             android:paddingLeft="30dp"
             android:paddingRight="0dp"/>
 
-        <CheckBox
-            android:id="@+id/rememberMe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/Remember_me"
-            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -58,6 +51,20 @@
             android:layout_gravity="bottom"
             android:background="#D6A0A0A0"
             android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textView2" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
 
         <Button
             android:id="@+id/btnRegister"
