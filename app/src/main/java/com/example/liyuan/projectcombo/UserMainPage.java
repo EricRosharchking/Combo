@@ -42,7 +42,6 @@ public class UserMainPage extends FragmentActivity {
                         MainActivity.class);
                 String userEmail = (String) getIntent().getSerializableExtra("userEmail");
                 String userName = (String) getIntent().getSerializableExtra("userName");
-
                 i.putExtra("userName", userName);
                 i.putExtra("userEmail", userEmail);
                 startActivity(i);

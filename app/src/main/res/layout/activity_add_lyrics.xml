@@ -7,25 +7,24 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#757575"
         android:orientation="horizontal"
         tools:context=".AddLyricsActivity">
 
         <LinearLayout
             android:layout_width="fill_parent"
+            android:background="#757575"
             android:layout_height="fill_parent"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/control_panel"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:alpha="0.7"
-                android:background="#3A393A">
+                android:layout_height="wrap_content"
+                android:alpha="0.7">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <include

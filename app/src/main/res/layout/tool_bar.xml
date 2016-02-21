@@ -14,7 +14,7 @@
 
         <Spinner
             android:id="@+id/time_signature"
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:popupBackground="#424242" />
@@ -27,7 +27,7 @@
             android:progress="1" />
         <TextView
             android:id="@+id/seekbarvalue"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:gravity="center"
             android:text="60"

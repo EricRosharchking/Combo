@@ -29,8 +29,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
@@ -42,7 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -123,6 +125,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
     int progress;
 
+    private SeekBar tempoSeekBar;
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -146,6 +149,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
+            toolbar.findViewById(R.id.tempoSeekBar);
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             mActivityTitle = "Create new song";
@@ -273,8 +277,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             displayThread = new DisplayThread();
 
-//            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-//            tempoSeekBar.setOnSeekBarChangeListener(this);
+            tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+            tempoSeekBar.setOnSeekBarChangeListener(this);
 //            buttonBack = (Button) findViewById(R.id.buttonBack);
 //            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
@@ -313,7 +317,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            metronumberpicker.setWrapSelectorWheel(false);
 //            metronumberpicker.setOnValueChangedListener(this);
 //
-//            tempo = metronumberpicker.getValue();
+            tempo = 60;
             Spinner spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -367,6 +371,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 1:
+                        finish();
                         break;
                     case 2:
                         save();
@@ -953,13 +958,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getSerializableExtra("Score") != null) {
+        if (getIntent().getSerializableExtra("score") != null) {
             //open(getIntent());
-            Score thisScore = (Score) getIntent().getSerializableExtra("Score");
+            Score thisScore = (Score) getIntent().getSerializableExtra("score");
             Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-                textView.setText(extractScore(thisScore.getScore(), thisScore.getLengths()));
+                textView.setText(Html.fromHtml(extractScore(thisScore.getScore(), thisScore.getLengths())).toString());
                 score = thisScore;
                 opened = true;
                 isOpened = true;
@@ -998,7 +1003,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
-                metronome = new Metronome(metronumberpicker.getValue());
+                metronome = new Metronome(tempo);
                 metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
@@ -1048,9 +1053,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "";
+        String t = "|";
         if (notes != null && lengths != null && notes.length == lengths.length) {
-            for (int i = 0; i < notes.length; i++) {
+            /*for (int i = 0; i < notes.length; i++) {
                 String thisNote = Integer.toString(notes[i]);
                 double thisLength = lengths[i];
                 int q = (int) Math.round(thisLength / 0.25);
@@ -1072,11 +1077,109 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         break;
                 }
                 scoreString += thisNote;
+            }*/
+
+            double totalLengths = 0.0;
+            int barCount = 1;
+            int lineCount = 1;
+
+            for (int i = 0; i < notes.length; i++) {
+                int n = notes[i];
+                double l = lengths[i];
+//            if (l < 0.15)
+//                continue;
+                String thisKey = " 1";
+                switch (n) {
+                    case 0:
+                        thisKey = " 0";
+                        break;
+                    case -3:
+                    case 3:
+                    case 42:
+                        thisKey = " 2";
+                        break;
+                    case -4:
+                    case 4:
+                    case 56:
+                    case -5:
+                    case 5:
+                    case 70:
+                        thisKey = " 3";
+                        break;
+                    case -6:
+                    case 6:
+                    case 84:
+                    case -7:
+                    case 7:
+                    case 98:
+                        thisKey = " 4";
+                        break;
+                    case -8:
+                    case 8:
+                    case 112:
+                    case -9:
+                    case 9:
+                    case 126:
+                        thisKey = " 5";
+                        break;
+                    case -10:
+                    case 10:
+                    case 140:
+                        thisKey = " 6";
+                        break;
+                    case -11:
+                    case 11:
+                    case 154:
+                    case -12:
+                    case 12:
+                    case 168:
+                        thisKey = " 7";
+                        break;
+                    default:
+                        break;
+                }
+//            Log.d("Log@DisplayActivity133", thisKey);
+                if (n < 0) {
+                    thisKey += "\u0323 ";
+                } else if (n > 13) {
+                    thisKey += "\u0307 ";
+                } else {
+                    thisKey += " ";
+                }
+                t += thisKey;
+                for (int j = 2; j < l; j++) {
+                    t += " - ";
+                }
+
+                double r = l % 1;
+                if (l > 2.15 && r < 0.85)
+                    t += thisKey;
+
+                if (r >= 0.85)
+                    t += " - ";
+                else if (r >= 0.69)
+                    t += "<sub>\u0332</sub> \u2022 ";
+                else if (r >= 0.4)
+                    t += "<sub>\u0332</sub> ";
+                else if (r >= 0.15)
+                    t += "<sub>\u0333</sub> ";
+
+                totalLengths += l;
+                if (totalLengths > barCount * 4) {
+                    t += "|";
+                    barCount += 1;
+                    if (barCount > lineCount * 3) {
+                        t += "\n ";
+                        t += "|";
+                        lineCount++;
+                    }
+                }
             }
+            t += " \u2225";
         }
 
         ////TODO:
-        return Html.fromHtml(scoreString.trim()).toString();
+        return t.trim();
     }
 
 
@@ -1130,7 +1233,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         scoreLength[3] = "1.000";*/
 
 
-                playBackTrack = new PlayBack(numericNotes, lengths, lastNote);
+                playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
                 Log.d("PlayBack Log", "PlayBack initialised");
                 playBackTrack.start();
 
@@ -1178,25 +1281,36 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+//    @Override
+//    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//        tempo = newVal;
+//        if (metronome != null)
+//            metronome.changeTempo(tempo);
+//        secondsPerBeat = 60.0 / tempo;
+//    }
+
+
     @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        tempo = newVal;
-        if (metronome != null)
-            metronome.changeTempo(tempo);
-        secondsPerBeat = 60 / tempo;
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+            tempo = progress + 60;
+            Log.d("SeekBar Log", "The seekBar value is " + tempo);
+            ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
+
+        }
     }
 
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
 
-//    @Override
-//    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//        if (fromUser) {
-//            this.progress = progress + 60;
-//            Log.d("SeekBar Log", "The progress is " + this.progress);
-////            seekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
-////            TextView seekBarValue = (TextView) findViewById(R.id.seekbarvalue);
-////            seekBarValue.setText(String.valueOf(this.progress));
-//        }
-//    }
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        if (metronome != null)
+            metronome.changeTempo(tempo);
+        secondsPerBeat = 60.0 / tempo;
+    }
 
 
 //    @Override
@@ -1244,7 +1358,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         score.setTempo(tempo);
         score.setAuthor(userName);
-        intent.putExtra("Score", score);
+        intent.putExtra("score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
@@ -1256,7 +1370,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             intent.putExtra("notes", prepareScore());
             intent.putExtra("lengths", prepareLengths());
         } else {
-            intent.putExtra("Score", score);
+            intent.putExtra("score", score);
         }
         startActivity(intent);
     }
@@ -1305,7 +1419,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //    protected void open (Intent data) {
 //        Log.d("OnResultLog", "On Activity Result Entered");
 //        try {
-//            Score score = (Score) data.getSerializableExtra("Score");
+//            Score score = (Score) data.getSerializableExtra("score");
 //            displayThread.setArchived(score.getScore());
 //            for (String s: score.getScore().trim().split("_")) {
 //                if (!s.isEmpty()) {
@@ -1387,11 +1501,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_LONG).show();
         switch (position) {
-            case 1:
+            case 0:
                 timeSig = 3;
                 break;
-            case 2:
+            case 1:
                 timeSig = 4;
                 break;
         }

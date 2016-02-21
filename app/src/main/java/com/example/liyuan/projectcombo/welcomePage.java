@@ -59,7 +59,8 @@ import com.facebook.login.widget.LoginButton;
 
 public class welcomePage extends ActionBarActivity implements View.OnClickListener {
 
-    private String userEmail, userName;
+    private String userName;
+    private String userEmail;
     private Button btnLogin, btnRegister;
     private EditText edEmail, edPassword;
     TextView tv;
@@ -253,7 +254,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
                             //Starting profile activity
                             userEmail = email;
-                            userName = response.substring(7);
+                            userName = response.trim().substring(7);
+
                             openProfile();
 
                         }else{
@@ -291,7 +293,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         if (userEmail != null)
             intent.putExtra("userEmail", userEmail);
         if (userName != null)
-            intent.putExtra("userEmail",userEmail);
+            intent.putExtra("userName", userName);
         startActivity(intent);
         Toast.makeText(welcomePage.this, "Welcome " + userName, Toast.LENGTH_LONG).show();
     }

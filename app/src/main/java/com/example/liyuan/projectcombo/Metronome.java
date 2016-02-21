@@ -228,8 +228,8 @@ public class Metronome extends Activity {
         }
     }
 
-    public void changeTempo(int newSize) {
-        metronomeTempo = newSize;
+    public void changeTempo(int metronomeTempo) {
+        this.metronomeTempo = metronomeTempo;
         size = 44100 * 60 / metronomeTempo;
     }
 

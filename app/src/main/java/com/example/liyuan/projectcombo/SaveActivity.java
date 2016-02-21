@@ -65,7 +65,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
             Log.d("Log@SaveActivity56", "Context is not null");
-            builder = new AlertDialog.Builder(context);
+            builder = new AlertDialog.Builder(context,R.style.MyDialog);
 
             LayoutInflater inflater = LayoutInflater.from(context);
             // Set the dialog title
@@ -157,7 +157,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 //                author = sequence2.toString();
 //            }
 
-            score = (Score) getIntent().getSerializableExtra("Score");
+            score = (Score) getIntent().getSerializableExtra("score");
             Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
 //            score.setAuthor(author);
