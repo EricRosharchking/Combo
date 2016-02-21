@@ -130,7 +130,16 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             
             Intent intent = getIntent();
-            String rawScores = intent.getStringExtra("scores");
+            Score score = (Score) intent.getSerializableExtra("score");
+            int[] notes = (int[]) intent.getSerializableExtra("notes");
+            double[] lengths = (double[]) intent.getSerializableExtra("lengths");
+            if (score != null) {
+                notes = score.getScore();
+                lengths = score.getLengths();
+            }
+            String rawScores = extractScore(notes ,lengths);
+//            Log.d("rawScores", "The raw scores: " + rawScores);
+//            String rawScores = intent.getStringExtra("scores");
             Log.d("rawScores", "The raw scores: " + rawScores);
 
             scores = (TextView) findViewById(R.id.tvScores);
@@ -439,35 +448,107 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     private String extractScore(int[] notes, double[] lengths) {
-        String scoreString = "";
-        if (notes != null && lengths != null && notes.length == lengths.length) {
+        String t = "|";
+        if (notes != null && lengths != null && notes.length == lengths.length) {double totalLengths = 0.0;
+            int barCount = 1;
+            int lineCount = 1;
+
             for (int i = 0; i < notes.length; i++) {
-                String thisNote = Integer.toString(notes[i]);
-                double thisLength = lengths[i];
-                int q = (int) Math.round(thisLength / 0.25);
-                if (q == 0) {
-                    q = 1;
-                }
-                switch (q) {
-                    case 1:
-                        thisNote += double_underline;
+                int n = notes[i];
+                double l = lengths[i];
+//            if (l < 0.15)
+//                continue;
+                String thisKey = " 1";
+                switch (n) {
+                    case 0:
+                        thisKey = " 0";
                         break;
-                    case 2:
-                        thisNote += underline;
-                        break;
+                    case -3:
                     case 3:
-                        thisNote += underline;
-                        thisNote += bullet;
+                    case 42:
+                        thisKey = " 2";
+                        break;
+                    case -4:
+                    case 4:
+                    case 56:
+                    case -5:
+                    case 5:
+                    case 70:
+                        thisKey = " 3";
+                        break;
+                    case -6:
+                    case 6:
+                    case 84:
+                    case -7:
+                    case 7:
+                    case 98:
+                        thisKey = " 4";
+                        break;
+                    case -8:
+                    case 8:
+                    case 112:
+                    case -9:
+                    case 9:
+                    case 126:
+                        thisKey = " 5";
+                        break;
+                    case -10:
+                    case 10:
+                    case 140:
+                        thisKey = " 6";
+                        break;
+                    case -11:
+                    case 11:
+                    case 154:
+                    case -12:
+                    case 12:
+                    case 168:
+                        thisKey = " 7";
                         break;
                     default:
                         break;
                 }
-                scoreString += thisNote;
+//            Log.d("Log@DisplayActivity133", thisKey);
+                if (n < 0) {
+                    thisKey += "\u0323 ";
+                } else if (n > 13) {
+                    thisKey += "\u0307 ";
+                } else {
+                    thisKey += " ";
+                }
+                t += thisKey;
+                for (int j = 2; j < l; j++) {
+                    t += " - ";
+                }
+
+                double r = l % 1;
+                if (l > 2.15 && r < 0.85)
+                    t += thisKey;
+
+                if (r >= 0.85)
+                    t += " - ";
+                else if (r >= 0.69)
+                    t += "<sub>\u0332</sub> \u2022 ";
+                else if (r >= 0.4)
+                    t += "<sub>\u0332</sub> ";
+                else if (r >= 0.15)
+                    t += "<sub>\u0333</sub> ";
+
+                totalLengths += l;
+                if (totalLengths > barCount * 4) {
+                    t += "|";
+                    barCount += 1;
+                    if (barCount > lineCount * 3) {
+                        t += "\n ";
+                        t += "|";
+                        lineCount++;
+                    }
+                }
             }
+            t += " \u2225";
         }
 
-        ////TODO:
-        return Html.fromHtml(scoreString.trim()).toString();
+        return t.trim();
     }
 
     public void openOrNew() {
