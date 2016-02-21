@@ -26,8 +26,8 @@ public class DisplayActivity extends ActionBarActivity {
         int[] notes = (int[]) getIntent().getSerializableExtra("notes");
         double[] lengths = (double[]) getIntent().getSerializableExtra("lengths");
 
-        if (getIntent().getSerializableExtra("Score") != null) {
-            score = (Score) getIntent().getSerializableExtra("Score");
+        if (getIntent().getSerializableExtra("score") != null) {
+            score = (Score) getIntent().getSerializableExtra("score");
             notes = score.getScore();
             lengths = score.getLengths();
             String key = score.getKey();

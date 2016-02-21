@@ -35,6 +35,7 @@ import java.util.Map;
 
 public class welcomePage extends ActionBarActivity implements View.OnClickListener {
 
+    private String userName;
     private String userEmail;
     private Button btnLogin, btnRegister;
     private EditText edEmail, edPassword;
@@ -123,7 +124,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                     @Override
                     public void onResponse(String response) {
                         //If we are getting success from server
-                        if(response.trim().equals("success")){
+                        if(response.contains("success")){
                             //Creating a shared preference
                             SharedPreferences sharedPreferences = welcomePage.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -139,6 +140,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
                             //Starting profile activity
                             userEmail = email;
+                            userName = response.trim().substring(7);
                             openProfile();
 
                         }else{
@@ -175,6 +177,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         Intent intent = new Intent(welcomePage.this, UserMainPage.class);
         if (userEmail != null)
             intent.putExtra("userEmail", userEmail);
+        if (userName != null)
+            intent.putExtra("userName", userName);
         startActivity(intent);
         Toast.makeText(getApplicationContext(),
                 "Welcome! Now you can create your song!", Toast.LENGTH_LONG)

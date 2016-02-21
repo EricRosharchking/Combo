@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 public class PlayBack extends Thread{
 
+    int tempo;
 	int j;
     static int lastNote;
     private final double strike = 0.002;
@@ -45,12 +46,13 @@ public class PlayBack extends Thread{
     }
 
 
-    public PlayBack(int[] notes, double[] lengths, int x) {
+    public PlayBack(int[] notes, double[] lengths, int x, int tempo) {
         if (notes == null || notes.length == 0 || notes.length != lengths.length) {
             isRunning = false;
             Log.d("PlayBack Log", "notes or length is null or empty");
             return;
         } else {
+            this.tempo = tempo;
             lastNote = x;
             Log.d("PlayBack Log", "notes and lengths are not null");
             notesScore = notes;
@@ -69,6 +71,8 @@ public class PlayBack extends Thread{
 //        View view = get
 //        ImageButton imageButton = (ImageButton) findViewById(R.id.playBack_Button);
 //        imageButton.setImageResource(R.drawable.playing);
+        if (tempo <= 0)
+            tempo = 60;
         if (audioTrack != null) {
             audioTrack.play();
             j = lastNote;
@@ -79,7 +83,7 @@ public class PlayBack extends Thread{
 
                             double amplitude = 16384.0;
                             //Log.d("PlayBack Log", "The integer j is " + j);
-                            int sampleSize = (int) ((SAMPLE_RATE * notesLength[j]) * 2);
+                            int sampleSize = (int) ((SAMPLE_RATE * notesLength[j]) * 2 * 60.0 / tempo);
                             samples = new short[sampleSize];
                             int sample_count = sampleSize / 2;
                             double phase_Index = 0.0;

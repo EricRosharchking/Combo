@@ -26,6 +26,7 @@ public class DisplayThread extends Thread {
     private int quarterBeat;
     private int noteTime;
     private int lastNoteTime;
+    private double secondsPerBeat;
 
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
@@ -42,10 +43,11 @@ public class DisplayThread extends Thread {
         isRunning = true;
         key = 0;
         lastKey = -1;
-        barTime = timeSignature * 1000;
-        displayTime = barTime * 4;
         octave = 4;
-        quarterBeat = 250;
+        secondsPerBeat = 60.0 / tempo;
+        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
+        displayTime = barTime * 4;
+        quarterBeat = (int) (1000 * secondsPerBeat / 4);
     }
 
     public void run() {
@@ -64,6 +66,8 @@ public class DisplayThread extends Thread {
         Log.d("DisplayThread Log", "The start Time is " + startTime);
         long elapsedTime = System.currentTimeMillis() - startTime;
         long count = elapsedTime / quarterBeat;
+        int displayCount = 1;
+        int barCount = 1;
         while (isRunning) {
             elapsedTime = System.currentTimeMillis() - startTime;
 
@@ -94,7 +98,7 @@ public class DisplayThread extends Thread {
                     Log.d("Log@DisplayThread89", "Addon is " + addon);
                     //display += addon;
                 }
-                count = elapsedTime / 250;
+                count = elapsedTime / quarterBeat;
                 int x = (int)count / 4;
                 int y = (int)count % 4;
 
@@ -123,9 +127,11 @@ public class DisplayThread extends Thread {
 //                Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
 //                Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
 //                Log.d("DisplayThread Log", "The display is " + display);
-                if ((elapsedTime % barTime) == 0) {
+                if (elapsedTime >= barTime * barCount) {
                     display = display + "|";
-                    if ((elapsedTime % displayTime) == 0) {
+                    barCount ++;
+                    if (elapsedTime >= displayTime * displayCount) {
+                        displayCount ++;
                         archived += display;
                         display = "";
                     }
@@ -224,6 +230,10 @@ public class DisplayThread extends Thread {
 
     public void setTempo(int tempo) {
         this.tempo = tempo;
+        secondsPerBeat = 60.0 / tempo;
+        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
+        displayTime = barTime * 4;
+        quarterBeat = (int) (1000 * secondsPerBeat / 4);
     }
 
     public void setDelay(int delay) {
