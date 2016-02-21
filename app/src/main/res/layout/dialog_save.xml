@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/filename"
             android:textColorHint="#666666"
-            android:textColor="#000000"
+            android:textColor="@color/grey"
             />
 <!--        <EditText
             android:id="@+id/author_Field"

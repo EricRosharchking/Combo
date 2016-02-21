@@ -67,7 +67,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
             Log.d("Dialog Log", "Context is not null");
-            builder = new AlertDialog.Builder(context);
+            builder = new AlertDialog.Builder(context,R.style.MyDialog);
 
             // Set the dialog title
 
