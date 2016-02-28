@@ -102,7 +102,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                         displayWelcomeMessage(profile);
                         if (userEmail != null)
                             intent.putExtra("userEmail", userEmail);
-                        if (userName != null)
+                        if (userName != null && !userName.isEmpty())
                             intent.putExtra("userName",userName);
                         startActivity(intent);
 
@@ -144,7 +144,6 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                 Intent i = new Intent(getApplicationContext(),
                         register.class);
                 startActivity(i);
-                finish();
             }
         });
     }
@@ -160,7 +159,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         if(profile!=null){
             userName = profile.getName();
             userEmail = "";
-            Toast.makeText(welcomePage.this, "Welcome " + profile.getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(welcomePage.this, "Welcome " + userName, Toast.LENGTH_LONG).show();
             //text.setText("Welcome " + profile.getName());
         }
     }
@@ -188,6 +187,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         if(profile!=null){
             //We will start the Profile Activity
             Intent intent = new Intent(welcomePage.this, MainActivity.class);
+            String userName = profile.getName();
+            intent.putExtra(userName, "userName");
             startActivity(intent);
         }
 

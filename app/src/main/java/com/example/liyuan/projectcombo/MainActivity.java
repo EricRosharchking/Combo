@@ -166,7 +166,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
 
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
-            userName = "UserName here";//(String) getIntent().getSerializableExtra("userName");
+            userName = (String) getIntent().getSerializableExtra("userName");
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
                 t_name.setText(userName);
@@ -487,7 +487,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Intent i = new Intent(MainActivity.this,
                 AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
-        i.putExtra("scores", displayThread.getDisplay());
+        if (!isOpened) {
+            i.putExtra("scores", displayThread.getDisplay());
+            i.putExtra("notes", prepareScore());
+            i.putExtra("lengths", prepareLengths());
+        } else {
+            i.putExtra("score", score);
+        }
+
         startActivity(i);
     }
 
@@ -622,6 +629,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 metronomeRunning = false;
             }
         }
+        opened = false;
     }
     //old version
 //    @Override
@@ -966,6 +974,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
                 textView.setText(Html.fromHtml(extractScore(thisScore.getScore(), thisScore.getLengths())).toString());
                 score = thisScore;
+                tempo = score.getTempo();
+                ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
                 opened = true;
                 isOpened = true;
             }
@@ -1202,14 +1212,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
             }
 
-            numericNotes = prepareScore();
-            lengths = prepareLengths();
-
             Log.i("Log@Main735", "score is null? " + (score == null));
+            Log.i("Log@Main1215", "opened is " + opened);
             if (opened) {
                 numericNotes = score.getScore();
                 lengths = score.getLengths();
-                opened = false;
+//                opened = false;
+            } else {
+                numericNotes = prepareScore();
+                lengths = prepareLengths();
             }
 
             if (numericNotes != null && lengths != null) {
@@ -1437,7 +1448,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //    }
 
     public void onBackPressed() {
-        logout();
+        finish();
     }
 
     private void logout() {

@@ -45,7 +45,6 @@ public class UserMainPage extends FragmentActivity {
                 i.putExtra("userName", userName);
                 i.putExtra("userEmail", userEmail);
                 startActivity(i);
-                finish();
             }
         });
 
@@ -56,8 +55,8 @@ public class UserMainPage extends FragmentActivity {
                         NewActivity.class);
                 ScoreFile scoreFile = new ScoreFile();
                 i.putExtra("ScoreFile", scoreFile);
+                i.putExtra("parentActivity", 1);
                 startActivity(i);
-                finish();
             }
         });
         //Fetching email from shared preferences
