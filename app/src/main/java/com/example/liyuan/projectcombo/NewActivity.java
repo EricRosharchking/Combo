@@ -123,6 +123,8 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
                 intent.putExtra("score", score);
                 Log.d("Log@NewActivity102", "Starting Activity for Result");
                 //startActivityForResult(intent, 1);
+                intent.putExtra("userName", getIntent().getStringExtra("userName"));
+                intent.putExtra("userEmail", getIntent().getStringExtra("userEmail"));
                 startActivity(intent);
                 finish();
             } catch (IOException e) {
@@ -131,7 +133,20 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
             }
         } else if (which == -2) {
             Log.d("", "New Clicked");
+            if (getIntent().getIntExtra("parentActivity", 0) == 1) {
+                Intent i = new Intent(this, UserMainPage.class);
+                startActivity(i);
+            }
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getIntent().getIntExtra("parentActivity", 0) == 1) {
+            Intent i = new Intent(this, UserMainPage.class);
+            startActivity(i);
+        }
+        finish();
     }
 }

@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
 import java.util.List;
 import java.util.Vector;
 
@@ -40,11 +42,9 @@ public class UserMainPage extends FragmentActivity {
                         MainActivity.class);
                 String userEmail = (String) getIntent().getSerializableExtra("userEmail");
                 String userName = (String) getIntent().getSerializableExtra("userName");
-//                Log.i("Log@UserMain", userName);
                 i.putExtra("userName", userName);
                 i.putExtra("userEmail", userEmail);
                 startActivity(i);
-                finish();
             }
         });
 
@@ -55,8 +55,8 @@ public class UserMainPage extends FragmentActivity {
                         NewActivity.class);
                 ScoreFile scoreFile = new ScoreFile();
                 i.putExtra("ScoreFile", scoreFile);
+                i.putExtra("parentActivity", 1);
                 startActivity(i);
-                finish();
             }
         });
         //Fetching email from shared preferences
@@ -73,14 +73,12 @@ public class UserMainPage extends FragmentActivity {
             }
         });
 
-
-
     }
 
 
-
     //Logout function
-    private void logout(){
+    private void logout() {
+
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -88,8 +86,14 @@ public class UserMainPage extends FragmentActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+//logout from fb
+                        LoginManager.getInstance().logOut();
+//                        Intent in = new Intent(UserMainPage.this, welcomePage.class);
+//                        startActivity(in);
+//                        finish();
+
                         //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                         //Getting editor
                         SharedPreferences.Editor editor = preferences.edit();
 
@@ -105,33 +109,10 @@ public class UserMainPage extends FragmentActivity {
                         //Starting login activity
                         Intent intent = new Intent(UserMainPage.this, welcomePage.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
 
-        alertDialogBuilder.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                        //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
-                        //Getting editor
-                        SharedPreferences.Editor editor = preferences.edit();
-
-                        //Puting the value false for loggedin
-                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
-
-                        //Putting blank value to email
-                        editor.putString(Config.EMAIL_SHARED_PREF, "");
-
-                        //Saving the sharedpreferences
-                        editor.commit();
-
-                        //Starting login activity
-                        Intent intent = new Intent(UserMainPage.this, welcomePage.class);
-                        startActivity(intent);
-                    }
-                });
 
         alertDialogBuilder.setNegativeButton("No",
                 new DialogInterface.OnClickListener() {
@@ -156,13 +137,13 @@ public class UserMainPage extends FragmentActivity {
     public void onBackPressed() {
         logout();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
 
     @Override

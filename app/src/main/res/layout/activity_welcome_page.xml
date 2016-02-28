@@ -4,11 +4,13 @@
     android:orientation="vertical"
     android:background="@drawable/welcomepage"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingRight="20dp"
+    android:theme="@style/AppTheme">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
+        android:id="@+id/well"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="30dp">
 
@@ -42,14 +44,6 @@
             android:paddingLeft="30dp"
             android:paddingRight="0dp"/>
 
-        <CheckBox
-            android:id="@+id/rememberMe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/Remember_me"
-            android:textColor="#FFFFFF" />
-
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
@@ -58,20 +52,26 @@
             android:layout_gravity="bottom"
             android:background="#D6A0A0A0"
             android:textColor="#FFFFFF" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="5dp" />
         <Button
             android:id="@+id/btnRegister"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
             android:background="@null"
+            android:layout_marginTop="5dp"
             android:text="Register here"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="15dp" />
-
-
-
+            android:textSize="15sp" />
     </LinearLayout>
+
 
 
 </RelativeLayout>

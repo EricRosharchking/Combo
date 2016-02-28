@@ -12,14 +12,16 @@
         <item name="colorAccent">@color/green</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
+    
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
+
     <style name="My.ActionBar.Style" parent="Widget.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/white</item>
-
     </style>
-    <style name="MyDialog" parent="Theme.AppCompat.Light.Dialog">
+
+    <style name="MyDialog" parent="Theme.AppCompat.Dialog">
         <!-- Used for the buttons -->
         <item name="colorAccent">@color/green</item>
         <!-- Used for the title and text -->

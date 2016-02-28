@@ -22,7 +22,7 @@ public class PlayBack extends Thread{
     Thread t;
     AudioTrack audioTrack;
     private final double TWO_PI = 2 * Math.PI;
-    private final int SAMPLE_RATE = 22050;
+    private final int SAMPLE_RATE = 44100;
     private final int BUFFER_SIZE = AudioTrack.getMinBufferSize(SAMPLE_RATE,
             AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
     private boolean isRunning;
