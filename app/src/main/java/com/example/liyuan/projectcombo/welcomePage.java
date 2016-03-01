@@ -61,8 +61,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
     private String userName;
     private String userEmail;
-    private Button btnLogin, btnRegister;
-    private EditText edEmail, edPassword;
+    private Button btnLogin, btnRegister, btnForgot;
+    private EditText edEmail, edPassword, edSendEmail;
     TextView tv;
 
     //boolean variable to check user is logged in or not
@@ -85,6 +85,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         edPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
+        btnForgot = (Button) findViewById(R.id.btnForgot);
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("user_friends");
         loginButton.setReadPermissions("email");
@@ -143,6 +144,15 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
                         register.class);
+                startActivity(i);
+            }
+        });
+
+        //Link to forgot password screen
+        btnForgot.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        ForgotPasswordActivity.class);
                 startActivity(i);
             }
         });
