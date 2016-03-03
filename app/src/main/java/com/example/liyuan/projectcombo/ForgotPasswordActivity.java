@@ -26,7 +26,7 @@ public class ForgotPasswordActivity extends Activity implements View.OnClickList
     public static final String SENDEMAIL_URL = "http://cambo.atwebpages.com/android_login_api/sendemail.php";
     public static final String KEY_EMAIL = "email";
     EditText edSendEmail;
-    Button btnSendEmail;
+    Button btnSendEmail, btnLogin;
     String email, password = "";
 
     @Override
@@ -37,6 +37,19 @@ public class ForgotPasswordActivity extends Activity implements View.OnClickList
         edSendEmail = (EditText) findViewById(R.id.sendemail);
 
         btnSendEmail.setOnClickListener(this);
+
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+
+        // Link to Login Screen
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        welcomePage.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     private boolean isEmailValid(CharSequence email) {
@@ -47,7 +60,7 @@ public class ForgotPasswordActivity extends Activity implements View.OnClickList
 
         String subject = "Cambo Recovery Password".toString().trim();
         String message = "Greetings! Recently you have requested to recover your password for Cambo. " +
-                "Your password is " + password + ". Please try to login and enjoy our app! Thank you".toString().trim();
+                "Your password is " + password + ". Please try to login and enjoy our app! Thank you!".toString().trim();
 
         //Creating SendMail object
         SendMail sm = new SendMail(ForgotPasswordActivity.this, email, subject, message);
