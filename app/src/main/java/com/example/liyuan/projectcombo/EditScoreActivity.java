@@ -141,13 +141,13 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             //retrieve scores (in String) from MainActivity
             Intent intent = getIntent();
             Score score = (Score) intent.getSerializableExtra("score");
-            int[] notes = (int[]) intent.getSerializableExtra("notes");
-            double[] lengths = (double[]) intent.getSerializableExtra("lengths");
+            numericNotes = (int[]) intent.getSerializableExtra("notes");
+            lengths = (double[]) intent.getSerializableExtra("lengths");
             if (score != null) {
-                notes = score.getScore();
+                numericNotes = score.getScore();
                 lengths = score.getLengths();
             }
-            String rawScores = extractScore(notes ,lengths);
+            String rawScores = extractScore(numericNotes ,lengths);
             Log.d("rawScores", "The raw scores: " + rawScores);
 
             scores = (TextView) findViewById(R.id.score);
@@ -163,8 +163,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             }
 
             scoreFile = new ScoreFile();
-            numericNotes = null;
-            lengths = null;
             notesAndRest = "";
             lengthOfNotesAndRest = notesAndRest;
             metronomeRunning = false;
@@ -1178,8 +1176,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
             }
 
-            numericNotes = prepareScore();
-            lengths = prepareLengths();
+            //numericNotes = prepareScore();
+            //lengths = prepareLengths();
 
             Log.i("Log@Main735", "score is null? " + (score == null));
             if (opened) {

@@ -1,5 +1,7 @@
 package com.example.liyuan.projectcombo;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -125,6 +127,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
     int progress;
 
+    private Spinner spinner;
     private SeekBar tempoSeekBar;
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
@@ -254,6 +257,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             textView = (TextView) findViewById(R.id.main_score);
             textView.setMovementMethod(new ScrollingMovementMethod());
+//            textView.setLetterSpacing(0.05f);
 //            recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
 //            recordButton = (ImageButton) findViewById(R.id.record_button);
@@ -318,7 +322,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            metronumberpicker.setOnValueChangedListener(this);
 //
             tempo = 60;
-            Spinner spinner = (Spinner) findViewById(R.id.time_signature);
+            spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
             R.array.time_signature_array, android.R.layout.simple_spinner_item);
@@ -335,21 +339,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             opened = false;
             beatLength = 1.0;
 //count down
-//            textView_countdown = (TextView) findViewById(R.id.countdown);
-//            ValueAnimator animator = new ValueAnimator();
-//            animator.setObjectValues(0, 10);
-//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
-//                }
-//            });
-//            animator.setEvaluator(new TypeEvaluator<Integer>() {
-//                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
-//                    return Math.round(startValue + (endValue - startValue) * fraction);
-//                }
-//            });
-//            animator.setDuration(20000);
-//            animator.start();
+            textView_countdown = (TextView) findViewById(R.id.countdown);
+            ValueAnimator animator = new ValueAnimator();
+            animator.setObjectValues(4, 0);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+                }
+            });
+            animator.setEvaluator(new TypeEvaluator<Integer>() {
+                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+                    return Math.round(startValue + (endValue - startValue) * fraction);
+                }
+            });
+            animator.setDuration(5000);
+            animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;
@@ -575,6 +579,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     public void record() {
+        if (spinner != null) spinner.setEnabled(true);
+        if (tempoSeekBar != null) tempoSeekBar.setEnabled(true);
         if (!onRecord) {
             //recordButton.setImageResource(R.drawable.stopbutton);
             onRecord = true;
@@ -978,6 +984,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
                 opened = true;
                 isOpened = true;
+                if (tempoSeekBar != null) tempoSeekBar.setEnabled(false);
+                if (spinner != null) spinner.setEnabled(false);
             }
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
@@ -1303,7 +1311,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser) {
+        if (fromUser && !opened) {
             tempo = progress + 60;
             Log.d("SeekBar Log", "The seekBar value is " + tempo);
             ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
@@ -1318,9 +1326,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        if (metronome != null)
-            metronome.changeTempo(tempo);
-        secondsPerBeat = 60.0 / tempo;
+        if (!opened) {
+            if (metronome != null)
+                metronome.changeTempo(tempo);
+            secondsPerBeat = 60.0 / tempo;
+        }
     }
 
 
