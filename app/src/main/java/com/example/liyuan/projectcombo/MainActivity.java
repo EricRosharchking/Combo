@@ -125,6 +125,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
     int progress;
 
+    private Spinner spinner;
     private SeekBar tempoSeekBar;
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
@@ -318,7 +319,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            metronumberpicker.setOnValueChangedListener(this);
 //
             tempo = 60;
-            Spinner spinner = (Spinner) findViewById(R.id.time_signature);
+            spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
             R.array.time_signature_array, android.R.layout.simple_spinner_item);
@@ -575,6 +576,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     public void record() {
+        if (spinner != null) spinner.setEnabled(true);
+        if (tempoSeekBar != null) tempoSeekBar.setEnabled(true);
         if (!onRecord) {
             //recordButton.setImageResource(R.drawable.stopbutton);
             onRecord = true;
@@ -978,6 +981,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
                 opened = true;
                 isOpened = true;
+                if (tempoSeekBar != null) tempoSeekBar.setEnabled(false);
+                if (spinner != null) spinner.setEnabled(false);
             }
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
@@ -1303,7 +1308,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser) {
+        if (fromUser && !opened) {
             tempo = progress + 60;
             Log.d("SeekBar Log", "The seekBar value is " + tempo);
             ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
@@ -1318,9 +1323,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        if (metronome != null)
-            metronome.changeTempo(tempo);
-        secondsPerBeat = 60.0 / tempo;
+        if (!opened) {
+            if (metronome != null)
+                metronome.changeTempo(tempo);
+            secondsPerBeat = 60.0 / tempo;
+        }
     }
 
 
