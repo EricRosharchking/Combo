@@ -31,7 +31,7 @@ public class DisplayThread extends Thread {
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
     private final String curve = "<sup>\u0361</sup>";
-    private final String bullet = "&#8226\n";
+    private final String bullet = "\u2022";
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
 
@@ -84,8 +84,8 @@ public class DisplayThread extends Thread {
                 Log.d("Log@DisplayThread72", "Octave is " + octave);
                 if (lastKey == key) {
 //                    display = display + "⏜";//"\u23DC"和"⏜"textview都无法显示
-                    display = display +"-";//短破折号
-//                    display = display+"—";//长破折号
+//                    display = display +"-";//短破折号
+                    display = display+" \u2010 ";//长破折号
 //                    display = display+"\uFF0D\n";//长破折号怪怪的
 //                    display = display+"\u2040\n";//tie是短的
                 } else {

@@ -113,7 +113,7 @@ public class DisplayActivity extends ActionBarActivity {
                 }
                 t += thisKey;
                 for (int j = 2; j < l; j++) {
-                    t += " - ";
+                    t += " \u2010 ";
                 }
 
                 double r = l % 1;
@@ -121,13 +121,13 @@ public class DisplayActivity extends ActionBarActivity {
                     t += thisKey;
 
                 if (r >= 0.85)
-                    t += " - ";
+                    t += " \u2010 ";
                 else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
+                    t += "<sub>\u0332</sub>\u2022 ";
                 else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
+                    t += "<sub>\u0332</sub>";
                 else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
+                    t += "<sub>\u0333</sub>";
 
                 totalLengths += l;
                 if (totalLengths > barCount * 4) {
@@ -140,7 +140,7 @@ public class DisplayActivity extends ActionBarActivity {
                     }
                 }
             }
-            t += " \u2225";
+            t += "\u2225";
             textView.setText(Html.fromHtml(t));
         }
 //        Log.d("Log@DisplayActivity133", t);

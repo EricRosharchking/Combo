@@ -1,5 +1,7 @@
 package com.example.liyuan.projectcombo;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -255,6 +257,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             textView = (TextView) findViewById(R.id.main_score);
             textView.setMovementMethod(new ScrollingMovementMethod());
+//            textView.setLetterSpacing(0.05f);
 //            recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
 //            recordButton = (ImageButton) findViewById(R.id.record_button);
@@ -336,21 +339,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             opened = false;
             beatLength = 1.0;
 //count down
-//            textView_countdown = (TextView) findViewById(R.id.countdown);
-//            ValueAnimator animator = new ValueAnimator();
-//            animator.setObjectValues(0, 10);
-//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
-//                }
-//            });
-//            animator.setEvaluator(new TypeEvaluator<Integer>() {
-//                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
-//                    return Math.round(startValue + (endValue - startValue) * fraction);
-//                }
-//            });
-//            animator.setDuration(20000);
-//            animator.start();
+            textView_countdown = (TextView) findViewById(R.id.countdown);
+            ValueAnimator animator = new ValueAnimator();
+            animator.setObjectValues(4, 0);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+                }
+            });
+            animator.setEvaluator(new TypeEvaluator<Integer>() {
+                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+                    return Math.round(startValue + (endValue - startValue) * fraction);
+                }
+            });
+            animator.setDuration(5000);
+            animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;
