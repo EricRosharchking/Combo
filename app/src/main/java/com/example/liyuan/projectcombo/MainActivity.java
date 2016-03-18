@@ -69,6 +69,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private final String BULLET = "&#8226\n";
     private final String UNDERLINE = "<sub>\u0332</sub>";
     private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
+    private final String CONTENT ="<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><head><style>p{color:white;font-size:30px}</style><body style=\"background-color:#222222;\"><p style=\"font-size:30px\">";
 
 //  Button pausePlay;
 //  Button stopPlay;
@@ -84,6 +85,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //    ImageButton recordButton;
     TextView textView;
 //    TextView recordStatus;
+    WebView myWebView;
 
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
@@ -259,11 +261,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //webview score
 
 //            String htmlString = "<body style=\"background-color:#222222;\"><p style=\"font-size:30px\">0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•</p></body></html>";
-            String htmlString = "<body style=\"background-color:#222222;\"><p style=\"font-size:30px\">0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 1<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 0<sub>̳</sub>2<sub>̲</sub> ‐ <sub>̲</sub>• ‐ |0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐  ‐ <sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•3 ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•4| ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•</p></body></html>";
-            WebView myWebView = (WebView) findViewById(R.id.web_score);
-            String content ="<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><head><style>p{color:white;font-size:30px}</style>";
-            content += htmlString;
-            myWebView.loadData(content, "text/html; charset=utf-8", "UTF-8");
+            String htmlString = "0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 1<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 0<sub>̳</sub>2<sub>̲</sub> ‐ <sub>̲</sub>• ‐ |0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐  ‐ <sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•3 ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•4| ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•</p></body></html>";
+            myWebView = (WebView) findViewById(R.id.web_score);
+
+            htmlString = CONTENT + htmlString;
+            myWebView.loadData(htmlString, "text/html; charset=utf-8", "UTF-8");
 
             //textview score
             textView = (TextView) findViewById(R.id.main_score);
@@ -352,7 +354,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //count down
             textView_countdown = (TextView) findViewById(R.id.countdown);
             ValueAnimator animator = new ValueAnimator();
-            animator.setObjectValues(4, 0);
+            animator.setObjectValues(timeSig, 0);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
                     textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
@@ -604,13 +606,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             notesAndRest = "";
             lengthOfNotesAndRest = notesAndRest;
 
-
             if (displayThread.getState() != Thread.State.NEW) {
                 displayThread = new DisplayThread();
             }
-            displayThread.setTimeSignature(getTimeSignature());
+            displayThread.setTimeSignature(timeSig);
             displayThread.setTempo(tempo);
             startMetronome(null);
+
+            ValueAnimator animator = new ValueAnimator();
+            animator.setObjectValues(timeSig, 0);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+                }
+            });
+            animator.setEvaluator(new TypeEvaluator<Integer>() {
+                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+                    return Math.round(startValue + (endValue - startValue) * fraction);
+                }
+            });
+            animator.setDuration(5000);
+            animator.start();
+
             long delay = (long)(timeSig * 1000 * secondsPerBeat);
             try {
                 Thread.sleep(delay);
@@ -969,8 +986,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Log.d("The length of it is", lengthOfNotesAndRest);
 //        textView.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );//中间加横线
 //        textView.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );//底部加横线
-        textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause
+//        textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause
 //        textView.setText(displayThread.getDisplay());
+        String str = displayThread.getDisplay();
+        str += "</p></body></html>";
+        str = CONTENT + str;
+        myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
         return super.onTouchEvent(event);
     }
 
@@ -1537,10 +1558,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_LONG).show();
         switch (position) {
             case 0:
-                timeSig = 3;
+                timeSig = 4;
                 break;
             case 1:
-                timeSig = 4;
+                timeSig = 3;
                 break;
         }
     }
