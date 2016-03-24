@@ -44,10 +44,6 @@ public class DisplayThread extends Thread {
         key = 0;
         lastKey = -1;
         octave = 4;
-        secondsPerBeat = 60.0 / tempo;
-        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
-        displayTime = barTime * 4;
-        quarterBeat = (int) (1000 * secondsPerBeat / 4);
     }
 
     public void run() {
@@ -61,6 +57,12 @@ public class DisplayThread extends Thread {
 //
 //            strChinese = "decode error";
 //        }
+
+
+        secondsPerBeat = 60.0 / tempo;
+        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
+        displayTime = barTime * 4;
+        quarterBeat = (int) (1000 * secondsPerBeat / 4);
 
         startTime = System.currentTimeMillis();
         Log.d("DisplayThread Log", "The start Time is " + startTime);
@@ -221,8 +223,8 @@ public class DisplayThread extends Thread {
 
     public void setTimeSignature(int timeSignature) {
         this.timeSignature = timeSignature;
-        barTime = timeSignature * 1000;
-        displayTime = barTime * 4;
+        //barTime = timeSignature * 1000;
+        //displayTime = barTime * 4;
 //        Log.d("DisplayThread Log", "The current timeSignature is " + timeSignature);
 //        Log.d("DisplayThread Log", "The current barTime is " + barTime);
 //        Log.d("DisplayThread Log", "The current displayTime is " + displayTime);
@@ -230,10 +232,10 @@ public class DisplayThread extends Thread {
 
     public void setTempo(int tempo) {
         this.tempo = tempo;
-        secondsPerBeat = 60.0 / tempo;
-        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
-        displayTime = barTime * 4;
-        quarterBeat = (int) (1000 * secondsPerBeat / 4);
+        //secondsPerBeat = 60.0 / tempo;
+        //barTime = (int) (timeSignature * 1000 * secondsPerBeat);
+        //displayTime = barTime * 4;
+        //quarterBeat = (int) (1000 * secondsPerBeat / 4);
     }
 
     public void setDelay(int delay) {

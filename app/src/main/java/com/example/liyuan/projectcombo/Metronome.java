@@ -63,7 +63,7 @@ public class Metronome extends Activity {
                 double twopi = 2 * Math.PI;
                 double ph = 0.0;
 
-//                double frequency = frequency1;
+                double frequency = frequency1;
                 // start audio
                 audioTrack.play();
                 count = 1;

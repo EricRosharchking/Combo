@@ -116,8 +116,8 @@
     <string name="action_example">Example action</string>
 
         <string-array name="time_signature_array">
-            <item>3/4</item>
             <item>4/4</item>
+            <item>3/4</item>
         </string-array>
     <string name="app_id">161733834174689</string>
     <string name="sendEmail">Send Email</string>
