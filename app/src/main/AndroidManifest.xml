@@ -19,7 +19,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
         <activity
             android:name=".welcomePage"
             android:label="@string/app_name"
@@ -42,7 +45,9 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" >
-<!--            <intent-filter>
+
+            <!--
+                <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,7 +55,8 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UserMainPage" />-->
+                android:value=".UserMainPage" />
+            -->
         </activity>
         <activity
             android:name=".UserMainPage"
@@ -92,18 +98,19 @@
             android:name=".EditSaveActivity"
             android:label="string/title_activity_editsave"
             android:screenOrientation="landscape"
-            android:theme="@style/MyDialog">
+            android:theme="@style/MyDialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".DisplayActivity"
+        <activity
+            android:name=".DisplayActivity"
             android:label="@string/title_activity_display"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_Activity"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".AddLyricsActivity"
@@ -114,13 +121,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
-
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
