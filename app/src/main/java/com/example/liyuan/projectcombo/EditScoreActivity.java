@@ -63,7 +63,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private final String bullet = "&#8226\n";
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
-    private final String sharp = "\u266F";
+    //private final String sharp = "\u266F";
+    private final String sharp = "#";
 
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
