@@ -31,12 +31,12 @@ public class DisplayActivity extends ActionBarActivity {
             notes = score.getScore();
             lengths = score.getLengths();
             String key = score.getKey();
-            scoreKey.setText(key);
-            scoreTimeSig.setText(score.getTimeSignature());
-            String tempo = "" + score.getTempo();
-            scoreTempo.setText(tempo.trim());
-            scoreTitle.setText(score.getTitle());
-            scoreAuthor.setText(score.getAuthor());
+            //scoreKey.setText(key);
+            //scoreTimeSig.setText(score.getTimeSignature());
+            //String tempo = "" + score.getTempo();
+            //scoreTempo.setText(tempo.trim());
+            //scoreTitle.setText(score.getTitle());
+            //scoreAuthor.setText(score.getAuthor());
         }
 
         if (notes != null && lengths != null) {
@@ -141,8 +141,9 @@ public class DisplayActivity extends ActionBarActivity {
                 }
             }
             t += "\u2225";
-            textView.setText(Html.fromHtml(t));
+            //textView.setText(Html.fromHtml(t));
         }
+        //textView.setText(Html.fromHtml(getString(R.string.example)));
 //        Log.d("Log@DisplayActivity133", t);
         ////TODO: 把score变成两个TextView，一个只有数字，一个只有横线。use \n to separate the two
         ////TODO: behaviour of back button on screen will start a new MainActivity instead of resuming the old one
