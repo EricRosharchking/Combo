@@ -1239,19 +1239,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //notesAndRest = notesAndRest.trim();
         //lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
-        Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
+        //Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
         if (playBackTrack == null || playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
-            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
-                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
-            }
+//            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
+//                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
+//            }
             //// TODO: 10/18/2015 Trim the two Strings before split
-            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
-                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
-            }
+//            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
+//                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+//            }
 
-            Log.i("Log@Main735", "score is null? " + (score == null));
-            Log.i("Log@Main1215", "opened is " + opened);
+//            Log.i("Log@Main735", "score is null? " + (score == null));
+//            Log.i("Log@Main1215", "opened is " + opened);
             if (opened) {
                 numericNotes = score.getScore();
                 lengths = score.getLengths();
@@ -1261,9 +1261,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 lengths = prepareLengths();
             }
 
-            if (numericNotes != null && lengths != null) {
-                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
-            }
+//            if (numericNotes != null && lengths != null) {
+//                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+//            }
             if (numericNotes.length == lengths.length) {
 
 
