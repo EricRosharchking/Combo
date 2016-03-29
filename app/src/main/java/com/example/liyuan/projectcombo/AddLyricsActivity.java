@@ -130,7 +130,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             
             Intent intent = getIntent();
-            Score score = (Score) intent.getSerializableExtra("score");
+            score = (Score) intent.getSerializableExtra("score");
             int[] notes = (int[]) intent.getSerializableExtra("notes");
             double[] lengths = (double[]) intent.getSerializableExtra("lengths");
             if (score != null) {
@@ -144,6 +144,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             scores = (TextView) findViewById(R.id.tvScores);
             lyrics = (EditText) findViewById(R.id.edLyrics);
+            lyrics.setText(score.getLyrics());
 
             scores.setMovementMethod(new ScrollingMovementMethod());
             lyrics.setMovementMethod(new ScrollingMovementMethod());
@@ -559,12 +560,12 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     private void save() {
         Intent intent = new Intent(this, SaveActivity.class);
-        score = new Score();
+        score.setLyrics(lyrics.getText().toString());
         numericNotes = prepareScore();
         lengths = prepareLengths();
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
-        score.setScore(numericNotes, lengths);
+        //score.setScore(numericNotes, lengths);
         intent.putExtra("score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);

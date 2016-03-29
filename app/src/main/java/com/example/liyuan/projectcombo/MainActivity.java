@@ -2,6 +2,7 @@ package com.example.liyuan.projectcombo;
 
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.os.Handler;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,6 +57,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     Metronome metronome;
     ScoreFile scoreFile;
     Score score;
+    Countdown countdown;
+    ValueAnimator animator;
 
     private AudioThread[] audioThreads = new AudioThread[14];
     final int[] keys = {R.id.cnatural, R.id.csharp, R.id.dnatural, R.id.eflat, R.id.enatural,
@@ -261,7 +264,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //webview score
 
 //            String htmlString = "<body style=\"background-color:#222222;\"><p style=\"font-size:30px\">0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•</p></body></html>";
-            String htmlString = "0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 1<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 0<sub>̳</sub>2<sub>̲</sub> ‐ <sub>̲</sub>• ‐ |0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐  ‐ <sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•3 ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•4| ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•</p></body></html>";
+            String htmlString = "| 3 3<sub>̲</sub> 3<sub>̲</sub> 4 5 | 3• 2<sub>̲</sub> 2 \u2013 | 1 1<sub>̲</sub> 1<sub>̲</sub> 2 3 |";
+            //"0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 1<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 0<sub>̳</sub>2<sub>̲</sub> ‐ <sub>̲</sub>• ‐ |0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐  ‐ <sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•3 ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•4| ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•</p></body></html>";
             myWebView = (WebView) findViewById(R.id.web_score);
 
             htmlString = CONTENT + htmlString;
@@ -353,8 +357,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             beatLength = 1.0;
 //count down
             textView_countdown = (TextView) findViewById(R.id.countdown);
-            ValueAnimator animator = new ValueAnimator();
-            animator.setObjectValues(timeSig, 0);
+            textView_countdown.setText("" + timeSig);
+            countdown = new Countdown(this);
+            animator = new ValueAnimator();
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
                     textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
@@ -365,8 +370,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     return Math.round(startValue + (endValue - startValue) * fraction);
                 }
             });
-            animator.setDuration(5000);
-            animator.start();
+            animator.setObjectValues(timeSig, 0);
+            //animator.setDuration(5000);
+            //animator.start();
 
         } catch (NumberFormatException e) {
             tempo = 60;
@@ -613,18 +619,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             displayThread.setTempo(tempo);
             startMetronome(null);
 
-            ValueAnimator animator = new ValueAnimator();
+            //countdown.setTimeSig(timeSig);
+            new Handler().post(countdown);
             animator.setObjectValues(timeSig, 0);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
-                }
-            });
-            animator.setEvaluator(new TypeEvaluator<Integer>() {
-                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
-                    return Math.round(startValue + (endValue - startValue) * fraction);
-                }
-            });
             animator.setDuration(5000);
             animator.start();
 

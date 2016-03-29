@@ -154,7 +154,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+            scores.setText(Html.fromHtml(getString(R.string.example)) + "\u2225");
 
             scores.setInputType(InputType.TYPE_NULL);
             if (android.os.Build.VERSION.SDK_INT >= 11)
