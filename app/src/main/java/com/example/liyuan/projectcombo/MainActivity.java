@@ -57,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     Metronome metronome;
     ScoreFile scoreFile;
     Score score;
-    Countdown countdown;
+    //Countdown countdown;
     ValueAnimator animator;
 
     private AudioThread[] audioThreads = new AudioThread[14];
@@ -89,6 +89,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     TextView textView;
 //    TextView recordStatus;
     WebView myWebView;
+
+    //change menu name
+    String menu_name = "Create new song";
+    boolean isOpenOrNot = false;
 
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
@@ -358,7 +362,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //count down
             textView_countdown = (TextView) findViewById(R.id.countdown);
             textView_countdown.setText("" + timeSig);
-            countdown = new Countdown(this);
+            //countdown = new Countdown(this);
             animator = new ValueAnimator();
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -437,7 +441,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle("Create new song");
+
+                if(isOpenOrNot==true){
+                    mActivityTitle = score.getTitle();
+                }
+
+                getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -620,7 +629,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             startMetronome(null);
 
             //countdown.setTimeSig(timeSig);
-            new Handler().post(countdown);
+            //new Handler().post(countdown);
             animator.setObjectValues(timeSig, 0);
             animator.setDuration(5000);
             animator.start();
@@ -1388,6 +1397,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         Intent intent = new Intent(this, NewActivity.class);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
+        isOpenOrNot = true;
     }
 
 
