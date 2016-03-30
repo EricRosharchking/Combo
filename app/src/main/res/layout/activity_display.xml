@@ -27,7 +27,7 @@
 					android:layout_alignParentStart="true"
 					android:text="1 = "
 					android:textColor="#000000"
-					android:textSize="30sp"/>
+					android:textSize="28sp"/>
 					
 				<TextView
 					android:id="@+id/score_key"
@@ -37,7 +37,7 @@
 					android:layout_toEndOf="@+id/score_key_misc"
 					android:text="C"
 					android:textColor="#000000"
-					android:textSize="30sp"/>
+					android:textSize="28sp"/>
 					
 				<TextView
 					android:id="@+id/score_timeSig"
@@ -49,7 +49,7 @@
 					android:layout_marginStart="5dp"
 					android:text="4/4"
 					android:textColor="#000000"
-					android:textSize="30sp"/>
+					android:textSize="28sp"/>
 					
 				<TextView
 					android:id="@+id/score_tempo"
@@ -61,7 +61,7 @@
 					android:layout_marginStart="5dp"
 					android:text="60"
 					android:textColor="#000000"
-					android:textSize="30sp"/>
+					android:textSize="28sp"/>
 					
 				<TextView
 					android:id="@+id/score_title"
@@ -70,7 +70,7 @@
 					android:layout_centerHorizontal="true"
 					android:text="虫儿飞"
 					android:textColor="#000000"
-					android:textSize="48sp"/>
+					android:textSize="38sp"/>
 					
 				<TextView
 					android:id="@+id/score_author"
@@ -80,7 +80,7 @@
 					android:layout_alignParentEnd="true"
 					android:text="Anonymous"
 					android:textColor="#000000"
-					android:textSize="30sp"/>
+					android:textSize="28sp"/>
 			</RelativeLayout>
 
 			<TextView
@@ -89,6 +89,7 @@
 				android:layout_height="wrap_content"
 				android:layout_below="@id/score_misc"
 				android:gravity="left"
+				android:text="@string/example"
 				android:layout_marginTop="15dp"
 				android:layout_marginLeft="10dp"
 				android:textColor="#000000"

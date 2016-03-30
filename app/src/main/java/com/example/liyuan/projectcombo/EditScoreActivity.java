@@ -63,7 +63,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private final String bullet = "&#8226\n";
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
-    private final String sharp = "\u266F";
+    private final String sharp = "#";
 
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
@@ -153,7 +153,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+//            scores.setText(Html.fromHtml(getString(R.string.example2)) + "\u2225");
+
+            Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3,8));
 
             scores.setInputType(InputType.TYPE_NULL);
             if (android.os.Build.VERSION.SDK_INT >= 11)
@@ -386,8 +388,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //            spinner.setAdapter(adapter);
 //            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
-            numericNotes = null;
-            lengths = null;
             withMetronome = true;
             opened = false;
             beatLength = 1.0;
@@ -1165,30 +1165,30 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         //notesAndRest = notesAndRest.trim();
         //lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
-        Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
+//        Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
         if (playBackTrack == null || playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
-            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
-                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
-            }
-            //// TODO: 10/18/2015 Trim the two Strings before split
-            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
-                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
-            }
+//            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
+//                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
+//            }
+//            //// TODO: 10/18/2015 Trim the two Strings before split
+//            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
+//                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
+//            }
 
             //numericNotes = prepareScore();
             //lengths = prepareLengths();
 
-            Log.i("Log@Main735", "score is null? " + (score == null));
-            if (opened) {
-                numericNotes = score.getScore();
-                lengths = score.getLengths();
-                opened = false;
-            }
+//            Log.i("Log@Main735", "score is null? " + (score == null));
+//            if (opened) {
+//                numericNotes = score.getScore();
+//                lengths = score.getLengths();
+//                opened = false;
+//            }
 
-            if (numericNotes != null && lengths != null) {
-                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
-            }
+//            if (numericNotes != null && lengths != null) {
+//                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
+//            }
             if (numericNotes.length == lengths.length) {
 
 
@@ -1207,8 +1207,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         scoreLength[3] = "1.000";*/
 
 
-                playBackTrack = new PlayBack(numericNotes, lengths, lastNote,tempo);
-                Log.d("PlayBack Log", "PlayBack initialised");
+                playBackTrack = new PlayBack(numericNotes, lengths, 0, 60);
+//                Log.d("PlayBack Log", "PlayBack initialised");
                 playBackTrack.start();
 
                     /*try {
@@ -1220,6 +1220,35 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     }*/
             }
         }
+    }
+
+    public void pausePlay(View view) {
+        if (playBackTrack != null) {
+            playBackTrack.pausePlaying();
+            lastNote = playBackTrack.getJ();
+            if (lastNote == playBackTrack.getSize() - 1) {
+                lastNote = playBackTrack.getLast();
+            }
+            try {
+                playBackTrack.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+        }
+    }
+
+    public void stopPlay(View view) {
+        if (playBackTrack != null) {
+            playBackTrack.stopPlaying();
+            lastNote = playBackTrack.getLast();
+        }
+        try {
+            playBackTrack.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
     private int[] prepareScore() {
@@ -1466,35 +1495,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void pausePlay(View view) {
-        if (playBackTrack != null) {
-            playBackTrack.pausePlaying();
-            lastNote = playBackTrack.getJ();
-            if (lastNote == playBackTrack.getSize() - 1) {
-                lastNote = playBackTrack.getLast();
-            }
-            try {
-                playBackTrack.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
-        }
-    }
-
-    public void stopPlay(View view) {
-        if (playBackTrack != null) {
-            playBackTrack.stopPlaying();
-            lastNote = playBackTrack.getLast();
-        }
-        try {
-            playBackTrack.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
     private int getTimeSignature() {
