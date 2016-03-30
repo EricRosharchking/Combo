@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by Liyuan on 11/1/2015.
  */
-public class DisplayThread extends Thread {
+public class DisplayThreadNew extends Thread {
     private long startTime;
     private int tempo;
     private int timeSignature;
@@ -35,7 +35,7 @@ public class DisplayThread extends Thread {
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
 
-    public DisplayThread() {
+    public DisplayThreadNew() {
         timeSignature = 4;
         tempo = 60;
         display = "";
