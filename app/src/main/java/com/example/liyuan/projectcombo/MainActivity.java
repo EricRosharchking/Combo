@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
+import com.example.liyuan.projectcombo.kiv.MyAdapter;
 import com.facebook.login.LoginManager;
 
 import java.lang.reflect.Method;
@@ -387,30 +388,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        myAdapter = new MyAdapter(this, userName, "Cambo");
+        int[] images = {R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
+        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 1:
-                        finish();
-                        break;
-                    case 2:
                         save();
                         break;
-                    case 3:
+                    case 2:
                         editScore();
                         break;
-                    case 4:
+                    case 3:
                         addLyrics();
                         break;
-                    case 5:
+                    case 4:
                         openOrNew();
                         break;
-                    case 6:
-                    exportToPDF();
+                    case 5:
+                        exportToPDF();
                         break;
+
                 }
                 //Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
@@ -1566,63 +1567,5 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-}
-
-class MyAdapter extends BaseAdapter {
-    private String att_email;
-    private String att_name;
-    private Context context;
-    String[] tool_list;
-    int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
-
-    public MyAdapter(Context context, String email, String name) {
-        this.context = context;
-        this.att_name = name;
-        this.att_email = email;
-        tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
-    }
-
-    @Override
-    public int getCount() {
-
-        return tool_list.length;
-    }
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
-    @Override
-    public boolean isEnabled(int position) {
-        if (position == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    @Override
-    public Object getItem(int i) {
-        return tool_list[i];
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        View row = null;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
-        if (view == null) {
-            row = inflater.inflate(R.layout.custom_row, viewGroup, false);
-        } else {
-            row = view;
-        }
-        TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
-        ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
-        titleTextView2.setText(tool_list[i]);
-        titleImageView2.setImageResource(images[i]);
-        return row;
     }
 }

@@ -39,6 +39,8 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.example.liyuan.projectcombo.kiv.MyAdapter;
+
 public class EditScoreActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener{
 
     Score score;
@@ -70,7 +72,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-    private MyAdapter myAdapter;
     private Toolbar toolbar;
     private NumberPicker metronumberpicker;
 
@@ -155,7 +156,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
 //            scores.setText(Html.fromHtml(getString(R.string.example2)) + "\u2225");
 
-            Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3,8));
+            Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3, 8));
 
             scores.setInputType(InputType.TYPE_NULL);
             if (android.os.Build.VERSION.SDK_INT >= 11)
@@ -407,7 +408,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo");
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.saveas , R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox_EditScoreActivity);
+        MyAdapter myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -419,8 +422,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     case 2:
                         save();
                         break;
+                    //saveasnew
                     case 3:
-                        editScore();
+                        save();
                         break;
                     case 4:
                         addLyrics();
@@ -431,6 +435,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     case 6:
                         exportToPDF();
                         break;
+
                 }
                 Toast.makeText(EditScoreActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
@@ -1569,60 +1574,60 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         finish();
     }
 
-    class MyAdapter extends BaseAdapter {
-        private String att_email;
-        private String att_name;
-        private Context context;
-        String[] tool_list;
-        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
-
-        public MyAdapter(Context context, String email, String name) {
-            this.context = context;
-            this.att_name = name;
-            this.att_email = email;
-            tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
-        }
-
-        @Override
-        public int getCount() {
-
-            return tool_list.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return tool_list[i];
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View row = null;
-            if (view == null) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
-                row = inflater.inflate(R.layout.custom_row, viewGroup, false);
-            } else {
-                row = view;
-            }
-            TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
-            ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
-            TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-            if (t_name != null) {
-                t_name.setText("Cambo");
+//    class MyAdapter extends BaseAdapter {
+//        private String att_email;
+//        private String att_name;
+//        private Context context;
+//        String[] tool_list;
+//        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 //
-            }
-//        t_name.setText(att_name);
-            TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-//        t_email.setText(att_email);
-            titleTextView2.setText(tool_list[i]);
-            titleImageView2.setImageResource(images[i]);
-            return row;
-        }
-    }
+//        public MyAdapter(Context context, String email, String name) {
+//            this.context = context;
+//            this.att_name = name;
+//            this.att_email = email;
+//            tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//
+//            return tool_list.length;
+//        }
+//
+//        @Override
+//        public Object getItem(int i) {
+//            return tool_list[i];
+//        }
+//
+//        @Override
+//        public long getItemId(int i) {
+//            return i;
+//        }
+//
+//        @Override
+//        public View getView(int i, View view, ViewGroup viewGroup) {
+//            View row = null;
+//            if (view == null) {
+//                LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
+//                row = inflater.inflate(R.layout.custom_row, viewGroup, false);
+//            } else {
+//                row = view;
+//            }
+//            TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
+//            ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
+//            TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+//            if (t_name != null) {
+//                t_name.setText("Cambo");
+////
+//            }
+////        t_name.setText(att_name);
+//            TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+////        t_email.setText(att_email);
+//            titleTextView2.setText(tool_list[i]);
+//            titleImageView2.setImageResource(images[i]);
+//            return row;
+//        }
+//    }
 
 
     //split the String to String[] for use to split into multiple arrays
