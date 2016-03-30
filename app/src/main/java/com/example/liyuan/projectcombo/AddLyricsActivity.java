@@ -28,6 +28,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.liyuan.projectcombo.kiv.MyAdapter;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -128,9 +130,9 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
             View decorView = getWindow().getDecorView();
             // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            
+
             Intent intent = getIntent();
-            score = (Score) intent.getSerializableExtra("score");
+            Score score = (Score) intent.getSerializableExtra("score");
             int[] notes = (int[]) intent.getSerializableExtra("notes");
             double[] lengths = (double[]) intent.getSerializableExtra("lengths");
             if (score != null) {
@@ -144,7 +146,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             scores = (TextView) findViewById(R.id.tvScores);
             lyrics = (EditText) findViewById(R.id.edLyrics);
-            lyrics.setText(score.getLyrics());
+//            lyrics.setText(score.getLyrics());
 
             scores.setMovementMethod(new ScrollingMovementMethod());
             lyrics.setMovementMethod(new ScrollingMovementMethod());
@@ -183,12 +185,14 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo");
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.recordlists, R.drawable.share};
+        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox_addlyrics);
+        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
+            switch (position) {
                     case 1:
                         finish();
                         break;
@@ -199,12 +203,9 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                         editScore();
                         break;
                     case 4:
-                        addLyrics();
-                        break;
-                    case 5:
                         openOrNew();
                         break;
-                    case 6:
+                    case 5:
                         exportToPDF();
                         break;
                 }
@@ -560,12 +561,12 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     private void save() {
         Intent intent = new Intent(this, SaveActivity.class);
-        score.setLyrics(lyrics.getText().toString());
+        score = new Score();
         numericNotes = prepareScore();
         lengths = prepareLengths();
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
-        //score.setScore(numericNotes, lengths);
+        score.setScore(numericNotes, lengths);
         intent.putExtra("score", score);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
@@ -729,61 +730,6 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
             }
-        }
-    }
-
-    class MyAdapter extends BaseAdapter {
-        private String att_email;
-        private String att_name;
-        private Context context;
-        String[] tool_list;
-        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
-
-        public MyAdapter(Context context, String email, String name) {
-            this.context = context;
-            this.att_name = name;
-            this.att_email = email;
-            tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
-        }
-
-        @Override
-        public int getCount() {
-
-            return tool_list.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return tool_list[i];
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View row = null;
-            if (view == null) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
-                row = inflater.inflate(R.layout.custom_row, viewGroup, false);
-            } else {
-                row = view;
-            }
-            TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
-            ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
-            TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-            if (t_name != null) {
-                t_name.setText("Cambo");
-//
-            }
-//        t_name.setText(att_name);
-            TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-//        t_email.setText(att_email);
-            titleTextView2.setText(tool_list[i]);
-            titleImageView2.setImageResource(images[i]);
-            return row;
         }
     }
 
