@@ -5,19 +5,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
-public class NewActivity extends ActionBarActivity implements DialogInterface.OnClickListener {
+public class CreateScoreActivity extends ActionBarActivity implements DialogInterface.OnClickListener {
     String name;
     String[] names;
     private final int EXPORT = 1;
@@ -32,7 +27,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
         action = getIntent().getIntExtra("action", 0);
         names = new String[]{"1", "2", "3"};
         Context context = App.getAppContext();
-        //scoreFile.setContext(NewActivity.this);
+        //scoreFile.setContext(CreateScoreActivity.this);
         if (context != null) {
 
             Object[] objectArray = scoreFile.openAllFileNames().getAllFileNamesSet().toArray();
@@ -41,7 +36,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
 			if (names.length > 0)
                 name = names[0];
         } else {
-            //scoreFile = new ScoreFile(NewActivity.this);
+            //scoreFile = new ScoreFile(CreateScoreActivity.this);
             scoreFile = new ScoreFile();
             Log.e("Error@NewActivity38", "Context is null");
         }
@@ -51,7 +46,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
             d.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    NewActivity.this.finish();
+                    CreateScoreActivity.this.finish();
                 }
             });
             d.show();
@@ -62,7 +57,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
 
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Context context = NewActivity.this;
+        Context context = CreateScoreActivity.this;
         AlertDialog.Builder builder;
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
@@ -90,7 +85,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
                     .setNegativeButton("New", this);
 
         } else {
-            Log.e("NewActivity Log", "Context is Null");
+            Log.e("CreateScoreActivity Log", "Context is Null");
             builder = null;
         }
 
@@ -136,7 +131,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
         } else if (which == -2) {
             Log.d("", "New Clicked");
             if (getIntent().getIntExtra("parentActivity", 0) == 1) {
-                Intent i = new Intent(this, UserMainPage.class);
+                Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
             }
             finish();
@@ -146,7 +141,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
     @Override
     public void onBackPressed() {
         if (getIntent().getIntExtra("parentActivity", 0) == 1) {
-            Intent i = new Intent(this, UserMainPage.class);
+            Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         }
         finish();

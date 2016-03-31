@@ -65,7 +65,7 @@ public class DisplayThread extends Thread {
         quarterBeat = (int) (1000 * secondsPerBeat / 4);
 
         startTime = System.currentTimeMillis();
-        Log.d("DisplayThread Log", "The start Time is " + startTime);
+//        Log.d("DisplayThread Log", "The start Time is " + startTime);
         long elapsedTime = System.currentTimeMillis() - startTime;
         long count = elapsedTime / quarterBeat;
         int displayCount = 1;
@@ -236,10 +236,6 @@ public class DisplayThread extends Thread {
         //barTime = (int) (timeSignature * 1000 * secondsPerBeat);
         //displayTime = barTime * 4;
         //quarterBeat = (int) (1000 * secondsPerBeat / 4);
-    }
-
-    public void setDelay(int delay) {
-
     }
 
     public void setOctave(int octave) {

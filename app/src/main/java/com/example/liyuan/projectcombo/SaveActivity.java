@@ -76,7 +76,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
                     .setNegativeButton("Cancel", this);
 
         } else {
-            Log.e("NewActivity Log", "Context is Null");
+            Log.e("CreateScoreActivity Log", "Context is Null");
             builder = null;
         }
 

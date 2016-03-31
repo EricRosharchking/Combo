@@ -46,27 +46,8 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" >
 
-            <!--
-                <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UserMainPage" />
-            -->
         </activity>
-        <activity
-            android:name=".UserMainPage"
-            android:label="@string/title_activity_user_main_page"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".welcomePage" />
-        </activity>
+
         <activity
             android:name=".EditScoreActivity"
             android:label="@string/title_activity_add_lyrics"
@@ -77,7 +58,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".NewActivity"
+            android:name=".CreateScoreActivity"
             android:label="@string/title_activity_new"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" >

@@ -66,7 +66,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
                     .setNegativeButton("Cancel", this);
 
         } else {
-            Log.e("NewActivity Log", "Context is Null");
+            Log.e("CreateScoreActivity Log", "Context is Null");
             builder = null;
         }
 
