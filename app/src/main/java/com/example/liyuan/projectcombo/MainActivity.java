@@ -100,6 +100,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private String userEmail;
     private String userName;
+    private String userScoreName;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -180,6 +181,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
             userName = (String) getIntent().getSerializableExtra("userName");
+            userScoreName = (String) getIntent().getSerializableExtra("userScore");
+
+            if(userScoreName != null){
+                mActivityTitle = userScoreName;
+            }
+
+            Log.i("Log@myScoreName", "Score name here is " + userScoreName);
+
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
                 t_name.setText(userName);
@@ -442,9 +451,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
 
-                if(isOpenOrNot==true){
-                    mActivityTitle = score.getTitle();
-                }
+//                if(isOpenOrNot==true){
+//                    mActivityTitle = score.getTitle();
+//                }
 
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()

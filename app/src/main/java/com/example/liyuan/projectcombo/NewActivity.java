@@ -125,6 +125,8 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
                 //startActivityForResult(intent, 1);
                 intent.putExtra("userName", getIntent().getStringExtra("userName"));
                 intent.putExtra("userEmail", getIntent().getStringExtra("userEmail"));
+                intent.putExtra("userScore", name);
+                Log.i("Log@New111", "score name to be sent "+name);
                 startActivity(intent);
                 finish();
             } catch (IOException e) {
