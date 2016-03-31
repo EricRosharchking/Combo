@@ -200,25 +200,18 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             b20 = (Button) findViewById(R.id.button20);
             b21 = (Button) findViewById(R.id.button21);
             b22 = (Button) findViewById(R.id.button22);
-            b23 = (Button) findViewById(R.id.button23);
             b24 = (Button) findViewById(R.id.button24);
             b25 = (Button) findViewById(R.id.button25);
             b26 = (Button) findViewById(R.id.button26);
-            b27 = (Button) findViewById(R.id.button27);
             b28 = (Button) findViewById(R.id.button28);
-            b29 = (Button) findViewById(R.id.button29);
             b30 = (Button) findViewById(R.id.button30);
             b31 = (Button) findViewById(R.id.button31);
             b32 = (Button) findViewById(R.id.button32);
-            b33 = (Button) findViewById(R.id.button33);
             b34 = (Button) findViewById(R.id.button34);
-            b35 = (Button) findViewById(R.id.button35);
             b36 = (Button) findViewById(R.id.button36);
             b37 = (Button) findViewById(R.id.button37);
             b38 = (Button) findViewById(R.id.button38);
-            b39 = (Button) findViewById(R.id.button39);
             b40 = (Button) findViewById(R.id.button40);
-            b41 = (Button) findViewById(R.id.button41);
             b42 = (Button) findViewById(R.id.button42);
             b43 = (Button) findViewById(R.id.button43);
             b44 = (Button) findViewById(R.id.button44);
@@ -439,7 +432,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     }
 
     private void exportToPDF() {
-        Intent intent = new Intent(this, NewActivity.class);
+        Intent intent = new Intent(this, CreateScoreActivity.class);
         intent.putExtra("action", 1);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
@@ -769,15 +762,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button23:
-                t = ""+Html.fromHtml("4"+dot_above);
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button23:
+//                t = ""+Html.fromHtml("4"+dot_above);
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button24:
                 t = ""+Html.fromHtml("4"+dot_below);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -808,16 +801,16 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button27:
-                t = ""+Html.fromHtml("5"+curve);
-                //int index = getEditSelection();// The location of the cursor
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button27:
+//                t = ""+Html.fromHtml("5"+curve);
+//                //int index = getEditSelection();// The location of the cursor
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button28:
                 t = ""+Html.fromHtml("5"+bullet);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -827,15 +820,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button29:
-                t = ""+Html.fromHtml("5"+dot_above);
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button29:
+//                t = ""+Html.fromHtml("5"+dot_above);
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button30:
                 t = ""+Html.fromHtml("5"+dot_below);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -863,15 +856,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button33:
-                t = ""+Html.fromHtml("6"+curve);
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button33:
+//                t = ""+Html.fromHtml("6"+curve);
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button34:
                 t = ""+Html.fromHtml("6"+bullet);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -881,15 +874,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button35:
-                t = ""+Html.fromHtml("6"+dot_above);
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button35:
+//                t = ""+Html.fromHtml("6"+dot_above);
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button36:
                 t = ""+Html.fromHtml("5"+dot_below);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -917,15 +910,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button39:
-                t = ""+Html.fromHtml("7"+curve);
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button39:
+//                t = ""+Html.fromHtml("7"+curve);
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button40:
                 t = ""+Html.fromHtml("7"+bullet);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -935,15 +928,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     scores.getEditableText().insert(index, t);// Insert text cursor position
                 }
                 break;
-            case R.id.button41:
-                t = ""+Html.fromHtml("7"+dot_above);
-                if (index <0 || index >= getEditTextViewString().length()) {
-                    scores.append(t);
-
-                } else {
-                    scores.getEditableText().insert(index, t);// Insert text cursor position
-                }
-                break;
+//            case R.id.button41:
+//                t = ""+Html.fromHtml("7"+dot_above);
+//                if (index <0 || index >= getEditTextViewString().length()) {
+//                    scores.append(t);
+//
+//                } else {
+//                    scores.getEditableText().insert(index, t);// Insert text cursor position
+//                }
+//                break;
             case R.id.button42:
                 t = ""+Html.fromHtml("7"+dot_below);
                 if (index <0 || index >= getEditTextViewString().length()) {
@@ -1382,7 +1375,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     }
 
     public void openOrNew() {
-        Intent intent = new Intent(this, NewActivity.class);
+        Intent intent = new Intent(this, CreateScoreActivity.class);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
