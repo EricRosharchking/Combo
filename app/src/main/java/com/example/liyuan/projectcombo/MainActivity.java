@@ -307,24 +307,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     logout();
                 }
             });
-//
-//            buttonBack.setOnClickListener(new View.OnClickListener() {
-//
-//                public void onClick(View view) {
-//                    Intent i = new Intent(getApplicationContext(),
-//                            UserMainPage.class);
-//                    startActivity(i);
-//                    finish();
-//                }
-//            });
 
-//            buttonAddLyrics.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    addLyrics();
-//                }
-//            });
 
 //Number Picker
 //            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
