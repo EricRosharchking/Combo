@@ -99,7 +99,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                         AccessToken accessToken = loginResult.getAccessToken();
                         Profile profile = Profile.getCurrentProfile();
 
-                        Intent intent = new Intent(welcomePage.this, UserMainPage.class);
+                        Intent intent = new Intent(welcomePage.this, MainActivity.class);
                         displayWelcomeMessage(profile);
                         if (userEmail != null)
                             intent.putExtra("userEmail", userEmail);
@@ -300,7 +300,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     }
 
     public void openProfile(){
-        Intent intent = new Intent(welcomePage.this, UserMainPage.class);
+        Intent intent = new Intent(welcomePage.this, MainActivity.class);
         if (userEmail != null)
             intent.putExtra("userEmail", userEmail);
         if (userName != null)

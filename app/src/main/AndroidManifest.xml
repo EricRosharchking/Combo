@@ -58,15 +58,15 @@
                 android:value=".UserMainPage" />
             -->
         </activity>
-        <activity
-            android:name=".UserMainPage"
-            android:label="@string/title_activity_user_main_page"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".welcomePage" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".UserMainPage"-->
+            <!--android:label="@string/title_activity_user_main_page"-->
+            <!--android:screenOrientation="landscape"-->
+            <!--android:theme="@style/AppTheme" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".welcomePage" />-->
+        <!--</activity>-->
         <activity
             android:name=".EditScoreActivity"
             android:label="@string/title_activity_add_lyrics"

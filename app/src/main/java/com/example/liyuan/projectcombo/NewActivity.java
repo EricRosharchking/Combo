@@ -134,7 +134,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
         } else if (which == -2) {
             Log.d("", "New Clicked");
             if (getIntent().getIntExtra("parentActivity", 0) == 1) {
-                Intent i = new Intent(this, UserMainPage.class);
+                Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
             }
             finish();
@@ -144,7 +144,7 @@ public class NewActivity extends ActionBarActivity implements DialogInterface.On
     @Override
     public void onBackPressed() {
         if (getIntent().getIntExtra("parentActivity", 0) == 1) {
-            Intent i = new Intent(this, UserMainPage.class);
+            Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         }
         finish();
