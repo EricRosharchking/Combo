@@ -238,10 +238,6 @@ public class DisplayThread extends Thread {
         //quarterBeat = (int) (1000 * secondsPerBeat / 4);
     }
 
-    public void setDelay(int delay) {
-
-    }
-
     public void setOctave(int octave) {
         this.octave = octave;
     }

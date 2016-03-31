@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by Liyuan on 11/1/2015.
  */
-public class DisplayThreadNew extends Thread {
+public class DisplayThreadNew {
     private long startTime;
     private int tempo;
     private int timeSignature;
@@ -22,18 +22,20 @@ public class DisplayThreadNew extends Thread {
     private int lastKey;
     private int barTime;
     private int displayTime;
-    private int octave;
     private int quarterBeat;
+    private int octave;
     private int noteTime;
     private int lastNoteTime;
+    private int barCount;
     private double secondsPerBeat;
+    private double totalLength;
 
-    private final String underline = "<sub>\u0332</sub>";
-    private final String double_underline = "<sub>\u0333</sub>";
-    private final String curve = "<sup>\u0361</sup>";
-    private final String bullet = "\u2022";
-    private final String dot_above = "<sub>\u0307</sub>";
-    private final String dot_below = "<sub>\u0323</sub>";
+    private final String underline = " <sub>\u0332</sub> ";
+    private final String double_underline = " <sub>\u0333</sub> ";
+    private final String curve = " <sup>\u0361</sup> ";
+    private final String bullet = "\u2022 ";
+    private final String dot_above = " <sub>\u0307</sub> ";
+    private final String dot_below = " <sub>\u0323</sub> ";
 
     public DisplayThreadNew() {
         timeSignature = 4;
@@ -42,110 +44,19 @@ public class DisplayThreadNew extends Thread {
         archived = display;
         isRunning = true;
         key = 0;
-        lastKey = -1;
         octave = 4;
-    }
-
-    public void run() {
-//        String strUtf8 = "&#FF0D";
-//        String strChinese = null;
-//
-//        try {
-//            strChinese = new String(strUtf8.getBytes("UTF-8"),  "utf-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//
-//            strChinese = "decode error";
-//        }
-
-
+        lastKey = -1;
         secondsPerBeat = 60.0 / tempo;
         barTime = (int) (timeSignature * 1000 * secondsPerBeat);
         displayTime = barTime * 4;
         quarterBeat = (int) (1000 * secondsPerBeat / 4);
+        barCount = 1;
+        totalLength = 0.0;
+    }
 
-        startTime = System.currentTimeMillis();
-//        Log.d("DisplayThread Log", "The start Time is " + startTime);
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        long count = elapsedTime / quarterBeat;
-        int displayCount = 1;
-        int barCount = 1;
-        while (isRunning) {
-            elapsedTime = System.currentTimeMillis() - startTime;
-
-            String addon = "";
-            if (octave == 3) {
-                addon = dot_below;
-            } else if (octave == 5) {
-                addon = dot_above;
-            }
-            if (key == 0) {
-                addon = "";
-            }
-            if ((elapsedTime % quarterBeat) == 0 && elapsedTime > count * quarterBeat && (elapsedTime / quarterBeat) > 0) {
-                Log.d("Log@DisplayThread72", "Octave is " + octave);
-                if (lastKey == key) {
-//                    display = display + "⏜";//"\u23DC"和"⏜"textview都无法显示
-//                    display = display +"-";//短破折号
-                    display = display+" \u2010 ";//长破折号
-//                    display = display+"\uFF0D\n";//长破折号怪怪的
-//                    display = display+"\u2040\n";//tie是短的
-                } else {
-//                    String underline = "<u>" + key + "&#8226\n </u>";//"<u>"underline
-//                    String underline = lastKey+"<sup>\u0361</sup><sub><big>\u0333</big></sub>" + key+"<sub><big>\u0333</big></sub>" +"&#8226\n";//bullet point
-//                    String addon = lastKey+curve+underline+key+double_underline+bullet+lastKey+dot_below;//testing
-                    lastKey = key;
-                    addon = lastKey + addon;
-                    display += addon;
-                    Log.d("Log@DisplayThread89", "Addon is " + addon);
-                    //display += addon;
-                }
-                count = elapsedTime / quarterBeat;
-                int x = (int)count / 4;
-                int y = (int)count % 4;
-
-//                for (int i = 1; i <= x; i ++) {
-//                    display += "-";
-//                }
+    public void whatever() {
 
 
-                switch (y) {
-                    case 1:
-                        display += double_underline;
-                        break;
-                    case 2:
-                        display += underline;
-                        break;
-                    case 3:
-                        display += underline;
-                        display += bullet;
-                        break;
-                    default:
-                        break;
-                }
-
-//                  display = Html.fromHtml(display).toString();
-//                Log.d("DisplayThread Log", "The current system time is " + System.currentTimeMillis());
-//                Log.d("DisplayThread Log", "The elapsed time is " + elapsedTime);
-//                Log.d("DisplayThread Log", "The elapsed 250 milliseconds period is" + count);
-//                Log.d("DisplayThread Log", "The display is " + display);
-                if (elapsedTime >= barTime * barCount) {
-                    display = display + "|";
-                    barCount ++;
-                    if (elapsedTime >= displayTime * displayCount) {
-                        displayCount ++;
-                        archived += display;
-                        display = "";
-                    }
-                }
-//                Log.d("Debug Log", "TimeSignature is " + timeSignature);
-//                Log.d("Debug Log", "BarTime is " + barTime);
-//                Log.d("Debug Log", "DisplayTime is " + displayTime);
-            }
-        }
-        Log.d("DisplayThread Log", "Length of Archived is " + archived.length());
-        Log.d("DisplayThread Log", "Length of Archived after adding Display is " + archived.length());
-        Log.d("DisplayThread Log", "Archived after adding Display is " + archived);
     }
 
     public String getDisplay() {
@@ -157,17 +68,37 @@ public class DisplayThreadNew extends Thread {
     }
 
     public void stopThread() {
-        isRunning = false;
-        Log.d("DisplayThread Log", "The elapsed time is " + (System.currentTimeMillis() - startTime));
-        Log.d("DisplayThread Log", "The length of archived is " + archived.length());
-        Log.d("DisplayThread Log", "The length of display is " + display.length());
-        Log.d("DisplayThread Log", "Display is " + display);
-        Log.d("DisplayThread Log", "Archived is " + archived);
-
         archived += display;
     }
 
-    public void update(int strike) {
+    public void update(double lastLength) {
+        lastLength *= 1000;
+        int count = (int) (lastLength / quarterBeat);
+        int x = count / 4;
+        int y = count % 4;
+
+        for (int i = 1; i <= x; i++) {
+            display += " ‐ ";
+        }
+
+
+        switch (y) {
+            case 1:
+                display += double_underline;
+                break;
+            case 2:
+                display += underline;
+                break;
+            case 3:
+                display += underline;
+                display += bullet;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void update(int strike, double lastLength) {
         int thisKey = 1;
         switch (strike) {
             case 0:
@@ -219,12 +150,111 @@ public class DisplayThreadNew extends Thread {
                 break;
         }
         key = thisKey;
+
+        if (lastKey != -1) {
+            lastLength *= 1000;
+            totalLength += lastLength;
+            if (totalLength == barCount * barTime) {
+                barCount ++;
+                display += " | ";
+            } else if (totalLength > barCount * barTime) {
+                double firstHalf = totalLength - barCount * barTime;
+                int count = (int) (firstHalf / quarterBeat);
+                int x = count / 4;
+                int y = count % 4;
+
+                switch (y) {
+                    case 1:
+                        display += double_underline;
+                        break;
+                    case 2:
+                        display += underline;
+                        break;
+                    case 3:
+                        display += underline;
+                        display += bullet;
+                        break;
+                    default:
+                        break;
+                }
+
+                for (int i = 1; i <= x; i++) {
+                    display += " ‐ ";
+                }
+
+                barCount ++;
+                display += " | ";
+
+                double secondHalf = lastLength - firstHalf;
+                display += lastKey;
+                count = (int) (secondHalf / quarterBeat);
+                x = count / 4;
+                y = count % 4;
+
+                switch (y) {
+                    case 1:
+                        display += double_underline;
+                        break;
+                    case 2:
+                        display += underline;
+                        break;
+                    case 3:
+                        display += underline;
+                        display += bullet;
+                        break;
+                    default:
+                        break;
+                }
+
+                for (int i = 1; i <= x; i++) {
+                    display += " ‐ ";
+                }
+
+            }
+            int count = (int) (lastLength / quarterBeat);
+            int x = count / 4;
+            int y = count % 4;
+
+            switch (y) {
+                case 1:
+                    display += double_underline;
+                    break;
+                case 2:
+                    display += underline;
+                    break;
+                case 3:
+                    display += underline;
+                    display += bullet;
+                    break;
+                default:
+                    break;
+            }
+
+            for (int i = 1; i <= x; i++) {
+                display += " ‐ ";
+            }
+
+        }
+        lastKey = key;
+        display += " ";
+        display += lastKey;
+        switch (octave){
+            case 3:
+                display += "\u0323";
+                break;
+            case 4:
+                break;
+            case 5:
+                display += "\u0307";
+                break;
+        }
+
     }
 
     public void setTimeSignature(int timeSignature) {
         this.timeSignature = timeSignature;
-        //barTime = timeSignature * 1000;
-        //displayTime = barTime * 4;
+        barTime = timeSignature * 1000;
+        displayTime = barTime * 4;
 //        Log.d("DisplayThread Log", "The current timeSignature is " + timeSignature);
 //        Log.d("DisplayThread Log", "The current barTime is " + barTime);
 //        Log.d("DisplayThread Log", "The current displayTime is " + displayTime);
@@ -232,25 +262,13 @@ public class DisplayThreadNew extends Thread {
 
     public void setTempo(int tempo) {
         this.tempo = tempo;
-        //secondsPerBeat = 60.0 / tempo;
-        //barTime = (int) (timeSignature * 1000 * secondsPerBeat);
-        //displayTime = barTime * 4;
-        //quarterBeat = (int) (1000 * secondsPerBeat / 4);
-    }
-
-    public void setDelay(int delay) {
-
+        secondsPerBeat = 60.0 / tempo;
+        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
+        displayTime = barTime * 4;
+        quarterBeat = (int) (1000 * secondsPerBeat / 4);
     }
 
     public void setOctave(int octave) {
         this.octave = octave;
-    }
-
-    public void setDisplay(String score) {
-        display = score;
-    }
-
-    public void setArchived(String score) {
-        archived = score;
     }
 }
