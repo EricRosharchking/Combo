@@ -33,6 +33,7 @@ import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.helper.SQLiteHandler;
 import com.example.liyuan.projectcombo.helper.SessionManager;
@@ -395,7 +396,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         break;
 
                 }
-                //Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -1367,7 +1368,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             topMenu.findItem(R.id.stop).setIcon(R.drawable.stop);
         }
     }
-    
+
 
 //    @Override
 //    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
