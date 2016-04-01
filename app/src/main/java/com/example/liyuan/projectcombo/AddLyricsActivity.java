@@ -1,6 +1,5 @@
 package com.example.liyuan.projectcombo;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,14 +14,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -215,7 +211,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     private void exportToPDF() {
-        Intent intent = new Intent(this, NewActivity.class);
+        Intent intent = new Intent(this, CreateScoreActivity.class);
         intent.putExtra("action", 1);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
@@ -554,7 +550,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     public void openOrNew() {
-        Intent intent = new Intent(this, NewActivity.class);
+        Intent intent = new Intent(this, CreateScoreActivity.class);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
