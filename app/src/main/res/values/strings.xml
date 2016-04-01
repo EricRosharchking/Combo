@@ -100,6 +100,7 @@
     <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="navigation_toolbox">
+        <item>CREATE NEW SONG</item>
         <item>SAVE RECORD</item>
         <item>EDIT RECORD</item>
         <item>ADD LYRICS</item>
@@ -107,7 +108,7 @@
         <item>EXPORT TO PDF</item>
     </string-array>
 
-    <string-array name="navigation_toolbox_EditScoreActivity">
+<!--    <string-array name="navigation_toolbox_EditScoreActivity">
         <item>CREATE NEW SONG</item>
         <item>SAVE RECORD</item>
         <item>SAVE AS NEW RECORD</item>
@@ -122,7 +123,7 @@
         <item>EDIT RECORD</item>
         <item>VIEW RECORD LISTS</item>
         <item>EXPORT TO PDF</item>
-    </string-array>
+    </string-array>-->
 
     <string name="profile">profile</string>
     <string name="title_activity_main2">Main2Activity</string>

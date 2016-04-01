@@ -124,6 +124,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double elapse;
     double beatLength;
 
+    final int disabledPosition = 0;
     int tempo;
     int noteID;
     int timeSig;
@@ -373,7 +374,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images);
+        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images, disabledPosition);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

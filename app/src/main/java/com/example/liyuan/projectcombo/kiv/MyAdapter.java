@@ -17,16 +17,18 @@ public class MyAdapter extends BaseAdapter {
         private String att_email;
         private String att_name;
         private Context context;
+		private int disabledPosition;
         String[] tool_list;
         int[] images;// = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
-        public MyAdapter(Context context, String email, String name, String[] toollist, int[] images) {
+        public MyAdapter(Context context, String email, String name, String[] toollist, int[] images, int disabledPosition) {
             this.context = context;
             this.att_name = name;
             this.att_email = email;
             this.images = images;
 //            tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
             this.tool_list = toollist;
+			this.disabledPosition = disabledPosition;
         }
 
         @Override
@@ -40,7 +42,7 @@ public class MyAdapter extends BaseAdapter {
         }
         @Override
         public boolean isEnabled(int position) {
-            if (position == 0) {
+            if (position == disabledPosition) {
                 return false;
             } else {
                 return true;
