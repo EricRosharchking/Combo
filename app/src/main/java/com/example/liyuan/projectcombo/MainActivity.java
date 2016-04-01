@@ -644,14 +644,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
 
 
-            if (displayThreadNew != null) {
+//            if (displayThreadNew != null) {
 //                displayThreadNew.stopThread();
 //                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
 //                    textView.setText(displayThread.getArchived());
                 displayThreadNew.update(rest);
                 textView.setText(Html.fromHtml(displayThreadNew.getDisplay() + "\u2225"));//ending pause in html
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
-            }
+//            }
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
                 metronomeRunning = false;
