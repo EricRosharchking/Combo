@@ -648,8 +648,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                displayThreadNew.stopThread();
 //                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
 //                    textView.setText(displayThread.getArchived());
-                displayThreadNew.update(rest);
-                textView.setText(Html.fromHtml(displayThreadNew.getDisplay() + "\u2225"));//ending pause in html
+            displayThreadNew.update(rest);
+            textView.setText(Html.fromHtml(displayThreadNew.getDisplay() + "\u2225"));//ending pause in html
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
 //            }
             if (metronome != null && metronomeRunning) {
