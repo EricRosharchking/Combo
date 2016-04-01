@@ -109,6 +109,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     boolean opened;
     boolean isOpened;
 
+
     double startRecordTime;
     double stopRecordTime;
     double recordTime;
@@ -557,15 +558,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (!isPlayBack) {
                     playBack(null);
                     item.setIcon(R.drawable.onplay);
+                    changeStopIcon();
+                    changePauseIcon();
                 }
                 break;
             case R.id.pause:
                 pausePlay(null);
                 changePlayBackIcon();
+                changePauseIcon();
                 break;
             case R.id.stop:
                 stopPlay(null);
                 changePlayBackIcon();
+                changeStopIcon();
                 break;
             case R.id.metro:
                 if (!withMetronome) {
@@ -1325,6 +1330,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+            isPlayBack = false;
         }
     }
 
@@ -1340,8 +1346,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+            isPlayBack = false;
         }
     }
+
+
+    public void changePauseIcon() {
+        if (isPlayBack) {
+            topMenu.findItem(R.id.stop).setIcon(R.drawable.pause_onclick);
+        } else {
+            topMenu.findItem(R.id.stop).setIcon(R.drawable.pause);
+        }
+    }
+
+
+    public void changeStopIcon() {
+        if (isPlayBack) {
+            topMenu.findItem(R.id.stop).setIcon(R.drawable.stop_onclick);
+        } else {
+            topMenu.findItem(R.id.stop).setIcon(R.drawable.stop);
+        }
+    }
+    
 
 //    @Override
 //    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
