@@ -56,7 +56,6 @@
 
                 <EditText
                     android:id="@+id/edLyrics"
-                    android:imeOptions="flagNoExtractUi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Input your lyrics here"

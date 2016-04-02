@@ -88,17 +88,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //    TextView recordStatus;
     WebView myWebView;
 
-    //change menu name
-    String menu_name = "Create new song";
-    boolean isOpenOrNot = false;
-
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
 
     private String userEmail;
     private String userName;
-    private String userScoreName;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -164,7 +159,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
-            toolbar.findViewById(R.id.tempoSeekBar);
+//            toolbar.findViewById(R.id.tempoSeekBar);
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             mActivityTitle = "Create new song";
@@ -182,14 +177,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
             userName = (String) getIntent().getSerializableExtra("userName");
-            userScoreName = (String) getIntent().getSerializableExtra("userScore");
-
-            if(userScoreName != null){
-                mActivityTitle = userScoreName;
+            if (savedInstanceState != null) {
+                userEmail = savedInstanceState.getString("userEmail");
+                userName = savedInstanceState.getString("userName");
             }
-
-            Log.i("Log@myScoreName", "Score name here is " + userScoreName);
-
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
                 t_name.setText(userName);
@@ -356,7 +347,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //count down
             textView_countdown = (TextView) findViewById(R.id.countdown);
             textView_countdown.setText("" + timeSig);
-            //countdown = new Countdown(this);
+            countdown = new Countdown(this);
             animator = new ValueAnimator();
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -438,16 +429,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-
-                if(isOpenOrNot==true){
-                    userScoreName = (String) getIntent().getSerializableExtra("userScore");
-
-                    if(userScoreName != null){
-                        mActivityTitle = userScoreName;
-                    }
-                }
-
-                getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle("Create new song");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -638,7 +620,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             startMetronome(null);
 
             //countdown.setTimeSig(timeSig);
-
             animator.setObjectValues(timeSig, 0);
             animator.setDuration(5000);
             animator.start();
@@ -1088,6 +1069,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    public void onSavedInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putCharSequence("userName", userName);
+        savedInstanceState.putCharSequence("userEmail", userEmail);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
 
     public void startMetronome(View view) {
         if (!metronomeRunning) {
@@ -1456,7 +1443,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         intent.putExtra("userEmail", userEmail);
         intent.putExtra("userName", userName);
         startActivity(intent);
-        isOpenOrNot = true;
     }
 
 
