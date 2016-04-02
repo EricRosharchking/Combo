@@ -31,12 +31,12 @@ public class DisplayActivity extends ActionBarActivity {
             notes = score.getScore();
             lengths = score.getLengths();
             String key = score.getKey();
-            //scoreKey.setText(key);
-            //scoreTimeSig.setText(score.getTimeSignature());
-            //String tempo = "" + score.getTempo();
-            //scoreTempo.setText(tempo.trim());
-            //scoreTitle.setText(score.getTitle());
-            //scoreAuthor.setText(score.getAuthor());
+            scoreKey.setText(key);
+            scoreTimeSig.setText(score.getTimeSignature());
+            String tempo = "" + score.getTempo();
+            scoreTempo.setText(tempo.trim());
+            scoreTitle.setText(score.getTitle());
+            scoreAuthor.setText(score.getAuthor());
         }
 
         if (notes != null && lengths != null) {
@@ -105,15 +105,15 @@ public class DisplayActivity extends ActionBarActivity {
                 }
 //            Log.d("Log@DisplayActivity133", thisKey);
                 if (n < 0) {
-                    thisKey += "\u0323 ";
+                    thisKey += "<sub>\u0323</sub>";
                 } else if (n > 13) {
-                    thisKey += "\u0307 ";
+                    thisKey += "<sup>\u0307</sup>";
                 } else {
-                    thisKey += " ";
+                    thisKey += "";
                 }
                 t += thisKey;
                 for (int j = 2; j < l; j++) {
-                    t += " \u2010 ";
+                    t += "\u2010 ";
                 }
 
                 double r = l % 1;
@@ -121,13 +121,13 @@ public class DisplayActivity extends ActionBarActivity {
                     t += thisKey;
 
                 if (r >= 0.85)
-                    t += " \u2010 ";
+                    t += "\u2010 ";
                 else if (r >= 0.69)
                     t += "<sub>\u0332</sub>\u2022 ";
                 else if (r >= 0.4)
-                    t += "<sub>\u0332</sub>";
+                    t += "<sub>\u0332</sub> ";
                 else if (r >= 0.15)
-                    t += "<sub>\u0333</sub>";
+                    t += "<sub>\u0333</sub> ";
 
                 totalLengths += l;
                 if (totalLengths > barCount * 4) {
@@ -141,7 +141,7 @@ public class DisplayActivity extends ActionBarActivity {
                 }
             }
             t += "\u2225";
-            //textView.setText(Html.fromHtml(t));
+            textView.setText(Html.fromHtml(t));
         }
         //textView.setText(Html.fromHtml(getString(R.string.example)));
 //        Log.d("Log@DisplayActivity133", t);

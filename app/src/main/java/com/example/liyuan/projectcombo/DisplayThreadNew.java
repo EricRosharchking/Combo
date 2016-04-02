@@ -22,7 +22,6 @@ public class DisplayThreadNew {
     private int lastKey;
     private int barTime;
     private int displayTime;
-    private int quarterBeat;
     private int octave;
     private int noteTime;
     private int lastNoteTime;
@@ -30,12 +29,13 @@ public class DisplayThreadNew {
     private double secondsPerBeat;
     private double totalLength;
 
-    private final String underline = " <sub>\u0332</sub> ";
-    private final String double_underline = " <sub>\u0333</sub> ";
-    private final String curve = " <sup>\u0361</sup> ";
-    private final String bullet = "\u2022 ";
-    private final String dot_above = " <sub>\u0307</sub> ";
-    private final String dot_below = " <sub>\u0323</sub> ";
+    private final int quarterBeat = 250;
+    private final String underline = "<sub>\u0332</sub>";
+    private final String double_underline = "<sub>\u0333</sub>";
+    private final String curve = "<sup>\u0361</sup>";
+    private final String bullet = "\u2022";
+    private final String dot_above = "<sub>\u0307</sub>";
+    private final String dot_below = "<sub>\u0323</sub>";
 
     public DisplayThreadNew() {
         timeSignature = 4;
@@ -47,9 +47,8 @@ public class DisplayThreadNew {
         octave = 4;
         lastKey = -1;
         secondsPerBeat = 60.0 / tempo;
-        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
+        barTime = timeSignature * 1000;
         displayTime = barTime * 4;
-        quarterBeat = (int) (1000 * secondsPerBeat / 4);
         barCount = 1;
         totalLength = 0.0;
     }
@@ -77,7 +76,7 @@ public class DisplayThreadNew {
         int x = count / 4;
         int y = count % 4;
 
-        for (int i = 1; i <= x; i++) {
+        for (int i = 1; i * 4 * quarterBeat <= lastLength; i++) {
             display += " ‐ ";
         }
 
@@ -96,6 +95,8 @@ public class DisplayThreadNew {
             default:
                 break;
         }
+
+        display += "||";
     }
 
     public void update(int strike, double lastLength) {
@@ -154,12 +155,39 @@ public class DisplayThreadNew {
         if (lastKey != -1) {
             lastLength *= 1000;
             totalLength += lastLength;
-            if (totalLength == barCount * barTime) {
-                barCount ++;
-                display += " | ";
-            } else if (totalLength > barCount * barTime) {
-                double firstHalf = totalLength - barCount * barTime;
-                int count = (int) (firstHalf / quarterBeat);
+            if (totalLength > barCount * barTime) {
+                while (totalLength > barCount * barTime) {
+                    double firstHalf = barCount * barTime - (totalLength - lastLength);
+                    int count = (int) (firstHalf / quarterBeat);
+                    int x = count / 4;
+                    int y = count % 4;
+
+                    switch (y) {
+                        case 1:
+                            display += double_underline;
+                            break;
+                        case 2:
+                            display += underline;
+                            break;
+                        case 3:
+                            display += underline;
+                            display += bullet;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    for (int i = 1; i * 4 * quarterBeat < firstHalf; i++) {
+                        display += " ‐ ";
+                    }
+
+                    barCount++;
+                    display += " | ";
+                    display += lastKey;
+                    lastLength -= firstHalf;
+                }
+                double secondHalf = totalLength - barTime * barCount;
+                int count = (int) (secondHalf / quarterBeat);
                 int x = count / 4;
                 int y = count % 4;
 
@@ -178,39 +206,11 @@ public class DisplayThreadNew {
                         break;
                 }
 
-                for (int i = 1; i <= x; i++) {
+                for (int i = 1; i * 4 * quarterBeat < secondHalf; i++) {
                     display += " ‐ ";
                 }
-
-                barCount ++;
-                display += " | ";
-
-                double secondHalf = lastLength - firstHalf;
-                display += lastKey;
-                count = (int) (secondHalf / quarterBeat);
-                x = count / 4;
-                y = count % 4;
-
-                switch (y) {
-                    case 1:
-                        display += double_underline;
-                        break;
-                    case 2:
-                        display += underline;
-                        break;
-                    case 3:
-                        display += underline;
-                        display += bullet;
-                        break;
-                    default:
-                        break;
-                }
-
-                for (int i = 1; i <= x; i++) {
-                    display += " ‐ ";
-                }
-
             }
+
             int count = (int) (lastLength / quarterBeat);
             int x = count / 4;
             int y = count % 4;
@@ -230,15 +230,20 @@ public class DisplayThreadNew {
                     break;
             }
 
-            for (int i = 1; i <= x; i++) {
+            for (int i = 1; i * 4 * quarterBeat < lastLength; i++) {
                 display += " ‐ ";
+            }
+
+            if (totalLength == barCount * barTime) {
+                barCount++;
+                display += " | ";
             }
 
         }
         lastKey = key;
         display += " ";
         display += lastKey;
-        switch (octave){
+        switch (octave) {
             case 3:
                 display += "\u0323";
                 break;
@@ -254,7 +259,8 @@ public class DisplayThreadNew {
     public void setTimeSignature(int timeSignature) {
         this.timeSignature = timeSignature;
         barTime = timeSignature * 1000;
-        displayTime = barTime * 4;
+        barCount = 1;
+//        displayTime = barTime * 4;
 //        Log.d("DisplayThread Log", "The current timeSignature is " + timeSignature);
 //        Log.d("DisplayThread Log", "The current barTime is " + barTime);
 //        Log.d("DisplayThread Log", "The current displayTime is " + displayTime);
@@ -262,10 +268,9 @@ public class DisplayThreadNew {
 
     public void setTempo(int tempo) {
         this.tempo = tempo;
-        secondsPerBeat = 60.0 / tempo;
-        barTime = (int) (timeSignature * 1000 * secondsPerBeat);
-        displayTime = barTime * 4;
-        quarterBeat = (int) (1000 * secondsPerBeat / 4);
+        barTime = timeSignature * 1000;
+//        displayTime = barTime * 4;
+        barCount = 1;
     }
 
     public void setOctave(int octave) {
