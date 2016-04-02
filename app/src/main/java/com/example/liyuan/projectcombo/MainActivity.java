@@ -124,7 +124,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     double elapse;
     double beatLength;
 
-    final int disabledPosition = 0;
+    final int disabledID = 0;
     int tempo;
     int noteID;
     int timeSig;
@@ -374,25 +374,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images, disabledPosition);
+        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 1:
+                    case 2:
                         save();
                         break;
-                    case 2:
+                    case 3:
                         editScore();
                         break;
-                    case 3:
+                    case 4:
                         addLyrics();
                         break;
-                    case 4:
+                    case 5:
                         openOrNew();
                         break;
-                    case 5:
+                    case 6:
                         exportToPDF();
                         break;
 
@@ -1028,7 +1028,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-                textView.setText(Html.fromHtml(extractScore(thisScore.getScore(), thisScore.getLengths())).toString());
+                String htmlData = CONTENT+ extractScore(thisScore.getScore(), thisScore.getLengths()) + "</p></body></html>";
+
+                myWebView.loadData(htmlData, "text/html; charset=utf-8", "UTF-8");
                 score = thisScore;
                 tempo = score.getTempo();
                 ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
@@ -1208,11 +1210,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
 //            Log.d("Log@DisplayActivity133", thisKey);
                 if (n < 0) {
-                    thisKey += "\u0323 ";
+                    thisKey += "\u0323";
                 } else if (n > 13) {
-                    thisKey += "\u0307 ";
+                    thisKey += "\u0307";
                 } else {
-                    thisKey += " ";
+                    thisKey += "";
                 }
                 t += thisKey;
                 for (int j = 2; j < l; j++) {
@@ -1355,9 +1357,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void changePauseIcon() {
         if (isPlayBack) {
-            topMenu.findItem(R.id.stop).setIcon(R.drawable.pause_onclick);
+            topMenu.findItem(R.id.pause).setIcon(R.drawable.pause_onclick);
         } else {
-            topMenu.findItem(R.id.stop).setIcon(R.drawable.pause);
+            topMenu.findItem(R.id.pause).setIcon(R.drawable.pause);
         }
     }
 

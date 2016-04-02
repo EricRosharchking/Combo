@@ -95,7 +95,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     int tempo;
     int timeSig;
     int lastNote;
-    int disabledPosition = 3;
+    int disabledID = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,27 +184,30 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images, disabledPosition);
+        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch (position) {
-                    case 1:
-                        finish();
-                        break;
-                    case 2:
-                        save();
-                        break;
-                    case 3:
-                        editScore();
-                        break;
-                    case 4:
-                        openOrNew();
-                        break;
-                    case 5:
-                        exportToPDF();
-                        break;
+                case 1:
+                    finish();
+                    break;
+                case 2:
+                    save();
+                    break;
+                case 3:
+                    editScore();
+                    break;
+//                case 4:
+//                    addLyrics();
+//                    break;
+                case 5:
+                    openOrNew();
+                    break;
+                case 6:
+                    exportToPDF();
+                    break;
                 }
                 Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
