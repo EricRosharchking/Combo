@@ -51,6 +51,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private AudioThread[] audioThreads = new AudioThread[14];
     final Note[] Notes = new Note[13];
     DisplayThread displayThread;
+    MyAdapter myAdapter;
 
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
@@ -66,6 +67,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
     private final String sharp = "#";
+    private String userName;
+    private String userEmail;
 
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
@@ -133,10 +136,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
             LayoutInflater inflater = getLayoutInflater();
 
-            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
-
-            mDrawerList2.addHeaderView(listHeaderView);
-
             View decorView = getWindow().getDecorView();
             // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -157,17 +156,35 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(extractScore(numericNotes, lengths) + "\u2225");
+            scores.setText(rawScores);
 
             Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3, 8));
 
             scores.setInputType(InputType.TYPE_NULL);
             scores.setFocusable(false);
+
             if (android.os.Build.VERSION.SDK_INT >= 11)
             {
                 scores.setRawInputType(InputType.TYPE_CLASS_TEXT);
                 scores.setTextIsSelectable(true);
             }
+
+            userEmail = intent.getStringExtra("userEmail");
+            userName = intent.getStringExtra("userName");
+            Log.d("UserName",userName);
+            Log.d("userEmail",userEmail);View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
+
+            mDrawerList2.addHeaderView(listHeaderView);
 
             scoreFile = new ScoreFile();
             notesAndRest = "";
@@ -431,7 +448,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        MyAdapter myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images, disabledID);
+        myAdapter= new MyAdapter(this, userEmail, userName, tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -1292,6 +1309,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     }
 
     private void getScoreFromText(String scoreText) {
+        noteList.clear();
+        lengthList.clear();
         String[] thisArray = scoreText.split("\\s+");
         for(String str: thisArray) {
             for (int i = 0; i < str.length(); i ++) {
@@ -1452,7 +1471,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     }
                 }
             }
-            t += " \u2225";
+            t += "||";
         }
 
         ////TODO:
@@ -1468,8 +1487,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private void save() {
         Intent intent = new Intent(this, SaveActivity.class);
         Score thisScore = new Score();
-        noteList.clear();
-        lengthList.clear();
         thisScore.setTempo(tempo);
         switch (timeSig) {
             case 3:
@@ -1496,6 +1513,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         Intent i = new Intent(EditScoreActivity.this,
                 AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
+        i.putExtra("userEmail", userEmail);
+        i.putExtra("userName", userName);
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
         finish();
@@ -1615,7 +1634,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 displayThread.stopThread();
 //                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
 //                    textView.setText(displayThread.getArchived());
-                scores.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause in html
+                scores.setText(Html.fromHtml(displayThread.getDisplay()));//ending pause in html
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
             }
             if (metronome != null && metronomeRunning) {

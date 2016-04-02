@@ -175,12 +175,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
 
+            if (getIntent().getSerializableExtra("userEmail") != null)
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
+            if (getIntent().getSerializableExtra("userName") != null)
             userName = (String) getIntent().getSerializableExtra("userName");
-            if (savedInstanceState != null) {
-                userEmail = savedInstanceState.getString("userEmail");
-                userName = savedInstanceState.getString("userName");
-            }
+
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            userEmail = sharedPref.getString("userEmail", userEmail);
+            userName = sharedPref.getString("userName", userName);
+
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
                 t_name.setText(userName);
@@ -363,6 +366,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //animator.setDuration(5000);
             //animator.start();
 
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("userEmail", userEmail);
+            editor.putString("userName", userName);
+            editor.apply();
         } catch (NumberFormatException e) {
             tempo = 60;
 //            tempoButton.setText("60");
@@ -378,12 +385,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images, disabledID);
+        myAdapter = new MyAdapter(this, "Fuck", "YOU", tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
+                    case 1:
+                        Intent intent = new Intent();
+                        intent.putExtra("userName", userName);
+                        intent.putExtra("userEmail", userEmail);
+                        setResult(1, intent);
+                        finish();
+                        break;
                     case 2:
                         save();
                         break;
@@ -1041,11 +1055,67 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 opened = true;
                 isOpened = true;
                 if (tempoSeekBar != null) tempoSeekBar.setEnabled(false);
-                if (spinner != null) spinner.setEnabled(false);
+                if (spinner != null) {
+                    spinner.setEnabled(false);
+                    switch (score.getTimeSignature()) {
+                        case "4/4":
+                            spinner.setSelection(0);
+                            break;
+                        case "3/4":
+                            spinner.setSelection(1);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                myAdapter.setDisabledID(-1);
             }
+
+/*            LayoutInflater inflater = getLayoutInflater();
+            myAdapter.setDisabledID(-1);
+            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
+
+            mDrawerList2.addHeaderView(listHeaderView);*/
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if(resultCode == 1) {
+            userEmail = intent.getStringExtra("userEmail");
+            userName = intent.getStringExtra("userName");
+        }
+/*        LayoutInflater inflater = getLayoutInflater();
+        myAdapter.setDisabledID(-1);
+        View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+        TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+        if (t_name != null)
+            t_name.setText(userName);
+        else
+            Log.i("Log@myAdapter", "TextView t_name is null");
+        TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+        if (t_email != null)
+            t_email.setText(userEmail);
+        else
+            Log.i("Log@myAdapter", "TextView t_email is null");
+
+        mDrawerList2.setHeaderHeaderView(listHeaderView);*/
+        super.onActivityResult(requestCode, resultCode,intent);
     }
 
 
@@ -1067,12 +1137,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } finally {
             super.onDestroy();
         }
-    }
-
-    public void onSavedInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putCharSequence("userName", userName);
-        savedInstanceState.putCharSequence("userEmail", userEmail);
-        super.onSaveInstanceState(savedInstanceState);
     }
 
 
@@ -1547,7 +1611,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //    }
 
     public void onBackPressed() {
-        finish();
+//        finish();
+        logout();
     }
 
     private void logout() {
