@@ -103,6 +103,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     int tempo;
     int timeSig;
     int lastNote;
+    int disabledPosition = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,9 +405,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.saveas , R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
-        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox_EditScoreActivity);
-        MyAdapter myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images);
+        int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
+        MyAdapter myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images, disabledPosition);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
