@@ -68,14 +68,37 @@ public class register extends ActionBarActivity implements View.OnClickListener 
         final String email = edEmail.getText().toString().trim();
         final String cpassword = edCPassword.getText().toString().trim();
 
+        boolean credentials = true;
         boolean passwordmatch = true;
         boolean emailValid = true;
-        boolean allEmpty = false;
+
+
+        if(!password.equals(cpassword)){
+            Toast.makeText(getApplicationContext(),
+                    "Password and confirm password do not match!", Toast.LENGTH_LONG)
+                    .show();
+            passwordmatch = false;
+        }
+
+        if(password.length() < 6 || cpassword.length() < 6){
+            Toast.makeText(getApplicationContext(),
+                    "Password needs to have at least 6 characters!", Toast.LENGTH_LONG)
+                    .show();
+            passwordmatch = false;
+        }
 
         emailValid = isEmailValid(email);
 
+        if(emailValid == false){
+            Toast.makeText(getApplicationContext(),
+                    "Please enter a valid email!", Toast.LENGTH_LONG)
+                    .show();
+            emailValid = false;
+        }
+
+
+
         if (!username.isEmpty() && !email.isEmpty() && passwordmatch==true && emailValid==true) {
-            allEmpty = false;
             StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
                     new Response.Listener<String>() {
                         @Override
@@ -108,28 +131,9 @@ public class register extends ActionBarActivity implements View.OnClickListener 
             startActivity(i);
             finish();
         } else {
-            allEmpty = true;
-        }
-
-        if(allEmpty){
             Toast.makeText(getApplicationContext(),
                     "Please enter your details!", Toast.LENGTH_LONG)
                     .show();
-        }else if(emailValid == false){
-            Toast.makeText(getApplicationContext(),
-                    "Please enter a valid email!", Toast.LENGTH_LONG)
-                    .show();
-            emailValid = false;
-        } else if(!password.equals(cpassword)){
-            Toast.makeText(getApplicationContext(),
-                    "Password and confirm password do not match!", Toast.LENGTH_LONG)
-                    .show();
-            passwordmatch = false;
-        } else if(password.length() < 6 || cpassword.length() < 6){
-            Toast.makeText(getApplicationContext(),
-                    "Password needs to have at least 6 characters!", Toast.LENGTH_LONG)
-                    .show();
-            passwordmatch = false;
         }
 
     }
