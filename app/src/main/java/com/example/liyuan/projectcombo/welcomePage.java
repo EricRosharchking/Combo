@@ -71,6 +71,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
