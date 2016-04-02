@@ -11,6 +11,7 @@
             android:id="@+id/name_Field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:imeOptions="flagNoExtractUi"
             android:hint="@string/filename"
             android:textColorHint="#666666"
             android:textColor="@color/grey"
