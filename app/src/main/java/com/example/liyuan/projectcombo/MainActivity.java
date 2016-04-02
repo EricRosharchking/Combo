@@ -433,9 +433,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
 
-//                if(isOpenOrNot==true){
-//                    mActivityTitle = score.getTitle();
-//                }
+                if(isOpenOrNot==true){
+                    userScoreName = (String) getIntent().getSerializableExtra("userScore");
+
+                    if(userScoreName != null){
+                        mActivityTitle = userScoreName;
+                    }
+                }
 
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
