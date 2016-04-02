@@ -88,6 +88,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //    TextView recordStatus;
     WebView myWebView;
 
+    //change menu name
+    String menu_name = "Create new song";
     boolean isOpenOrNot = false;
 
     private HashMap<Integer, Integer> keyNoteMap;
@@ -165,15 +167,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             toolbar.findViewById(R.id.tempoSeekBar);
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-            userScoreName = (String) getIntent().getSerializableExtra("userScore");
-
-            if(userScoreName != null){
-                mActivityTitle = userScoreName;
-            } else {
-                mActivityTitle = "Create new song";
-            }
-
+            mActivityTitle = "Create new song";
             getSupportActionBar().setTitle(mActivityTitle);
             addDrawerItems2();
             setupDrawer();
@@ -188,7 +182,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
             userName = (String) getIntent().getSerializableExtra("userName");
+            userScoreName = (String) getIntent().getSerializableExtra("userScore");
 
+            if(userScoreName != null){
+                mActivityTitle = userScoreName;
+            }
 
             Log.i("Log@myScoreName", "Score name here is " + userScoreName);
 
