@@ -1179,10 +1179,13 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
+                metronome.changeTempo(tempo);
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
-                metronome = new Metronome(metronumberpicker.getValue());
+                metronome = new Metronome(tempo);
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             }
@@ -1253,11 +1256,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 numericNotes = prepareScore();
                 lengths = prepareLengths();
 
-                metronome = new Metronome(tempo);
-                metronome.changeTimeSignature(timeSig);
                 playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
 //                Log.d("PlayBack Log", "PlayBack initialised");
-                metronome.start();
+                startMetronome(null);
                 playBackTrack.start();
 
                     /*try {
@@ -1563,7 +1564,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 // User chose the "Settings" item, show the app settings UI...
 //                Intent intent = new Intent(MainActivity.this, register.class);
 //                startActivity(intent);
-                record();
+//                record();
                 break;
             case R.id.playBack:
                 playBack(null);
@@ -1575,8 +1576,14 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 stopPlay(null);
                 break;
             case R.id.metro:
-                withMetronome = true;
-                startMetronome(null);
+                withMetronome = !withMetronome;
+                if (!withMetronome) {
+                    withMetronome = true;
+                    item.setIcon(R.drawable.metro_on);
+                } else {
+                    withMetronome = false;
+                    item.setIcon(R.drawable.metro_off);
+                }
                 break;
             default:
                 // If we got here, the user's action was not recognized.
@@ -1593,7 +1600,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         return timeSig;
     }
 
-    public void record() {
+    /*public void record() {
         if (!onRecord) {
             //recordButton.setImageResource(R.drawable.stopbutton);
             onRecord = true;
@@ -1647,7 +1654,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 metronome.stop();
             }
         }
-    }
+    }*/
 
 
     //split the String to String[] for use to split into multiple arrays
