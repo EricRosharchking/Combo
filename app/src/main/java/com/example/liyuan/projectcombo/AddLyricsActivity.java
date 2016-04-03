@@ -59,6 +59,8 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+    private String userName;
+    private String userEmail;
     private MyAdapter myAdapter;
     private Toolbar toolbar;
     private NumberPicker metronumberpicker;
@@ -95,7 +97,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     int tempo;
     int timeSig;
     int lastNote;
-    int disabledPosition = 3;
+    int disabledID = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +121,6 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 //            super.onCreate(savedInstanceState);
 
             LayoutInflater inflater = getLayoutInflater();
-
-            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
-
-            mDrawerList2.addHeaderView(listHeaderView);
 
             View decorView = getWindow().getDecorView();
             // Hide the status bar.
@@ -167,7 +165,21 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             displayThread = new DisplayThread();
 
+            userEmail = intent.getStringExtra("userEmail");
+            userName = intent.getStringExtra("userName");
+            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
 
+            mDrawerList2.addHeaderView(listHeaderView);
             //TO DO: Implement save
 
         }catch(NumberFormatException e){
@@ -184,27 +196,30 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images, disabledPosition);
+        MyAdapter myAdapter = new MyAdapter(this, userEmail, userName, tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch (position) {
-                    case 1:
-                        finish();
-                        break;
-                    case 2:
-                        save();
-                        break;
-                    case 3:
-                        editScore();
-                        break;
-                    case 4:
-                        openOrNew();
-                        break;
-                    case 5:
-                        exportToPDF();
-                        break;
+                case 1:
+                    finish();
+                    break;
+                case 2:
+                    save();
+                    break;
+                case 3:
+                    editScore();
+                    break;
+//                case 4:
+//                    addLyrics();
+//                    break;
+                case 5:
+                    openOrNew();
+                    break;
+                case 6:
+                    exportToPDF();
+                    break;
                 }
                 Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }

@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -37,7 +39,7 @@ import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.kiv.MyAdapter;
 
-public class EditScoreActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener{
+public class EditScoreActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener{
 
     Score score;
     double[] lengths;
@@ -49,11 +51,14 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private AudioThread[] audioThreads = new AudioThread[14];
     final Note[] Notes = new Note[13];
     DisplayThread displayThread;
+    MyAdapter myAdapter;
 
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
             b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51,b52,b53,b54,b55,b56,b57,b58;
     TextView scores;
+    private Spinner spinner;
+    private SeekBar tempoSeekBar;
 
     private final String underline = "<sub>\u0332</sub>";
     private final String double_underline = "<sub>\u0333</sub>";
@@ -62,6 +67,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private final String dot_above = "<sub>\u0307</sub>";
     private final String dot_below = "<sub>\u0323</sub>";
     private final String sharp = "#";
+    private String userName;
+    private String userEmail;
 
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
@@ -71,6 +78,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     private Toolbar toolbar;
     private NumberPicker metronumberpicker;
 
+	List<Integer> noteList;
+	List<Double> lengthList;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -103,7 +112,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     int tempo;
     int timeSig;
     int lastNote;
-    int disabledPosition = 2;
+    int disabledID = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +136,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
             LayoutInflater inflater = getLayoutInflater();
 
-            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
-
-            mDrawerList2.addHeaderView(listHeaderView);
-
             View decorView = getWindow().getDecorView();
             // Hide the status bar.
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -151,16 +156,35 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-//            scores.setText(Html.fromHtml(getString(R.string.example2)) + "\u2225");
+            scores.setText(rawScores);
 
             Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3, 8));
 
             scores.setInputType(InputType.TYPE_NULL);
+            scores.setFocusable(false);
+
             if (android.os.Build.VERSION.SDK_INT >= 11)
             {
                 scores.setRawInputType(InputType.TYPE_CLASS_TEXT);
                 scores.setTextIsSelectable(true);
             }
+
+            userEmail = intent.getStringExtra("userEmail");
+            userName = intent.getStringExtra("userName");
+            Log.d("UserName",userName);
+            Log.d("userEmail",userEmail);View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
+
+            mDrawerList2.addHeaderView(listHeaderView);
 
             scoreFile = new ScoreFile();
             notesAndRest = "";
@@ -168,6 +192,10 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             metronomeRunning = false;
             metronome = new Metronome(60);
             opened = false;
+			
+			noteList = new ArrayList<Integer>();
+			lengthList = new ArrayList<Double>();
+//			lengthList.add(1.0);
 
             for (int i = 1; i < audioThreads.length; i++) {
                 audioThreads[i] = new AudioThread(Notes[i - 1]);
@@ -375,6 +403,19 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //            metronumberpicker.setMinValue(60);
 //            metronumberpicker.setWrapSelectorWheel(false);
 //
+            tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+            tempoSeekBar.setOnSeekBarChangeListener(this);
+            tempo = 60;
+            spinner = (Spinner) findViewById(R.id.time_signature);
+//            Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.time_signature_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+//            spinner.setOnItemSelectedListener(adapter);
+            spinner.setOnItemSelectedListener(this);
 //            tempo = metronumberpicker.getValue();
 //            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
 // Create an ArrayAdapter using the string array and a default spinner layout
@@ -407,7 +448,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        MyAdapter myAdapter = new MyAdapter(this, "midterm@fyp.com", "Cambo", tool_list, images, disabledPosition);
+        myAdapter= new MyAdapter(this, userEmail, userName, tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -420,9 +461,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         save();
                         break;
                     //saveasnew
-                    case 3:
-                        save();
-                        break;
+//                    case 3:
+//                        saveAsNew();
+//                        break;
                     case 4:
                         addLyrics();
                         break;
@@ -485,15 +526,13 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Log@Main398", "position is " + position + " and id is " + id);
+//        Log.i("Log@Main398", "position is " + position + " and id is " + id);
         switch (position) {
+            case 0:
+                timeSig = 4;
+                break;
             case 1:
-                metronome.setWithMetronome(true);
-                break;
-            case 2:
-                metronome.setWithMetronome(false);
-                break;
-            default:
+                timeSig = 3;
                 break;
         }
     }
@@ -551,7 +590,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         int index = getEditSelection();
         switch(v.getId()){
             case R.id.button51:
-                t = "-";
+                t = "- ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -560,7 +599,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button50:
-                t = "0";
+                t = "0 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -570,7 +609,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 break;
 
             case R.id.button:
-                t = ""+Html.fromHtml("1"+underline);
+                t = ""+Html.fromHtml("1"+underline) + " ";
                 // int index = getEditSelection();// The location of the cursor
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
@@ -580,7 +619,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button2:
-                t = ""+Html.fromHtml("1"+double_underline);
+                t = ""+Html.fromHtml("1"+double_underline) + " ";
                 //int index = getEditSelection();// The location of the cursor
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
@@ -600,7 +639,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button4:
-                t = ""+Html.fromHtml("1"+bullet);
+                t = ""+Html.fromHtml("1"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -618,7 +657,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button6:
-                t = ""+Html.fromHtml("1"+dot_below);
+                t = ""+Html.fromHtml("1"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -627,7 +666,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button7:
-                t = ""+Html.fromHtml("2"+underline);
+                t = ""+Html.fromHtml("2"+underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -636,7 +675,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button8:
-                t = ""+Html.fromHtml("2"+double_underline);
+                t = ""+Html.fromHtml("2"+double_underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -654,7 +693,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button10:
-                t = ""+Html.fromHtml("2"+bullet);
+                t = ""+Html.fromHtml("2"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -672,7 +711,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button12:
-                t = ""+Html.fromHtml("2"+dot_below);
+                t = ""+Html.fromHtml("2"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -681,7 +720,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button13:
-                t = ""+Html.fromHtml("3"+underline);
+                t = ""+Html.fromHtml("3"+underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -690,7 +729,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button14:
-                t = ""+Html.fromHtml("3"+double_underline);
+                t = ""+Html.fromHtml("3"+double_underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -708,7 +747,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button16:
-                t = ""+Html.fromHtml("3"+bullet);
+                t = ""+Html.fromHtml("3"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -726,7 +765,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button18:
-                t = ""+Html.fromHtml("3"+dot_below);
+                t = ""+Html.fromHtml("3"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -744,7 +783,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button20:
-                t = ""+Html.fromHtml("4"+double_underline);
+                t = ""+Html.fromHtml("4"+double_underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -762,7 +801,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button22:
-                t = ""+Html.fromHtml("4"+bullet);
+                t = ""+Html.fromHtml("4"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -780,7 +819,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button24:
-                t = ""+Html.fromHtml("4"+dot_below);
+                t = ""+Html.fromHtml("4"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -790,7 +829,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 break;
 
             case R.id.button25:
-                t = ""+Html.fromHtml("5"+underline);
+                t = ""+Html.fromHtml("5"+underline) + " ";
                 // int index = getEditSelection();// The location of the cursor
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
@@ -800,7 +839,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button26:
-                t = ""+Html.fromHtml("5"+double_underline);
+                t = ""+Html.fromHtml("5"+double_underline) + " ";
                 //int index = getEditSelection();// The location of the cursor
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
@@ -820,7 +859,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button28:
-                t = ""+Html.fromHtml("5"+bullet);
+                t = ""+Html.fromHtml("5"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -838,7 +877,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button30:
-                t = ""+Html.fromHtml("5"+dot_below);
+                t = ""+Html.fromHtml("5"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -847,7 +886,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button31:
-                t = ""+Html.fromHtml("6"+underline);
+                t = ""+Html.fromHtml("6"+underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -856,7 +895,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button32:
-                t = ""+Html.fromHtml("6"+double_underline);
+                t = ""+Html.fromHtml("6"+double_underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -874,7 +913,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button34:
-                t = ""+Html.fromHtml("6"+bullet);
+                t = ""+Html.fromHtml("6"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -892,7 +931,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button36:
-                t = ""+Html.fromHtml("5"+dot_below);
+                t = ""+Html.fromHtml("5"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -901,7 +940,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button37:
-                t = ""+Html.fromHtml("7"+underline);
+                t = ""+Html.fromHtml("7"+underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -910,7 +949,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button38:
-                t = ""+Html.fromHtml("7"+double_underline);
+                t = ""+Html.fromHtml("7"+double_underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -928,7 +967,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button40:
-                t = ""+Html.fromHtml("7"+bullet);
+                t = ""+Html.fromHtml("7"+bullet) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -946,7 +985,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                }
 //                break;
             case R.id.button42:
-                t = ""+Html.fromHtml("7"+dot_below);
+                t = ""+Html.fromHtml("7"+dot_below) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -955,7 +994,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button43:
-                t = "1";
+                t = "1 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -964,7 +1003,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button44:
-                t = "2";
+                t = "2 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -973,7 +1012,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button45:
-                t = "3";
+                t = "3 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -982,7 +1021,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button46:
-                t = "4";
+                t = "4 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -991,7 +1030,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button47:
-                t = "5";
+                t = "5 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1000,7 +1039,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button48:
-                t = "6";
+                t = "6 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1009,7 +1048,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button49:
-                t = "7";
+                t = "7 ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1018,7 +1057,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button52:
-                t = "" + Html.fromHtml("1"+sharp);
+                t = "" + Html.fromHtml("1"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1027,7 +1066,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button53:
-                t = "" + Html.fromHtml("2"+sharp);
+                t = "" + Html.fromHtml("2"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1036,7 +1075,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button54:
-                t = "" + Html.fromHtml("3"+sharp);
+                t = "" + Html.fromHtml("3"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1045,7 +1084,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button55:
-                t = "" + Html.fromHtml("4"+sharp);
+                t = "" + Html.fromHtml("4"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1054,7 +1093,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button56:
-                t = "" + Html.fromHtml("5"+sharp);
+                t = "" + Html.fromHtml("5"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1063,7 +1102,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button57:
-                t = "" + Html.fromHtml("6"+sharp);
+                t = "" + Html.fromHtml("6"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1072,7 +1111,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button58:
-                t = "" + Html.fromHtml("7"+sharp);
+                t = "" + Html.fromHtml("7"+sharp) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1178,8 +1217,6 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
 //            }
 
-            //numericNotes = prepareScore();
-            //lengths = prepareLengths();
 
 //            Log.i("Log@Main735", "score is null? " + (score == null));
 //            if (opened) {
@@ -1208,8 +1245,12 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         scoreLength[2] = "1.000";
                         scoreLength[3] = "1.000";*/
 
+                getScoreFromText(scores.getEditableText().toString());
 
-                playBackTrack = new PlayBack(numericNotes, lengths, 0, 60);
+                numericNotes = prepareScore();
+                lengths = prepareLengths();
+
+                playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
 //                Log.d("PlayBack Log", "PlayBack initialised");
                 playBackTrack.start();
 
@@ -1255,25 +1296,51 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
     private int[] prepareScore() {
         int[] array;
-        if (!notesAndRest.isEmpty()) {
-            String[] scoreNotes = notesAndRest.trim().split(" ");
-            array = new int[scoreNotes.length];
-            for (int i = 0; i < scoreNotes.length; i++) {
-                array[i] = Integer.parseInt(scoreNotes[i]);
+        if (!noteList.isEmpty()) {
+            array = new int[noteList.size()];
+            for (int i = 0; i < noteList.size(); i++) {
+                array[i] = noteList.get(i);
             }
         } else {
             array = new int[]{1, 3, 5};
         }
+
         return array;
+    }
+
+    private void getScoreFromText(String scoreText) {
+        noteList.clear();
+        lengthList.clear();
+        String[] thisArray = scoreText.split("\\s+");
+        for(String str: thisArray) {
+            for (int i = 0; i < str.length(); i ++) {
+                String s = str.substring(i, i + 1);
+                if (s.matches("[01234567]")) {
+                    noteList.add(Integer.valueOf(s));
+                    lengthList.add(1.0);
+                } else if (s.equals("\u0307")) {
+                    noteList.set(noteList.size() - 1, noteList.get(noteList.size() - 1) * 14);
+                } else if (s.equals("\u0323")) {
+                    noteList.set(noteList.size() - 1, -noteList.get(noteList.size() - 1));
+                } else if (s.equals("\u0332")) {
+                    lengthList.set(lengthList.size() - 1, lengthList.get(lengthList.size() - 1) * 0.5);
+                }else if (s.equals("\u0333")) {
+                    lengthList.set(lengthList.size() - 1, lengthList.get(lengthList.size() - 1) * 0.25);
+                }else if (s.equals("\u2022")) {
+                    lengthList.set(lengthList.size() - 1, lengthList.get(lengthList.size() - 1) * 1.5);
+                }else if (s.equals("-")) {
+                    lengthList.set(lengthList.size() - 1, lengthList.get(lengthList.size() - 1) + 1);
+                }
+            }
+        }
     }
 
     private double[] prepareLengths() {
         double[] array;
-        if (!lengthOfNotesAndRest.isEmpty()) {
-            String[] scoreLength = lengthOfNotesAndRest.trim().split(" ");
-            array = new double[scoreLength.length];
-            for (int i = 0; i < scoreLength.length; i++) {
-                array[i] = Double.parseDouble(scoreLength[i]);
+        if (!lengthList.isEmpty()) {
+            array = new double[lengthList.size()];
+            for (int i = 0; i < lengthList.size(); i++) {
+                array[i] = lengthList.get(i);
             }
         } else {
             array = new double[]{1.0, 1.0, 1.0};
@@ -1282,7 +1349,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     }
 
     private String extractScore(int[] notes, double[] lengths) {
-        String t = "|";
+        String t = "||";
         if (notes != null && lengths != null && notes.length == lengths.length) {
             /*for (int i = 0; i < notes.length; i++) {
                 String thisNote = Integer.toString(notes[i]);
@@ -1369,11 +1436,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
 //            Log.d("Log@DisplayActivity133", thisKey);
                 if (n < 0) {
-                    thisKey += "\u0323 ";
+                    thisKey += "\u0323";
                 } else if (n > 13) {
-                    thisKey += "\u0307 ";
+                    thisKey += "\u0307";
                 } else {
-                    thisKey += " ";
+                    thisKey += "";
                 }
                 t += thisKey;
                 for (int j = 2; j < l; j++) {
@@ -1387,11 +1454,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 if (r >= 0.85)
                     t += " - ";
                 else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
+                    t += "\u0332\u2022 ";
                 else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
+                    t += "\u0332 ";
                 else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
+                    t += "\u0333 ";
 
                 totalLengths += l;
                 if (totalLengths > barCount * 4) {
@@ -1404,7 +1471,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     }
                 }
             }
-            t += " \u2225";
+            t += "||";
         }
 
         ////TODO:
@@ -1419,13 +1486,25 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
     private void save() {
         Intent intent = new Intent(this, SaveActivity.class);
-        score = new Score();
+        Score thisScore = new Score();
+        thisScore.setTempo(tempo);
+        switch (timeSig) {
+            case 3:
+                thisScore.setTimeSignatureFT();
+                break;
+            case 4:
+                thisScore.setTimeSignatureFF();
+                break;
+            default:
+                break;
+        }
+        getScoreFromText(scores.getEditableText().toString());
         numericNotes = prepareScore();
         lengths = prepareLengths();
         Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
         Log.i("Log@Main806", "lengths is null?" + (lengths == null));
-        score.setScore(numericNotes, lengths);
-        intent.putExtra("Score", score);
+        thisScore.setScore(numericNotes, lengths);
+        intent.putExtra("score", thisScore);
         intent.putExtra("ScoreFile", scoreFile);
         startActivity(intent);
     }
@@ -1434,6 +1513,8 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         Intent i = new Intent(EditScoreActivity.this,
                 AddLyricsActivity.class);
         //i.putExtra("scores", Html.fromHtml(displayThread.getDisplay() + "\u2225"));
+        i.putExtra("userEmail", userEmail);
+        i.putExtra("userName", userName);
         i.putExtra("scores", displayThread.getDisplay());
         startActivity(i);
         finish();
@@ -1553,7 +1634,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 displayThread.stopThread();
 //                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
 //                    textView.setText(displayThread.getArchived());
-                scores.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause in html
+                scores.setText(Html.fromHtml(displayThread.getDisplay()));//ending pause in html
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
             }
             if (metronome != null && metronomeRunning) {
@@ -1671,6 +1752,26 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         }
 
         return list;
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+            tempo = progress + 60;
+            Log.d("SeekBar Log", "The seekBar value is " + tempo);
+            ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
+
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 
     /*//add table dynamically
