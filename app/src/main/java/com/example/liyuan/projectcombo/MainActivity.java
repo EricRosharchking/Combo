@@ -95,6 +95,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private String userEmail;
     private String userName;
+    String userScoreName;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -110,7 +111,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     boolean isRunning;
     boolean opened;
     boolean isOpened;
-
 
     double startRecordTime;
     double stopRecordTime;
@@ -163,7 +163,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            toolbar.findViewById(R.id.tempoSeekBar);
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mActivityTitle = "Create new song";
+
+            userScoreName = (String) getIntent().getSerializableExtra("userScore");
+
+            if(userScoreName != null){
+                mActivityTitle = userScoreName;
+            } else {
+                mActivityTitle = "Create new song";
+            }
+
             getSupportActionBar().setTitle(mActivityTitle);
             addDrawerItems2();
             setupDrawer();
@@ -276,6 +284,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //String htmlString = "| 3 3<sub>̲</sub> 3<sub>̲</sub> 4 5 | 3• 2<sub>̲</sub> 2 \u2013 | 1 1<sub>̲</sub> 1<sub>̲</sub> 2 3 |";
             //"0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 1<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 0<sub>̳</sub>2<sub>̲</sub> ‐ <sub>̲</sub>• ‐ |0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐  ‐ <sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•3 ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•4| ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•</p></body></html>";
             myWebView = (WebView) findViewById(R.id.web_score);
+
 //            myWebView.setBackgroundColor(Color.TRANSPARENT);
             String htmlString = CONTENT + "Here will be the notes you played.</p></body></html>";
             myWebView.setBackgroundColor(Color.TRANSPARENT);
@@ -444,7 +453,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle("Create new song");
+                String title="";
+                if(userScoreName!=null){
+                    title =userScoreName;
+                }else{
+                    title="Create new song";
+                }
+                getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -673,10 +688,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
 //            }
 
-            String str = displayThreadNew.getDisplay();
-            str += "</p></body></html>";
-            str = CONTENT + str;
-            myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
+
 
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
@@ -684,6 +696,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
         opened = false;
+        String str = displayThreadNew.getDisplay();
+        str += "</p></body></html>";
+        str = CONTENT + str;
+        myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
     }
     //old version
 //    @Override
@@ -1126,7 +1142,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.i("Log@myAdapter", "TextView t_email is null");
 
         mDrawerList2.setHeaderHeaderView(listHeaderView);*/
-        super.onActivityResult(requestCode, resultCode,intent);
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 
 
@@ -1557,6 +1573,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         intent.putExtra("userEmail", userEmail);
         intent.putExtra("userName", userName);
+        intent.putExtra("userScore", userScoreName);
         startActivity(intent);
     }
 
@@ -1653,6 +1670,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                         //Putting blank value to email
                         editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Clear the shared preference
+                        SharedPreferences p = getPreferences(Context.MODE_PRIVATE);
+                        p.edit().clear().commit();
 
                         //Saving the sharedpreferences
                         editor.commit();

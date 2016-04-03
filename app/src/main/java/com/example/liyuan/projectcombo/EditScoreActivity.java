@@ -90,6 +90,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     String lengthOfNotesAndRest;
     DateFormat df;
     Date now;
+    String userScoreName;
 
     boolean withMetronome;
     boolean metronomeRunning;
@@ -131,11 +132,19 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mActivityTitle = getTitle().toString();
+
+            userScoreName = (String) getIntent().getSerializableExtra("userScore");
+
+            if(userScoreName!=null){
+                mActivityTitle = userScoreName;
+            }else{
+                mActivityTitle = getTitle().toString();
+            }
 
             addDrawerItems2();
             setupDrawer();
 
+            getSupportActionBar().setTitle(mActivityTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
 //            super.onCreate(savedInstanceState);
@@ -162,7 +171,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
 
-            scores.setText(rawScores);
+            scores.setText(Html.fromHtml(rawScores));
 
 //            Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3, 8));
 
@@ -177,7 +186,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
             userEmail = intent.getStringExtra("userEmail");
             userName = intent.getStringExtra("userName");
-            Log.d("UserName",userName);
+            Log.d("UserName", userName);
             Log.d("userEmail",userEmail);View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
@@ -518,6 +527,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+                if(userScoreName!=null){
+                    mActivityTitle = userScoreName;
+                }else{
+                    mActivityTitle = getTitle().toString();
+                }
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
@@ -616,7 +630,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.buttonBar:
-                t = "|";
+                t = "| ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -674,7 +688,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button5:
-                t = ""+Html.fromHtml("1"+dot_above);
+                t = ""+Html.fromHtml("1"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -728,7 +742,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button11:
-                t = ""+Html.fromHtml("2"+dot_above);
+                t = ""+Html.fromHtml("2"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -782,7 +796,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button17:
-                t = ""+Html.fromHtml("3"+dot_above);
+                t = ""+Html.fromHtml("3"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -800,7 +814,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button19:
-                t = ""+Html.fromHtml("4"+underline);
+                t = ""+Html.fromHtml("4"+underline) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -836,7 +850,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button23:
-                t = ""+Html.fromHtml("4"+dot_above);
+                t = ""+Html.fromHtml("4"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -894,7 +908,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button29:
-                t = ""+Html.fromHtml("5"+dot_above);
+                t = ""+Html.fromHtml("5"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -948,7 +962,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button35:
-                t = ""+Html.fromHtml("6"+dot_above);
+                t = ""+Html.fromHtml("6"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1002,7 +1016,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 }
                 break;
             case R.id.button41:
-                t = ""+Html.fromHtml("7"+dot_above);
+                t = ""+Html.fromHtml("7"+dot_above) + " ";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1471,7 +1485,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 if (n < 0) {
                     thisKey += "\u0323";
                 } else if (n > 13) {
-                    thisKey += "\u0307";
+                    thisKey += "<sup>\u0307</sup>";
                 } else {
                     thisKey += "";
                 }
@@ -1487,11 +1501,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 if (r >= 0.85)
                     t += " - ";
                 else if (r >= 0.69)
-                    t += "\u0332\u2022 ";
+                    t += "<sub>\u0332</sub>\u2022 ";
                 else if (r >= 0.4)
-                    t += "\u0332 ";
+                    t += "<sub>\u0332</sub> ";
                 else if (r >= 0.15)
-                    t += "\u0333 ";
+                    t += "<sub>\u0333</sub> ";
 
                 totalLengths += l;
 /*                if (totalLengths > barCount * 4) {

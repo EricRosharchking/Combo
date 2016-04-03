@@ -125,6 +125,7 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
                 //startActivityForResult(intent, 1);
                 intent.putExtra("userName", getIntent().getStringExtra("userName"));
                 intent.putExtra("userEmail", getIntent().getStringExtra("userEmail"));
+                intent.putExtra("userScore", name);
                 startActivity(intent);
                 finish();
             } catch (IOException e) {
