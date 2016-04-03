@@ -1490,24 +1490,91 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     thisKey += "";
                 }
                 t += thisKey;
-                for (int j = 2; j < l; j++) {
-                    t += " - ";
+                totalLengths += l;
+                if (totalLengths > barCount * 4) {
+                    while (totalLengths > barCount * 4) {
+                        double firstHalf = barCount * 4 - (totalLengths - l);
+                        int count = (int) (firstHalf / 0.25);
+                        int x = count / 4;
+                        int y = count % 4;
+
+                        switch (y) {
+                            case 1:
+                                t += "<sub>\u0333</sub> ";
+                                break;
+                            case 2:
+                                t += "<sub>\u0332</sub> ";
+                                break;
+                            case 3:
+                                t += "<sub>\u0332</sub> \u2022 ";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        for (int j = 1; j < firstHalf; j++) {
+                            t += " ‐ ";
+                        }
+
+                        barCount++;
+                        t += " | ";
+                        t += thisKey;
+                        l -= firstHalf;
+                    }
+                    double secondHalf = totalLengths - 4 * barCount;
+                    int count = (int) (secondHalf / 0.25);
+                    int x = count / 4;
+                    int y = count % 4;
+
+                    switch (y) {
+                        case 1:
+                            t += "<sub>\u0333</sub> ";
+                            break;
+                        case 2:
+                            t += "<sub>\u0332</sub> ";
+                            break;
+                        case 3:
+                            t += "<sub>\u0332</sub> \u2022 ";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    for (int j = 1; j < secondHalf; j++) {
+                        t += " ‐ ";
+                    }
+                    /*if (barCount > lineCount * 3) {
+                        t += "\n ";
+                        t += "|";
+                        lineCount++;
+                    }*/
+                }
+                int count = (int) (l / 0.25);
+                int x = count / 4;
+                int y = count % 4;
+
+                switch (y) {
+                    case 1:
+                        t += "<sub>\u0333</sub> ";
+                        break;
+                    case 2:
+                        t += "<sub>\u0332</sub> ";
+                        break;
+                    case 3:
+                        t += "<sub>\u0332</sub> \u2022 ";
+                        break;
+                    default:
+                        break;
                 }
 
-                double r = l % 1;
-                if (l > 2.15 && r < 0.85)
-                    t += thisKey;
+                for (int j = 1; j < l; j++) {
+                    t += " ‐ ";
+                }
 
-                if (r >= 0.85)
-                    t += " - ";
-                else if (r >= 0.69)
-                    t += "<sub>\u0332</sub>\u2022 ";
-                else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
-                else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
-
-                totalLengths += l;
+                if (totalLengths == barCount * 4) {
+                    barCount++;
+                    t += " | ";
+                }
 /*                if (totalLengths > barCount * 4) {
                     t += "|";
                     barCount += 1;
