@@ -76,4 +76,16 @@ public class MyAdapter extends BaseAdapter {
             titleImageView2.setImageResource(images[i]);
             return row;
         }
+
+    public void setDisabledID(int disabledID) {
+        this.disabledID = disabledID;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.att_email = userEmail;
+    }
+
+    public void setUserName(String userName) {
+        this.att_name = userName;
+    }
 }

@@ -88,15 +88,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     //    TextView recordStatus;
     WebView myWebView;
 
-    boolean isOpenOrNot = false;
-
     private HashMap<Integer, Integer> keyNoteMap;
     //// TODO: 10/4/2015 Use background of button, instead of imagebutton.
     //// TODO: 10/4/2015 Hashmap, int id as key, string name as value.
 
     private String userEmail;
     private String userName;
-    private String userScoreName;
     String notesAndRest;
     String lengthOfNotesAndRest;
     DateFormat df;
@@ -162,18 +159,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
-            toolbar.findViewById(R.id.tempoSeekBar);
+//            toolbar.findViewById(R.id.tempoSeekBar);
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-            userScoreName = (String) getIntent().getSerializableExtra("userScore");
-
-            if(userScoreName != null){
-                mActivityTitle = userScoreName;
-            } else {
-                mActivityTitle = "Create new song";
-            }
-
+            mActivityTitle = "Create new song";
             getSupportActionBar().setTitle(mActivityTitle);
             addDrawerItems2();
             setupDrawer();
@@ -186,11 +175,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
 
+            if (getIntent().getSerializableExtra("userEmail") != null)
             userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
+            if (getIntent().getSerializableExtra("userName") != null)
             userName = (String) getIntent().getSerializableExtra("userName");
 
-
-            Log.i("Log@myScoreName", "Score name here is " + userScoreName);
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            userEmail = sharedPref.getString("userEmail", userEmail);
+            userName = sharedPref.getString("userName", userName);
 
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
@@ -358,7 +350,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //count down
             textView_countdown = (TextView) findViewById(R.id.countdown);
             textView_countdown.setText("" + timeSig);
-            //countdown = new Countdown(this);
+            countdown = new Countdown(this);
             animator = new ValueAnimator();
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -374,6 +366,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             //animator.setDuration(5000);
             //animator.start();
 
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("userEmail", userEmail);
+            editor.putString("userName", userName);
+            editor.apply();
         } catch (NumberFormatException e) {
             tempo = 60;
 //            tempoButton.setText("60");
@@ -389,12 +385,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, userName, "Cambo", tool_list, images, disabledID);
+        myAdapter = new MyAdapter(this, "Fuck", "YOU", tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
+                    case 1:
+                        Intent intent = new Intent();
+                        intent.putExtra("userName", userName);
+                        intent.putExtra("userEmail", userEmail);
+                        setResult(1, intent);
+                        finish();
+                        break;
                     case 2:
                         save();
                         break;
@@ -440,16 +443,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-
-                if(isOpenOrNot==true){
-                    userScoreName = (String) getIntent().getSerializableExtra("userScore");
-
-                    if(userScoreName != null){
-                        mActivityTitle = userScoreName;
-                    }
-                }
-
-                getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle("Create new song");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -640,7 +634,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             startMetronome(null);
 
             //countdown.setTimeSig(timeSig);
-
             animator.setObjectValues(timeSig, 0);
             animator.setDuration(5000);
             animator.start();
@@ -1062,11 +1055,67 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 opened = true;
                 isOpened = true;
                 if (tempoSeekBar != null) tempoSeekBar.setEnabled(false);
-                if (spinner != null) spinner.setEnabled(false);
+                if (spinner != null) {
+                    spinner.setEnabled(false);
+                    switch (score.getTimeSignature()) {
+                        case "4/4":
+                            spinner.setSelection(0);
+                            break;
+                        case "3/4":
+                            spinner.setSelection(1);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                myAdapter.setDisabledID(-1);
             }
+
+/*            LayoutInflater inflater = getLayoutInflater();
+            myAdapter.setDisabledID(-1);
+            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+            if (t_name != null)
+                t_name.setText(userName);
+            else
+                Log.i("Log@myAdapter", "TextView t_name is null");
+            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+            if (t_email != null)
+                t_email.setText(userEmail);
+            else
+                Log.i("Log@myAdapter", "TextView t_email is null");
+
+            mDrawerList2.addHeaderView(listHeaderView);*/
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if(resultCode == 1) {
+            userEmail = intent.getStringExtra("userEmail");
+            userName = intent.getStringExtra("userName");
+        }
+/*        LayoutInflater inflater = getLayoutInflater();
+        myAdapter.setDisabledID(-1);
+        View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
+
+        TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
+        if (t_name != null)
+            t_name.setText(userName);
+        else
+            Log.i("Log@myAdapter", "TextView t_name is null");
+        TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
+        if (t_email != null)
+            t_email.setText(userEmail);
+        else
+            Log.i("Log@myAdapter", "TextView t_email is null");
+
+        mDrawerList2.setHeaderHeaderView(listHeaderView);*/
+        super.onActivityResult(requestCode, resultCode,intent);
     }
 
 
@@ -1458,7 +1507,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         intent.putExtra("userEmail", userEmail);
         intent.putExtra("userName", userName);
         startActivity(intent);
-        isOpenOrNot = true;
     }
 
 
@@ -1563,7 +1611,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //    }
 
     public void onBackPressed() {
-        finish();
+//        finish();
+        logout();
     }
 
     private void logout() {
