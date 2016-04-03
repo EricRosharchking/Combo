@@ -4,8 +4,6 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import java.util.HashMap;
 
@@ -90,9 +88,9 @@ public class PlayBack extends Thread{
                             double frequency = musicScore.get(notesScore[j]);
                             if (frequency != 0) {
                                 for (int i = 0; i < sample_count; i++) {
-                                    double a = xxx(i, SAMPLE_RATE, frequency, 0);
-                                    double b = xxx(i, SAMPLE_RATE, frequency, 0.25);
-                                    double c = xxx(i, SAMPLE_RATE, frequency, 0.5);
+                                    double a = getExtend(i, SAMPLE_RATE, frequency, 0);
+                                    double b = getExtend(i, SAMPLE_RATE, frequency, 0.25);
+                                    double c = getExtend(i, SAMPLE_RATE, frequency, 0.5);
                                     double extra = Math.pow(a, 2) + (0.75 * b) + (0.1 * c);
                                     double test = generate(i, SAMPLE_RATE, frequency, extra);
 
@@ -189,9 +187,9 @@ public class PlayBack extends Thread{
         double di = (double) i;
         double ds = (double) sampleRate;
 
-        double a = xxx(i, sampleRate, frequency, 0);
-        double b = xxx(i, sampleRate, frequency, 0.25);
-        double c = xxx(i, sampleRate, frequency, 0.5);
+        double a = getExtend(i, sampleRate, frequency, 0);
+        double b = getExtend(i, sampleRate, frequency, 0.25);
+        double c = getExtend(i, sampleRate, frequency, 0.5);
 
         extra = Math.pow(a, 2) + (0.75 * b) + (0.1 * c);
         data = Math.sin(2 * Math.PI * (di / ds) * frequency + extra);
@@ -200,7 +198,7 @@ public class PlayBack extends Thread{
     }
 
 	
-    private double xxx(int i, int sampleRate, double frequency, double extra) {
+    private double getExtend(int i, int sampleRate, double frequency, double extra) {
 
         double di = (double) i;
         double ds = (double) sampleRate;
