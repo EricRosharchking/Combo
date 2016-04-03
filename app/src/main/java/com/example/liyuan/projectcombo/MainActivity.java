@@ -1573,6 +1573,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         intent.putExtra("userEmail", userEmail);
         intent.putExtra("userName", userName);
+        intent.putExtra("userScore", userScoreName);
         startActivity(intent);
     }
 
