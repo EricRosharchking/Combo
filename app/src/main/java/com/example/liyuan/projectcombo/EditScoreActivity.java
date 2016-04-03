@@ -1245,13 +1245,19 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         scoreLength[2] = "1.000";
                         scoreLength[3] = "1.000";*/
 
+                if (playBackTrack != null) {
+                    lastNote = playBackTrack.getLast();
+                }
                 getScoreFromText(scores.getEditableText().toString());
 
                 numericNotes = prepareScore();
                 lengths = prepareLengths();
 
+                metronome = new Metronome(tempo);
+                metronome.changeTimeSignature(timeSig);
                 playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
 //                Log.d("PlayBack Log", "PlayBack initialised");
+                metronome.start();
                 playBackTrack.start();
 
                     /*try {
@@ -1461,7 +1467,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     t += "\u0333 ";
 
                 totalLengths += l;
-                if (totalLengths > barCount * 4) {
+/*                if (totalLengths > barCount * 4) {
                     t += "|";
                     barCount += 1;
                     if (barCount > lineCount * 3) {
@@ -1469,7 +1475,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         t += "|";
                         lineCount++;
                     }
-                }
+                }*/
             }
             t += "||";
         }
