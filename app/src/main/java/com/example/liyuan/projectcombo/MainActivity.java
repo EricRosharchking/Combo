@@ -963,6 +963,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         }
                         restEndTime = noteStartTime;
                     }
+                    String str = displayThreadNew.getDisplay();
+                    str += "</p></body></html>";
+                    str = CONTENT + str;
+                    myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
 
 //                    if (Notes[noteID - 1] != null) {
 //                        Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
