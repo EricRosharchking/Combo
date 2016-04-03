@@ -688,10 +688,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
 //            }
 
-            String str = displayThreadNew.getDisplay();
-            str += "</p></body></html>";
-            str = CONTENT + str;
-            myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
+
 
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
@@ -699,6 +696,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
         opened = false;
+        String str = displayThreadNew.getDisplay();
+        str += "</p></body></html>";
+        str = CONTENT + str;
+        myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
     }
     //old version
 //    @Override
