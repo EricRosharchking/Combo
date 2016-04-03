@@ -90,6 +90,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     String lengthOfNotesAndRest;
     DateFormat df;
     Date now;
+    String userScoreName;
 
     boolean withMetronome;
     boolean metronomeRunning;
@@ -131,11 +132,19 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mActivityTitle = getTitle().toString();
+
+            userScoreName = (String) getIntent().getSerializableExtra("userScore");
+
+            if(userScoreName!=null){
+                mActivityTitle = userScoreName;
+            }else{
+                mActivityTitle = getTitle().toString();
+            }
 
             addDrawerItems2();
             setupDrawer();
 
+            getSupportActionBar().setTitle(mActivityTitle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
 //            super.onCreate(savedInstanceState);
@@ -518,6 +527,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+                if(userScoreName!=null){
+                    mActivityTitle = userScoreName;
+                }else{
+                    mActivityTitle = getTitle().toString();
+                }
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
