@@ -155,7 +155,9 @@ public class DisplayThreadNew {
         if (lastKey != -1) {
             lastLength *= 1000;
             totalLength += lastLength;
-            if (totalLength > barCount * barTime) {
+            if (lastLength == 0) {
+                display = display.substring(0, display.length()-2);
+            }else if (totalLength > barCount * barTime) {
                 while (totalLength > barCount * barTime) {
                     double firstHalf = barCount * barTime - (totalLength - lastLength);
                     int count = (int) (firstHalf / quarterBeat);

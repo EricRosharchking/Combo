@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -29,7 +31,8 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        WebView myWebView = (WebView) findViewById(R.id.web_score);
+        myWebView.setBackgroundColor(Color.TRANSPARENT);
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
         names = new String[]{"1", "2", "3"};
         Context context = App.getAppContext();
@@ -143,6 +146,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 
             Dialog view = (Dialog) dialog;
             EditText nameField = (EditText)view.findViewById(R.id.name_Field);
+            nameField.setFocusable(false);
 //            EditText authorField = (EditText)view.findViewById(R.id.author_Field);
             CharSequence sequence1 = nameField.getText();
 //            CharSequence sequence2 = authorField.getText();

@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.webkit.WebView;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -22,7 +24,10 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        WebView myWebView = (WebView) findViewById(R.id.web_score);
+//        String content_style = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><head><style>p{color:white;font-size:30px}</style><body style=\"background-color:#222222;\"><p style=\"font-size:30px\"></p></body></html>";
+        myWebView.setBackgroundColor(Color.TRANSPARENT);
+//        myWebView.loadData(content_style, "text/html; charset=utf-8", "UTF-8");
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
         action = getIntent().getIntExtra("action", 0);
         names = new String[]{"1", "2", "3"};

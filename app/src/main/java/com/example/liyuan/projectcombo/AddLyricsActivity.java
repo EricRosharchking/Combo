@@ -1,6 +1,10 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.kiv.MyAdapter;
+import com.facebook.login.LoginManager;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -33,7 +38,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     TextView scores;
     EditText lyrics;
-    Button save;
+    Button btnLogout;
 
     Score score;
     double[] lengths;
@@ -141,6 +146,8 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             scores = (TextView) findViewById(R.id.tvScores);
             lyrics = (EditText) findViewById(R.id.edLyrics);
+            scores.setFocusable(false);
+//            lyrics.setFocusable(false);
 //            lyrics.setText(score.getLyrics());
 
             scores.setMovementMethod(new ScrollingMovementMethod());
@@ -148,7 +155,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             scores.setTextSize(18);
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+            scores.setText(Html.fromHtml(rawScores));
 
             scoreFile = new ScoreFile();
             numericNotes = null;
@@ -180,6 +187,14 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 Log.i("Log@myAdapter", "TextView t_email is null");
 
             mDrawerList2.addHeaderView(listHeaderView);
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
             //TO DO: Implement save
 
         }catch(NumberFormatException e){
@@ -221,7 +236,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                     exportToPDF();
                     break;
                 }
-                Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -462,8 +477,33 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     private String extractScore(int[] notes, double[] lengths) {
-        String t = "|";
-        if (notes != null && lengths != null && notes.length == lengths.length) {double totalLengths = 0.0;
+        String t = "||";
+        if (notes != null && lengths != null && notes.length == lengths.length) {
+            /*for (int i = 0; i < notes.length; i++) {
+                String thisNote = Integer.toString(notes[i]);
+                double thisLength = lengths[i];
+                int q = (int) Math.round(thisLength / 0.25);
+                if (q == 0) {
+                    q = 1;
+                }
+                switch (q) {
+                    case 1:
+                        thisNote += DOUBLE_UNDERLINE;
+                        break;
+                    case 2:
+                        thisNote += UNDERLINE;
+                        break;
+                    case 3:
+                        thisNote += UNDERLINE;
+                        thisNote += BULLET;
+                        break;
+                    default:
+                        break;
+                }
+                scoreString += thisNote;
+            }*/
+
+            double totalLengths = 0.0;
             int barCount = 1;
             int lineCount = 1;
 
@@ -524,11 +564,11 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 }
 //            Log.d("Log@DisplayActivity133", thisKey);
                 if (n < 0) {
-                    thisKey += "\u0323 ";
+                    thisKey += "\u0323";
                 } else if (n > 13) {
-                    thisKey += "\u0307 ";
+                    thisKey += "\u0307";
                 } else {
-                    thisKey += " ";
+                    thisKey += "";
                 }
                 t += thisKey;
                 for (int j = 2; j < l; j++) {
@@ -542,14 +582,14 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 if (r >= 0.85)
                     t += " - ";
                 else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
+                    t += "\u0332\u2022 ";
                 else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
+                    t += "\u0332 ";
                 else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
+                    t += "\u0333 ";
 
                 totalLengths += l;
-                if (totalLengths > barCount * 4) {
+/*                if (totalLengths > barCount * 4) {
                     t += "|";
                     barCount += 1;
                     if (barCount > lineCount * 3) {
@@ -557,11 +597,12 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                         t += "|";
                         lineCount++;
                     }
-                }
+                }*/
             }
-            t += " \u2225";
+            t += "||";
         }
 
+        ////TODO:
         return t.trim();
     }
 
@@ -611,7 +652,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -743,6 +784,59 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 metronome.stop();
             }
         }
+    }
+
+    private void logout() {
+
+
+        //Creating an alert dialog to confirm logout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //logout from fb
+                        LoginManager.getInstance().logOut();
+//                        Intent in = new Intent(MainActivity.this, welcomePage.class);
+//                        startActivity(in);
+//                        finish();
+
+
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                        //Putting blank value to email
+                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Saving the sharedpreferences
+                        editor.commit();
+
+                        //Starting login activity
+                        Intent intent = new Intent(AddLyricsActivity.this, welcomePage.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        //Showing the alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
 }
