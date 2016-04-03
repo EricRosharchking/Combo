@@ -55,7 +55,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
-            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51,b52,b53,b54,b55,b56,b57,b58;
+            b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51,b52,b53,b54,b55,b56,b57,b58,bBar;
     TextView scores;
     private Spinner spinner;
     private SeekBar tempoSeekBar;
@@ -263,6 +263,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             b56 = (Button) findViewById(R.id.button56);
             b57 = (Button) findViewById(R.id.button57);
             b58 = (Button) findViewById(R.id.button58);
+            bBar = (Button) findViewById(R.id.buttonBar);
 
 
             b1.setText(Html.fromHtml("1" + underline));
@@ -316,6 +317,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             b49.setText("7");
             b50.setText("0");
             b51.setText("-");
+            bBar.setText("|");
             b52.setText(Html.fromHtml("1" + sharp));
             b53.setText(Html.fromHtml("2" + sharp));
             b54.setText(Html.fromHtml("3" + sharp));
@@ -395,6 +397,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             b56.setOnClickListener(this);
             b57.setOnClickListener(this);
             b58.setOnClickListener(this);
+            bBar.setOnClickListener(this);
 
 //            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
 //            metronumberpicker.setFocusable(false);
@@ -475,7 +478,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         break;
 
                 }
-                Toast.makeText(EditScoreActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(EditScoreActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -591,6 +594,15 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         switch(v.getId()){
             case R.id.button51:
                 t = "- ";
+                if (index <0 || index >= getEditTextViewString().length()) {
+                    scores.append(t);
+
+                } else {
+                    scores.getEditableText().insert(index, t);// Insert text cursor position
+                }
+                break;
+            case R.id.buttonBar:
+                t = "|";
                 if (index <0 || index >= getEditTextViewString().length()) {
                     scores.append(t);
 
@@ -1545,7 +1557,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 
