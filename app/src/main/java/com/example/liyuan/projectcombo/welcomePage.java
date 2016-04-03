@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +51,17 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class welcomePage extends ActionBarActivity implements View.OnClickListener {
 
@@ -71,6 +77,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
 
+    Profile profile = null;
 
 
     @Override
@@ -87,9 +94,15 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnForgot = (Button) findViewById(R.id.btnForgot);
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
-        loginButton.setReadPermissions("email");
-        loginButton.setReadPermissions("public_profile");
+        List<String> permissions = new ArrayList<>();
+        permissions.add("public_profile");
+        permissions.add("email");
+        permissions.add("user_birthday");
+        loginButton.setReadPermissions(permissions);
+
+//        loginButton.setReadPermissions("user_friends");
+//        loginButton.setReadPermissions("email");
+//        loginButton.setReadPermissions("public_profile");
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -97,21 +110,50 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("LOGIN_SUCCESS", "Success");
                         AccessToken accessToken = loginResult.getAccessToken();
-                        Profile profile = Profile.getCurrentProfile();
+                        profile = Profile.getCurrentProfile();
 
-                        Intent intent = new Intent(welcomePage.this, MainActivity.class);
-                        displayWelcomeMessage(profile);
-                        if (userEmail != null)
-                            intent.putExtra("userEmail", userEmail);
-                        if (userName != null && !userName.isEmpty())
-                            intent.putExtra("userName",userName);
-                        startActivity(intent);
+                        // Facebook Email address
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(
+                                            JSONObject object,
+                                            GraphResponse response) {
+                                        Log.v("LoginActivity Response ", response.toString());
+
+                                        try {
+                                            userName = object.getString("name");
+                                            userEmail = object.getString("email");
+
+                                            Intent intent = new Intent(welcomePage.this, MainActivity.class);
+                                            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                                            userEmail = sharedPref.getString("userEmail", userEmail);
+                                            userName = sharedPref.getString("userName", userName);
+
+                                            Log.v("FB NAME Shared login: ", " " + userName);
+                                            Log.v("FB EMAIL Shared login: ", " " + userEmail);
+
+                                            if (userEmail != null)
+                                                intent.putExtra("userEmail", userEmail);
+                                            if (userName != null && !userName.isEmpty())
+                                                intent.putExtra("userName", userName);
+
+                                            displayWelcomeMessage(profile);
+                                            startActivity(intent);
+                                            Toast.makeText(getApplicationContext(), "Name " + userName, Toast.LENGTH_LONG).show();
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,gender, birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
 
 
-
-//                        Toast.makeText(getApplicationContext(),
-//                                "Welcome! Now you can create your song!", Toast.LENGTH_LONG)
-//                                .show();
                         finish();
                     }
 
