@@ -221,7 +221,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                     exportToPDF();
                     break;
                 }
-                Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddLyricsActivity.this, "position is " + position + ", id is " + id + " view id is " + view.getId(), Toast.LENGTH_SHORT).show();
             }
         });
     }

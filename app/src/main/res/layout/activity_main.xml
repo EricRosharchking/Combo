@@ -251,6 +251,7 @@
 
                 <WebView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/web_score"
+                    android:background="#222222"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="fill_parent"
