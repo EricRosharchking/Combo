@@ -146,6 +146,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
 
             Dialog view = (Dialog) dialog;
             EditText nameField = (EditText)view.findViewById(R.id.name_Field);
+            nameField.setFocusable(false);
 //            EditText authorField = (EditText)view.findViewById(R.id.author_Field);
             CharSequence sequence1 = nameField.getText();
 //            CharSequence sequence2 = authorField.getText();

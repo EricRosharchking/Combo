@@ -1,6 +1,10 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.kiv.MyAdapter;
+import com.facebook.login.LoginManager;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -33,7 +38,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
     TextView scores;
     EditText lyrics;
-    Button save;
+    Button btnLogout;
 
     Score score;
     double[] lengths;
@@ -141,6 +146,8 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             scores = (TextView) findViewById(R.id.tvScores);
             lyrics = (EditText) findViewById(R.id.edLyrics);
+            scores.setFocusable(false);
+            lyrics.setFocusable(false);
 //            lyrics.setText(score.getLyrics());
 
             scores.setMovementMethod(new ScrollingMovementMethod());
@@ -180,6 +187,14 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 Log.i("Log@myAdapter", "TextView t_email is null");
 
             mDrawerList2.addHeaderView(listHeaderView);
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
             //TO DO: Implement save
 
         }catch(NumberFormatException e){
@@ -743,6 +758,59 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 metronome.stop();
             }
         }
+    }
+
+    private void logout() {
+
+
+        //Creating an alert dialog to confirm logout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //logout from fb
+                        LoginManager.getInstance().logOut();
+//                        Intent in = new Intent(MainActivity.this, welcomePage.class);
+//                        startActivity(in);
+//                        finish();
+
+
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                        //Putting blank value to email
+                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Saving the sharedpreferences
+                        editor.commit();
+
+                        //Starting login activity
+                        Intent intent = new Intent(AddLyricsActivity.this, welcomePage.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        //Showing the alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
 }
