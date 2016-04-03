@@ -146,7 +146,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private NumberPicker metronumberpicker;
     private static Menu topMenu;
 
-    TextView textView_countdown;
+//    TextView textView_countdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,21 +349,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             opened = false;
             beatLength = 1.0;
 //count down
-            textView_countdown = (TextView) findViewById(R.id.countdown);
-            textView_countdown.setText("" + timeSig);
-            countdown = new Countdown(this);
-            animator = new ValueAnimator();
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
-                }
-            });
-            animator.setEvaluator(new TypeEvaluator<Integer>() {
-                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
-                    return Math.round(startValue + (endValue - startValue) * fraction);
-                }
-            });
-            animator.setObjectValues(timeSig, 0);
+//            textView_countdown = (TextView) findViewById(R.id.countdown);
+//            textView_countdown.setText("" + timeSig);
+//            countdown = new Countdown(this);
+//            animator = new ValueAnimator();
+//            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//                    textView_countdown.setText(String.valueOf(animation.getAnimatedValue()));
+//                }
+//            });
+//            animator.setEvaluator(new TypeEvaluator<Integer>() {
+//                public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+//                    return Math.round(startValue + (endValue - startValue) * fraction);
+//                }
+//            });
+//            animator.setObjectValues(timeSig, 0);
             //animator.setDuration(5000);
             //animator.start();
 
@@ -635,10 +635,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             startMetronome(null);
 
             //countdown.setTimeSig(timeSig);
-            animator.setObjectValues(timeSig, 0);
-            animator.setDuration(5000);
-            animator.start();
-            new Handler().post(countdown);
+//            animator.setObjectValues(timeSig, 0);
+//            animator.setDuration(5000);
+//            animator.start();
+//            new Handler().post(countdown);
 
             long delay = (long) (timeSig * 1000 * secondsPerBeat);
             try {
@@ -669,9 +669,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
 //                    textView.setText(displayThread.getArchived());
             displayThreadNew.update(rest);
-            textView.setText(Html.fromHtml(displayThreadNew.getDisplay() + "\u2225"));//ending pause in html
+//            textView.setText(Html.fromHtml(displayThreadNew.getDisplay() + "\u2225"));//ending pause in html
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
 //            }
+
+            String str = displayThreadNew.getDisplay();
+            str += "</p></body></html>";
+            str = CONTENT + str;
+            myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
+
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
                 metronomeRunning = false;
@@ -953,7 +959,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     rest = autoCorrectLength(rest);
                     ////TODO: auto-correct, get it done
 //                    Log.d("RestLog", "Rest is " + rest + " beats long");
-                    if (rest > 0) {
+                    if (rest >= 0) {
                         notesAndRest = notesAndRest + " " + "0";
                         lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
 

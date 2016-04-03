@@ -147,7 +147,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
             scores = (TextView) findViewById(R.id.tvScores);
             lyrics = (EditText) findViewById(R.id.edLyrics);
             scores.setFocusable(false);
-            lyrics.setFocusable(false);
+//            lyrics.setFocusable(false);
 //            lyrics.setText(score.getLyrics());
 
             scores.setMovementMethod(new ScrollingMovementMethod());
@@ -155,7 +155,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
 
             scores.setTextSize(18);
 
-            scores.setText(Html.fromHtml(rawScores) + "\u2225");
+            scores.setText(Html.fromHtml(rawScores));
 
             scoreFile = new ScoreFile();
             numericNotes = null;
@@ -477,8 +477,33 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     }
 
     private String extractScore(int[] notes, double[] lengths) {
-        String t = "|";
-        if (notes != null && lengths != null && notes.length == lengths.length) {double totalLengths = 0.0;
+        String t = "||";
+        if (notes != null && lengths != null && notes.length == lengths.length) {
+            /*for (int i = 0; i < notes.length; i++) {
+                String thisNote = Integer.toString(notes[i]);
+                double thisLength = lengths[i];
+                int q = (int) Math.round(thisLength / 0.25);
+                if (q == 0) {
+                    q = 1;
+                }
+                switch (q) {
+                    case 1:
+                        thisNote += DOUBLE_UNDERLINE;
+                        break;
+                    case 2:
+                        thisNote += UNDERLINE;
+                        break;
+                    case 3:
+                        thisNote += UNDERLINE;
+                        thisNote += BULLET;
+                        break;
+                    default:
+                        break;
+                }
+                scoreString += thisNote;
+            }*/
+
+            double totalLengths = 0.0;
             int barCount = 1;
             int lineCount = 1;
 
@@ -539,11 +564,11 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 }
 //            Log.d("Log@DisplayActivity133", thisKey);
                 if (n < 0) {
-                    thisKey += "\u0323 ";
+                    thisKey += "\u0323";
                 } else if (n > 13) {
-                    thisKey += "\u0307 ";
+                    thisKey += "\u0307";
                 } else {
-                    thisKey += " ";
+                    thisKey += "";
                 }
                 t += thisKey;
                 for (int j = 2; j < l; j++) {
@@ -557,14 +582,14 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 if (r >= 0.85)
                     t += " - ";
                 else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
+                    t += "\u0332\u2022 ";
                 else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
+                    t += "\u0332 ";
                 else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
+                    t += "\u0333 ";
 
                 totalLengths += l;
-                if (totalLengths > barCount * 4) {
+/*                if (totalLengths > barCount * 4) {
                     t += "|";
                     barCount += 1;
                     if (barCount > lineCount * 3) {
@@ -572,11 +597,12 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                         t += "|";
                         lineCount++;
                     }
-                }
+                }*/
             }
-            t += " \u2225";
+            t += "||";
         }
 
+        ////TODO:
         return t.trim();
     }
 
@@ -626,7 +652,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

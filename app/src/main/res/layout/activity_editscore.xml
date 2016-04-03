@@ -44,7 +44,6 @@
                     android:scrollbars="vertical"
                     android:text="Here is the notes you played"
                     android:textColor="#FFFFFF">
-
                 </EditText>
 
             </LinearLayout>

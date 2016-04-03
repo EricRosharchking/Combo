@@ -444,7 +444,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //            spinner.setAdapter(adapter);
 //            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
-            withMetronome = true;
+            withMetronome = false;
             opened = false;
             beatLength = 1.0;
 
@@ -1284,7 +1284,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
                 playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
 //                Log.d("PlayBack Log", "PlayBack initialised");
-                startMetronome(null);
+                if (withMetronome) startMetronome(null);
                 playBackTrack.start();
 
                     /*try {
@@ -1318,11 +1318,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         if (playBackTrack != null) {
             playBackTrack.stopPlaying();
             lastNote = playBackTrack.getLast();
-        }
-        try {
-            playBackTrack.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                playBackTrack.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
@@ -1602,13 +1602,18 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 stopPlay(null);
                 break;
             case R.id.metro:
-                withMetronome = !withMetronome;
                 if (!withMetronome) {
                     withMetronome = true;
                     item.setIcon(R.drawable.metro_on);
                 } else {
                     withMetronome = false;
                     item.setIcon(R.drawable.metro_off);
+                    try {
+                        metronome.stop();
+                    } catch (Exception e) {
+
+                    }
+                    metronomeRunning = false;
                 }
                 break;
             default:
@@ -1811,7 +1816,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
-    }private void logout() {
+    }
+
+    private void logout() {
 
 
         //Creating an alert dialog to confirm logout
