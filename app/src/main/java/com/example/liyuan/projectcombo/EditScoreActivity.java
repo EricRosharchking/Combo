@@ -1,6 +1,10 @@
 package com.example.liyuan.projectcombo;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -38,6 +42,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.kiv.MyAdapter;
+import com.facebook.login.LoginManager;
 
 public class EditScoreActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, NumberPicker.OnValueChangeListener, AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener{
 
@@ -53,6 +58,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     DisplayThread displayThread;
     MyAdapter myAdapter;
 
+    Button btnLogout;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16,b17,b18,b19,b20,
             b21,b22,b23,b24,b25,b26,b27,b28,b29,b30,b31,b32,b33,b34,b35,b36,b37,b38,b39,b40,
             b41,b42,b43,b44,b45,b46,b47,b48,b49,b50,b51,b52,b53,b54,b55,b56,b57,b58,bBar;
@@ -158,7 +164,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
             scores.setText(rawScores);
 
-            Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3, 8));
+//            Log.d("EditLog", "" + getString(R.string.example).length() + "lalala" + getString(R.string.example).substring(3, 8));
 
             scores.setInputType(InputType.TYPE_NULL);
             scores.setFocusable(false);
@@ -408,6 +414,14 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //
             tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
+            btnLogout = (Button) findViewById(R.id.btnLogout);
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
             tempo = 60;
             spinner = (Spinner) findViewById(R.id.time_signature);
 //            Create an ArrayAdapter using the string array and a default spinner layout
@@ -430,7 +444,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 //            spinner.setAdapter(adapter);
 //            spinner.setOnItemSelectedListener(this);
             scoreFile = new ScoreFile();
-            withMetronome = true;
+            withMetronome = false;
             opened = false;
             beatLength = 1.0;
 
@@ -1191,10 +1205,13 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
     public void startMetronome(View view) {
         if (!metronomeRunning) {
             if (metronome != null) {
+                metronome.changeTempo(tempo);
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             } else {
-                metronome = new Metronome(metronumberpicker.getValue());
+                metronome = new Metronome(tempo);
+                metronome.changeTimeSignature(timeSig);
                 metronome.setWithMetronome(withMetronome);
                 metronome.start();
             }
@@ -1257,6 +1274,9 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         scoreLength[2] = "1.000";
                         scoreLength[3] = "1.000";*/
 
+                if (playBackTrack != null) {
+                    lastNote = playBackTrack.getLast();
+                }
                 getScoreFromText(scores.getEditableText().toString());
 
                 numericNotes = prepareScore();
@@ -1264,6 +1284,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
                 playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
 //                Log.d("PlayBack Log", "PlayBack initialised");
+                if (withMetronome) startMetronome(null);
                 playBackTrack.start();
 
                     /*try {
@@ -1297,11 +1318,11 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         if (playBackTrack != null) {
             playBackTrack.stopPlaying();
             lastNote = playBackTrack.getLast();
-        }
-        try {
-            playBackTrack.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                playBackTrack.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
@@ -1473,7 +1494,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                     t += "\u0333 ";
 
                 totalLengths += l;
-                if (totalLengths > barCount * 4) {
+/*                if (totalLengths > barCount * 4) {
                     t += "|";
                     barCount += 1;
                     if (barCount > lineCount * 3) {
@@ -1481,7 +1502,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                         t += "|";
                         lineCount++;
                     }
-                }
+                }*/
             }
             t += "||";
         }
@@ -1569,7 +1590,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 // User chose the "Settings" item, show the app settings UI...
 //                Intent intent = new Intent(MainActivity.this, register.class);
 //                startActivity(intent);
-                record();
+//                record();
                 break;
             case R.id.playBack:
                 playBack(null);
@@ -1581,8 +1602,19 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 stopPlay(null);
                 break;
             case R.id.metro:
-                withMetronome = true;
-                startMetronome(null);
+                if (!withMetronome) {
+                    withMetronome = true;
+                    item.setIcon(R.drawable.metro_on);
+                } else {
+                    withMetronome = false;
+                    item.setIcon(R.drawable.metro_off);
+                    try {
+                        metronome.stop();
+                    } catch (Exception e) {
+
+                    }
+                    metronomeRunning = false;
+                }
                 break;
             default:
                 // If we got here, the user's action was not recognized.
@@ -1599,7 +1631,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
         return timeSig;
     }
 
-    public void record() {
+    /*public void record() {
         if (!onRecord) {
             //recordButton.setImageResource(R.drawable.stopbutton);
             onRecord = true;
@@ -1653,7 +1685,7 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
                 metronome.stop();
             }
         }
-    }
+    }*/
 
 
     //split the String to String[] for use to split into multiple arrays
@@ -1783,6 +1815,59 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    private void logout() {
+
+
+        //Creating an alert dialog to confirm logout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //logout from fb
+                        LoginManager.getInstance().logOut();
+//                        Intent in = new Intent(MainActivity.this, welcomePage.class);
+//                        startActivity(in);
+//                        finish();
+
+
+                        //Getting out sharedpreferences
+                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Getting editor
+                        SharedPreferences.Editor editor = preferences.edit();
+
+                        //Puting the value false for loggedin
+                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                        //Putting blank value to email
+                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                        //Saving the sharedpreferences
+                        editor.commit();
+
+                        //Starting login activity
+                        Intent intent = new Intent(EditScoreActivity.this, welcomePage.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        //Showing the alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
     }
 

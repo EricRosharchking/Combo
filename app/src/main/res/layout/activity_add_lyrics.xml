@@ -63,7 +63,8 @@
                     android:textColor="#FFFFFF"
                     android:autoText="false"
                     android:focusable="true"
-                    android:focusableInTouchMode="true" />
+                    android:focusableInTouchMode="true"
+                    android:imeOptions="flagNoExtractUi" />
 
             </RelativeLayout>
 
