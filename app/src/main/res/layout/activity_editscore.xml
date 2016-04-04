@@ -43,6 +43,7 @@
                     android:layout_height="fill_parent"
                     android:scrollbars="vertical"
                     android:text="Here is the notes you played"
+                    android:imeOptions="flagNoFullscreen"
                     android:textColor="#FFFFFF">
                 </EditText>
 
