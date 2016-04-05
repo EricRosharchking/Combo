@@ -23,7 +23,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editscore);
+        setContentView(R.layout.activity_editscorewithnewkeyboard);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile2");
