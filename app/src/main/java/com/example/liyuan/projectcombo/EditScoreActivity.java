@@ -1363,7 +1363,32 @@ public class EditScoreActivity extends ActionBarActivity implements View.OnClick
             for (int i = 0; i < str.length(); i ++) {
                 String s = str.substring(i, i + 1);
                 if (s.matches("[01234567]")) {
-                    noteList.add(Integer.valueOf(s));
+                    int note = Integer.valueOf(s);
+                    switch (note) {
+                        case 1:
+                            break;
+                        case 2:
+                            note = 3;
+                            break;
+                        case 3:
+                            note = 5;
+                            break;
+                        case 4:
+                            note = 6;
+                            break;
+                        case 5:
+                            note = 8;
+                            break;
+                        case 6:
+                            note = 10;
+                            break;
+                        case 7:
+                            note = 14;
+                            break;
+                        default:
+                            break;
+                    }
+                    noteList.add(note);
                     lengthList.add(1.0);
                 } else if (s.equals("\u0307")) {
                     noteList.set(noteList.size() - 1, noteList.get(noteList.size() - 1) * 14);

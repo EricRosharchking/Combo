@@ -727,13 +727,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public double autoCorrectLength(double actualLength) {
         double result = (double) (int) (actualLength / 1);
         actualLength -= result;
-        if (actualLength >= 0.85)
+        if (actualLength >= 0.9)
             actualLength = 1.0;
         else if (actualLength >= 0.65)
             actualLength = 0.75;
-        else if (actualLength >= 0.35)
+        else if (actualLength >= 0.4)
             actualLength = 0.5;
-        else if (actualLength >= 0.1)
+        else if (actualLength >= 0.2)
             actualLength = 0.25;
         else
             actualLength = 0.0;
@@ -1502,9 +1502,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (playBackTrack != null) {
             playBackTrack.pausePlaying();
             lastNote = playBackTrack.getJ();
-            if (lastNote == playBackTrack.getSize() - 1) {
-                lastNote = playBackTrack.getLast();
-            }
             try {
                 playBackTrack.join();
                 changePlayBackIcon();
@@ -1520,7 +1517,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void stopPlay(View view) {
         if (playBackTrack != null) {
             playBackTrack.stopPlaying();
-            lastNote = playBackTrack.getLast();
+            lastNote = 0;
             try {
                 playBackTrack.join();
                 changePlayBackIcon();
