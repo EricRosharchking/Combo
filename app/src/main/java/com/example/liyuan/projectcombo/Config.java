@@ -19,6 +19,9 @@ public class Config {
     //This would be used to store the email of current logged in user
     public static final String EMAIL_SHARED_PREF = "email";
 
+    //This would be used to store the username of current logged in user
+    public static final String UNAME_SHARED_PREF = "username";
+
     //This would be used to store the password of current logged in user
     public static final String PASSWORD_SHARED_PREF = "password";
 
