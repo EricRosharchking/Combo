@@ -35,12 +35,12 @@ public class DisplayThreadNew {
     private final String curve = "<sup>\u0361</sup>";
     private final String bullet = "\u2022";
     private final String dot_above = "<sub>\u0307</sub>";
-    private final String dot_below = "<sub>\u0323</sub>";
+    private final String dot_below = "\u0323";
 
     public DisplayThreadNew() {
         timeSignature = 4;
         tempo = 60;
-        display = "";
+        display = "|| ";
         archived = display;
         isRunning = true;
         key = 0;
@@ -156,7 +156,7 @@ public class DisplayThreadNew {
             lastLength *= 1000;
             totalLength += lastLength;
             if (lastLength == 0) {
-                display = display.substring(0, display.length()-2);
+                display = display.substring(0, display.length()-1);
             }else if (totalLength > barCount * barTime) {
                 while (totalLength > barCount * barTime) {
                     double firstHalf = barCount * barTime - (totalLength - lastLength);
@@ -164,6 +164,46 @@ public class DisplayThreadNew {
                     int x = count / 4;
                     int y = count % 4;
 
+                    for (int i = 1; i * 4 * quarterBeat < firstHalf; i++) {
+                        display += " ‐ ";
+                    }
+                    if (x > 0) {
+                        display += " ";
+                        display += lastKey;
+                    }
+                        switch (y) {
+                            case 1:
+                                display += double_underline;
+                                break;
+                            case 2:
+                                display += underline;
+                                break;
+                            case 3:
+                                display += underline;
+                                display += bullet;
+                                break;
+                            default:
+                                break;
+                        }
+
+
+                    barCount++;
+                    display += " | ";
+                    display += lastKey;
+                    lastLength -= firstHalf;
+                }
+                double secondHalf = totalLength - barTime * barCount;
+                int count = (int) (secondHalf / quarterBeat);
+                int x = count / 4;
+                int y = count % 4;
+
+                for (int i = 1; i * 4 * quarterBeat < secondHalf; i++) {
+                    display += " ‐ ";
+                }
+                if (x > 0) {
+                    display += " ";
+                    display += lastKey;
+                }
                     switch (y) {
                         case 1:
                             display += double_underline;
@@ -179,20 +219,20 @@ public class DisplayThreadNew {
                             break;
                     }
 
-                    for (int i = 1; i * 4 * quarterBeat < firstHalf; i++) {
-                        display += " ‐ ";
-                    }
 
-                    barCount++;
-                    display += " | ";
-                    display += lastKey;
-                    lastLength -= firstHalf;
-                }
-                double secondHalf = totalLength - barTime * barCount;
-                int count = (int) (secondHalf / quarterBeat);
-                int x = count / 4;
-                int y = count % 4;
+            }
 
+            int count = (int) (lastLength / quarterBeat);
+            int x = count / 4;
+            int y = count % 4;
+
+            for (int i = 1; i * 4 * quarterBeat < lastLength; i++) {
+                display += " ‐ ";
+            }
+            if (x > 0) {
+                display += " ";
+                display += lastKey;
+            }
                 switch (y) {
                     case 1:
                         display += double_underline;
@@ -208,33 +248,6 @@ public class DisplayThreadNew {
                         break;
                 }
 
-                for (int i = 1; i * 4 * quarterBeat < secondHalf; i++) {
-                    display += " ‐ ";
-                }
-            }
-
-            int count = (int) (lastLength / quarterBeat);
-            int x = count / 4;
-            int y = count % 4;
-
-            switch (y) {
-                case 1:
-                    display += double_underline;
-                    break;
-                case 2:
-                    display += underline;
-                    break;
-                case 3:
-                    display += underline;
-                    display += bullet;
-                    break;
-                default:
-                    break;
-            }
-
-            for (int i = 1; i * 4 * quarterBeat < lastLength; i++) {
-                display += " ‐ ";
-            }
 
             if (totalLength == barCount * barTime) {
                 barCount++;
@@ -244,17 +257,20 @@ public class DisplayThreadNew {
         }
         lastKey = key;
         display += " ";
-        display += lastKey;
-        switch (octave) {
-            case 3:
-                display += "\u0323";
-                break;
-            case 4:
-                break;
-            case 5:
-                display += "\u0307";
-                break;
+        String strKey = "" + lastKey;
+        if (lastKey!=0) {
+            switch (octave) {
+                case 3:
+                    strKey += dot_below;
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    strKey += "<sup>\u0307</sup>";
+                    break;
+            }
         }
+        display += strKey;
 
     }
 

@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -196,6 +197,9 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                 }
             });
             //TO DO: Implement save
+
+            SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
+            tempoSeekBar.setEnabled(false);
 
         }catch(NumberFormatException e){
             tempo = 60;

@@ -35,7 +35,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.8">
+                android:layout_weight="1.0">
 
                 <EditText
                     android:id="@+id/score"
@@ -43,6 +43,7 @@
                     android:layout_height="fill_parent"
                     android:scrollbars="vertical"
                     android:text="Here is the notes you played"
+                    android:imeOptions="flagNoFullscreen"
                     android:textColor="#FFFFFF">
                 </EditText>
 
@@ -120,19 +121,19 @@
                                 android:background="@drawable/button"
                                 android:text="1" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button5"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:textSize="20sp"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_alignBottom="@+id/button4"-->
-                                <!--android:layout_toEndOf="@+id/button4"-->
-                                <!--android:layout_toRightOf="@+id/button4"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="1" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button5"
+                                style="?android:attr/buttonStyleSmall"
+                                android:textSize="20sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/button4"
+                                android:layout_toEndOf="@+id/button4"
+                                android:layout_toRightOf="@+id/button4"
+                                android:background="@drawable/button"
+                                android:text="1" />
 
                             <Button
                                 android:minHeight="0dp"
@@ -250,19 +251,19 @@
                                 android:background="@drawable/button"
                                 android:text="2" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button11"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:textSize="20sp"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_alignParentTop="true"-->
-                                <!--android:layout_toEndOf="@+id/button10"-->
-                                <!--android:layout_toRightOf="@+id/button10"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="2" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button11"
+                                style="?android:attr/buttonStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:textSize="20sp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/button10"
+                                android:layout_toRightOf="@+id/button10"
+                                android:background="@drawable/button"
+                                android:text="2" />
 
                             <Button
                                 android:minHeight="0dp"
@@ -373,19 +374,19 @@
                                 android:background="@drawable/button"
                                 android:text="3" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button17"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:textSize="20sp"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_alignBottom="@+id/button16"-->
-                                <!--android:layout_toEndOf="@+id/button16"-->
-                                <!--android:layout_toRightOf="@+id/button16"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="3" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button17"
+                                style="?android:attr/buttonStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:textSize="20sp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/button16"
+                                android:layout_toEndOf="@+id/button16"
+                                android:layout_toRightOf="@+id/button16"
+                                android:background="@drawable/button"
+                                android:text="3" />
 
                             <Button
                                 android:minHeight="0dp"
@@ -494,19 +495,19 @@
                                 android:background="@drawable/button"
                                 android:text="4" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button23"-->
-                                <!--android:textSize="20sp"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_below="@+id/button10"-->
-                                <!--android:layout_toEndOf="@+id/button22"-->
-                                <!--android:layout_toRightOf="@+id/button22"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="4" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button23"
+                                android:textSize="20sp"
+                                style="?android:attr/buttonStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/button10"
+                                android:layout_toEndOf="@+id/button22"
+                                android:layout_toRightOf="@+id/button22"
+                                android:background="@drawable/button"
+                                android:text="4" />
 
                             <Button
                                 android:minHeight="0dp"
@@ -594,16 +595,16 @@
                                 android:background="@drawable/button"
                                 android:text="5" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button29"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:textSize="20sp"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="5" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button29"
+                                style="?android:attr/buttonStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:textSize="20sp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/button"
+                                android:text="5" />
 
                             <Button
                                 android:minHeight="0dp"
@@ -685,16 +686,16 @@
                                 android:background="@drawable/button"
                                 android:text="6" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button35"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:textSize="20sp"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="6" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button35"
+                                style="?android:attr/buttonStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:textSize="20sp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/button"
+                                android:text="6" />
 
                             <Button
                                 android:minHeight="0dp"
@@ -777,16 +778,16 @@
                                 android:background="@drawable/button"
                                 android:text="7" />
 
-                            <!--<Button
-                            android:minHeight="0dp"
-                             android:minWidth="0dp" -->
-                                <!--android:id="@+id/button41"-->
-                                <!--style="?android:attr/buttonStyleSmall"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:textSize="20sp"-->
-                                <!--android:background="@drawable/button"-->
-                                <!--android:text="7" />-->
+                            <Button
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:id="@+id/button41"
+                                style="?android:attr/buttonStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:background="@drawable/button"
+                                android:text="7" />
 
                             <Button
                                 android:minHeight="0dp"

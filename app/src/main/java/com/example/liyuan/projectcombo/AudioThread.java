@@ -10,21 +10,20 @@ import android.util.Log;
  */
 
 public class AudioThread extends Thread {
-    private final double strike = 0.002;
-    private final double sustain = 0.88;
-    private final double dive = 0.1;
+    private double strike;
     private Note note;
     private AudioTrack audioTrack;
     private final double TWO_PI = 2 * Math.PI;
     private final int SAMPLE_RATE = 44100;
     private final int BUFFER_SIZE = AudioTrack.getMinBufferSize(SAMPLE_RATE,
-            AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
+            AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT) * 2;
     private final int BUFFER_COUNT = BUFFER_SIZE / 2;
 
     private boolean isRunning;
 
     public AudioThread(Note note) {
         isRunning = true;
+        strike  = 0.002;
         this.note = note;
 
 //        audioTrack = init();
@@ -40,21 +39,21 @@ public class AudioThread extends Thread {
 //        try {
         
 //            audioTrack.play();
-        
+
         audioTrack = init();
         prepare(audioTrack);
 //        } catch (java.lang.IllegalStateException e) {
 //            e.printStackTrace();
 //            audioTrack = init();
 //        }
-        short samples[] = new short[BUFFER_SIZE];
+        short samples[] = new short[2 * BUFFER_SIZE];
         double amplitude = 16384.0;
-        double sustainVolume = amplitude * 4 / 3;
         double frequency = 261.63f;
         double remainder = 1.998;
         if (note != null) {
             frequency = note.getFrequency();
         }
+        Log.i("Frequency is ","" + frequency);
         //the frequency needs to be obtained from the constructor later
         int phase_Index = 0;
 
@@ -109,8 +108,10 @@ public class AudioThread extends Thread {
                     ////TODO:把phase_Index算回去 然后可以根据触摸长短调整音节的长短
 
                     double value1 = value / (Math.pow(2, 8));
-                    samples[i * 2] = (short) value;
-                    samples[i *2 + 1] = (short) value1;
+                    samples[i * 4] = (short) value;
+                    samples[i * 4 + 1] = (short) value;
+                    samples[i * 4 + 2] = (short) value1;
+                    samples[i * 4 + 3] = (short)  value1;
 
 
                 }
@@ -171,11 +172,10 @@ public class AudioThread extends Thread {
 
         double di = (double) i;
         double ds = (double) sampleRate;
-        double xx = Math.sin(TWO_PI * (di / ds) * frequency + extra);
         //if (i < 10) {
         //Log.d("base Log", "base is [" + i +"]" + xx);
         //}
-        return xx;
+        return Math.sin(TWO_PI * (di / ds) * frequency + extra);
     }
 
     private double getDampen(int sampleRate, double frequency, double volume) {
