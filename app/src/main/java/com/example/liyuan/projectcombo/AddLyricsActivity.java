@@ -196,7 +196,7 @@ public class AddLyricsActivity extends ActionBarActivity implements NumberPicker
                     logout();
                 }
             });
-            //TO DO: Implement save
+            //TO DO: Implement saveAs
 
             SeekBar tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setEnabled(false);

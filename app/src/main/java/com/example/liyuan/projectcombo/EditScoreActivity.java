@@ -32,6 +32,7 @@ import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.liyuan.projectcombo.kiv.MyAdapter;
 import com.facebook.login.LoginManager;
@@ -49,7 +50,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     Metronome metronome;
     ScoreFile scoreFile;
     PlayBack playBackTrack;
-    ImageButton bbackspace;
+    ImageButton backspace;
     int[] numericNotes;
     private AudioThread[] audioThreads = new AudioThread[14];
     final Note[] Notes = new Note[13];
@@ -57,7 +58,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     MyAdapter myAdapter;
 
     Button btnLogout;
-    Button b11, b12, b13, b14, b15, b16, b17, b18, b19, b21, b22, b23, b24, b25, b26, b27, b28, b29, bbutton0, b31, b32, b33, b34, b35, b36, b37, b38, b39, bbuttonbar, b41, b42, b43, b44, b45, b46, b47, b48, b49, bbuttonhython, b51, b52, b53, b54, b55, b56, b57, b58, b59, bbuttonsharp, b61, b62, b63, b64, b65, b66, b67, b68, b69, bbuttondot, b71, b72, b73, b74, b75, b76, b77, b78, b79, bbuttonspace;
+    Button b11, b12, b13, b14, b15, b16, b17, b18, b19, b21, b22, b23, b24, b25, b26, b27, b28, b29, bbutton0, b31, b32, b33, b34, b35, b36, b37, b38, b39, buttonbar, b41, b42, b43, b44, b45, b46, b47, b48, b49, buttonhython, b51, b52, b53, b54, b55, b56, b57, b58, b59, buttonsharp, b61, b62, b63, b64, b65, b66, b67, b68, b69, buttondot, b71, b72, b73, b74, b75, b76, b77, b78, b79, buttonspace;
     TextView scores;
     private Spinner spinner;
     private SeekBar tempoSeekBar;
@@ -225,7 +226,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b17 = (Button) findViewById(R.id.button17);
             b18 = (Button) findViewById(R.id.button18);
             b19 = (Button) findViewById(R.id.button19);
-            bbackspace = (ImageButton) findViewById(R.id.buttonbackspace);
+            backspace = (ImageButton) findViewById(R.id.buttonbackspace);
 
             b21 = (Button) findViewById(R.id.button21);
             b22 = (Button) findViewById(R.id.button22);
@@ -247,7 +248,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b37 = (Button) findViewById(R.id.button37);
             b38 = (Button) findViewById(R.id.button38);
             b39 = (Button) findViewById(R.id.button39);
-            bbuttonbar = (Button) findViewById(R.id.buttonbar);
+            buttonbar = (Button) findViewById(R.id.buttonbar);
 
             b41 = (Button) findViewById(R.id.button41);
             b42 = (Button) findViewById(R.id.button42);
@@ -258,7 +259,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b47 = (Button) findViewById(R.id.button47);
             b48 = (Button) findViewById(R.id.button48);
             b49 = (Button) findViewById(R.id.button49);
-            bbuttonhython = (Button) findViewById(R.id.buttonhython);
+            buttonhython = (Button) findViewById(R.id.buttonhython);
 
             b51 = (Button) findViewById(R.id.button51);
             b52 = (Button) findViewById(R.id.button52);
@@ -269,7 +270,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b57 = (Button) findViewById(R.id.button57);
             b58 = (Button) findViewById(R.id.button58);
             b59 = (Button) findViewById(R.id.button59);
-            bbuttonsharp = (Button) findViewById(R.id.buttonsharp);
+            buttonsharp = (Button) findViewById(R.id.buttonsharp);
 
             b61 = (Button) findViewById(R.id.button61);
             b62 = (Button) findViewById(R.id.button62);
@@ -280,7 +281,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b67 = (Button) findViewById(R.id.button67);
             b68 = (Button) findViewById(R.id.button68);
             b69 = (Button) findViewById(R.id.button69);
-            bbuttondot = (Button) findViewById(R.id.buttondot);
+            buttondot = (Button) findViewById(R.id.buttondot);
 
             b71 = (Button) findViewById(R.id.button71);
             b72 = (Button) findViewById(R.id.button72);
@@ -291,7 +292,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b77 = (Button) findViewById(R.id.button77);
             b78 = (Button) findViewById(R.id.button78);
             b79 = (Button) findViewById(R.id.button79);
-            bbuttonspace = (Button) findViewById(R.id.buttonspace);
+            buttonspace = (Button) findViewById(R.id.buttonspace);
 
             b11.setText(Html.fromHtml("1"));
             b12.setText(Html.fromHtml("1" + underline));
@@ -323,7 +324,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b37.setText(Html.fromHtml("3" + dot_below));
             b38.setText(Html.fromHtml("3" + dot_below + underlinenosub));
             b39.setText(Html.fromHtml("3" + dot_below + double_underlinenosub));
-            bbuttonbar.setText(Html.fromHtml(" | "));
+            buttonbar.setText(Html.fromHtml(" | "));
 
             b41.setText(Html.fromHtml("4"));
             b42.setText(Html.fromHtml("4" + underline));
@@ -334,7 +335,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b47.setText(Html.fromHtml("4" + dot_below));
             b48.setText(Html.fromHtml("4" + dot_below + underlinenosub));
             b49.setText(Html.fromHtml("4" + dot_below + double_underlinenosub));
-            bbuttonhython.setText(Html.fromHtml(" - "));
+            buttonhython.setText(Html.fromHtml(" - "));
 
             b51.setText(Html.fromHtml("5"));
             b52.setText(Html.fromHtml("5" + underline));
@@ -345,7 +346,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b57.setText(Html.fromHtml("5" + dot_below));
             b58.setText(Html.fromHtml("5" + dot_below + underlinenosub));
             b59.setText(Html.fromHtml("5" + dot_below + double_underlinenosub));
-            bbuttonsharp.setText(Html.fromHtml("#"));
+            buttonsharp.setText(Html.fromHtml("#"));
 
             b61.setText(Html.fromHtml("6"));
             b62.setText(Html.fromHtml("6" + underline));
@@ -356,7 +357,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b67.setText(Html.fromHtml("6" + dot_below));
             b68.setText(Html.fromHtml("6" + dot_below + underlinenosub));
             b69.setText(Html.fromHtml("6" + dot_below + double_underlinenosub));
-            bbuttondot.setText(Html.fromHtml(bullet));
+            buttondot.setText(Html.fromHtml(bullet));
 
             b71.setText(Html.fromHtml("7"));
             b72.setText(Html.fromHtml("7" + underline));
@@ -367,10 +368,10 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b77.setText(Html.fromHtml("7" + dot_below));
             b78.setText(Html.fromHtml("7" + dot_below + underlinenosub));
             b79.setText(Html.fromHtml("7" + dot_below + double_underlinenosub));
-            bbuttonspace.setText(Html.fromHtml(" "));
+            buttonspace.setText(Html.fromHtml(" "));
 
 
-            bbackspace.setOnClickListener(new OnClickListener() {
+            backspace.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -410,7 +411,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b37.setOnClickListener(this);
             b38.setOnClickListener(this);
             b39.setOnClickListener(this);
-            bbuttonbar.setOnClickListener(this);
+            buttonbar.setOnClickListener(this);
             b41.setOnClickListener(this);
             b42.setOnClickListener(this);
             b43.setOnClickListener(this);
@@ -420,7 +421,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b47.setOnClickListener(this);
             b48.setOnClickListener(this);
             b49.setOnClickListener(this);
-            bbuttonhython.setOnClickListener(this);
+            buttonhython.setOnClickListener(this);
             b51.setOnClickListener(this);
             b52.setOnClickListener(this);
             b53.setOnClickListener(this);
@@ -430,7 +431,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b57.setOnClickListener(this);
             b58.setOnClickListener(this);
             b59.setOnClickListener(this);
-            bbuttonsharp.setOnClickListener(this);
+            buttonsharp.setOnClickListener(this);
             b61.setOnClickListener(this);
             b62.setOnClickListener(this);
             b63.setOnClickListener(this);
@@ -440,7 +441,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b67.setOnClickListener(this);
             b68.setOnClickListener(this);
             b69.setOnClickListener(this);
-            bbuttondot.setOnClickListener(this);
+            buttondot.setOnClickListener(this);
             b71.setOnClickListener(this);
             b72.setOnClickListener(this);
             b73.setOnClickListener(this);
@@ -450,7 +451,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b77.setOnClickListener(this);
             b78.setOnClickListener(this);
             b79.setOnClickListener(this);
-            bbuttonspace.setOnClickListener(this);
+            buttonspace.setOnClickListener(this);
 
 
 //            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
@@ -510,9 +511,9 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
-        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
-        myAdapter = new MyAdapter(this, userEmail, userName, tool_list, images, disabledID);
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.saveas, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+        String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox_EditScoreActivity);
+        myAdapter = new MyAdapter(this, userEmail, userName, tool_list, images, -1);
         mDrawerList2.setAdapter(myAdapter);
         mDrawerList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -525,9 +526,9 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                         save();
                         break;
                     //saveasnew
-//                    case 3:
-//                        saveAsNew();
-//                        break;
+                    case 3:
+                        saveAs();
+                        break;
                     case 4:
                         addLyrics();
                         break;
@@ -1555,6 +1556,8 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                     lengthList.set(lengthList.size() - 1, lengthList.get(lengthList.size() - 1) * 1.5);
                 } else if (s.equals("-")) {
                     lengthList.set(lengthList.size() - 1, lengthList.get(lengthList.size() - 1) + 1);
+                } else if (s.equals("#")) {
+                    noteList.set(noteList.size() - 1, noteList.get(noteList.size() - 1) + 1);
                 }
             }
         }
@@ -1777,6 +1780,33 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     }
 
     private void save() {
+        Score thisScore = new Score();
+        thisScore.setTempo(tempo);
+        switch (timeSig) {
+            case 3:
+                thisScore.setTimeSignatureFT();
+                break;
+            case 4:
+                thisScore.setTimeSignatureFF();
+                break;
+            default:
+                break;
+        }
+        getScoreFromText(scores.getEditableText().toString());
+        numericNotes = prepareScore();
+        lengths = prepareLengths();
+        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
+        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
+        thisScore.setScore(numericNotes, lengths);
+        try {
+            scoreFile.save(thisScore);
+            Toast.makeText(EditScoreActivity.this, "Score " + thisScore.getTitle() + " Saved", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveAs() {
         Intent intent = new Intent(this, SaveActivity.class);
         Score thisScore = new Score();
         thisScore.setTempo(tempo);
@@ -1960,7 +1990,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
 //        private String att_name;
 //        private Context context;
 //        String[] tool_list;
-//        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+//        int[] images = {R.drawable.createnewsong, R.drawable.saveAs, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 //
 //        public MyAdapter(Context context, String email, String name) {
 //            this.context = context;

@@ -164,10 +164,10 @@ public class DisplayThreadNew {
                     int x = count / 4;
                     int y = count % 4;
 
-                    for (int i = 1; i * 4 * quarterBeat < firstHalf; i++) {
+                    for (int i = 2; i * 4 * quarterBeat < firstHalf; i++) {
                         display += " ‐ ";
                     }
-                    if (x > 0) {
+                    if (x > 0 && y > 0) {
                         display += " ";
                         display += lastKey;
                     }
@@ -197,10 +197,10 @@ public class DisplayThreadNew {
                 int x = count / 4;
                 int y = count % 4;
 
-                for (int i = 1; i * 4 * quarterBeat < secondHalf; i++) {
+                for (int i = 2; i * 4 * quarterBeat < secondHalf; i++) {
                     display += " ‐ ";
                 }
-                if (x > 0) {
+                if (x > 0 && y > 0) {
                     display += " ";
                     display += lastKey;
                 }
@@ -226,10 +226,10 @@ public class DisplayThreadNew {
             int x = count / 4;
             int y = count % 4;
 
-            for (int i = 1; i * 4 * quarterBeat < lastLength; i++) {
+            for (int i = 2; i * 4 * quarterBeat < lastLength; i++) {
                 display += " ‐ ";
             }
-            if (x > 0) {
+            if (x > 0 && y > 0) {
                 display += " ";
                 display += lastKey;
             }

@@ -566,7 +566,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        if (id == R.id.action_settings) {
 //
 //        } else if (id == R.id.saveSong) {
-//            save();
+//            saveAs();
 //        } else if (id == R.id.openHistory) {
 //            openOrNew();
 //        } else if (id == R.id.addLyrics){
@@ -714,7 +714,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        if (id == R.id.action_settings) {
 //
 //        } else if (id == R.id.saveSong) {
-//            save();
+//            saveAs();
 //        } else if (id == R.id.openHistory) {
 //            openOrNew();
 //        } else if (id == R.id.addLyrics){

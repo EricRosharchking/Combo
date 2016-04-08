@@ -108,7 +108,7 @@
         <item>EXPORT TO PDF</item>
     </string-array>
 
-<!--    <string-array name="navigation_toolbox_EditScoreActivity">
+    <string-array name="navigation_toolbox_EditScoreActivity">
         <item>CREATE NEW SONG</item>
         <item>SAVE RECORD</item>
         <item>SAVE AS NEW RECORD</item>
@@ -117,7 +117,7 @@
         <item>EXPORT TO PDF</item>
     </string-array>
 
-    <string-array name="navigation_toolbox_addlyrics">
+<!--    <string-array name="navigation_toolbox_addlyrics">
         <item>CREATE NEW SONG</item>
         <item>SAVE RECORD</item>
         <item>EDIT RECORD</item>

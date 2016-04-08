@@ -82,7 +82,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
     public void onClick(DialogInterface dialog, int which) {
         Log.i("ListenerLog@158", "Button is " + which);
         if(which == -1) {
-            //save
+            //saveAs
             Log.d("SaveActivity118", "Save Clicked");
 
             Dialog view = (Dialog) dialog;
@@ -107,7 +107,7 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
             Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
             try{
-                scoreFile.save(score);
+                scoreFile.saveAs(score);
             } catch (Exception e) {
                 e.printStackTrace();
             }
