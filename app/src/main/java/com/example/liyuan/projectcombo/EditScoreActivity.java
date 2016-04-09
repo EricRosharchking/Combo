@@ -1679,6 +1679,14 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                         int x = count / 4;
                         int y = count % 4;
 
+                        for (int j = 2; j < firstHalf; j++) {
+                            t += " ‐ ";
+                        }
+
+                        if (x > 0 && y > 0) {
+                            t += " ";
+                            t += thisKey;
+                        }
                         switch (y) {
                             case 1:
                                 t += "<sub>\u0333</sub> ";
@@ -1693,10 +1701,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                                 break;
                         }
 
-                        for (int j = 1; j < firstHalf; j++) {
-                            t += " ‐ ";
-                        }
-
                         barCount++;
                         t += " | ";
                         t += thisKey;
@@ -1706,6 +1710,15 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                     int count = (int) (secondHalf / 0.25);
                     int x = count / 4;
                     int y = count % 4;
+
+                    for (int j = 2; j < secondHalf; j++) {
+                        t += " ‐ ";
+                    }
+
+                    if (x > 0 && y > 0) {
+                        t += " ";
+                        t += thisKey;
+                    }
 
                     switch (y) {
                         case 1:
@@ -1720,10 +1733,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                         default:
                             break;
                     }
-
-                    for (int j = 1; j < secondHalf; j++) {
-                        t += " ‐ ";
-                    }
                     /*if (barCount > lineCount * 3) {
                         t += "\n ";
                         t += "|";
@@ -1734,6 +1743,14 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 int x = count / 4;
                 int y = count % 4;
 
+                for (int j = 2; j < l; j++) {
+                    t += " ‐ ";
+                }
+
+                if (x > 0 && y > 0) {
+                    t += " ";
+                    t += thisKey;
+                }
                 switch (y) {
                     case 1:
                         t += "<sub>\u0333</sub> ";
@@ -1746,10 +1763,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                         break;
                     default:
                         break;
-                }
-
-                for (int j = 1; j < l; j++) {
-                    t += " ‐ ";
                 }
 
                 if (totalLengths == barCount * 4) {
