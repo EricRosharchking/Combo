@@ -36,14 +36,14 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
         if (context != null) {
 
             Object[] objectArray = scoreFile.openAllFileNames().getAllFileNamesSet().toArray();
-            Log.d("@NewActivity34", "Object Size is " + objectArray.length);
+//            Log.d("@NewActivity34", "Object Size is " + objectArray.length);
             names = Arrays.copyOf(objectArray, objectArray.length, String[].class);
 			if (names.length > 0)
                 name = names[0];
         } else {
             //scoreFile = new ScoreFile(CreateScoreActivity.this);
             scoreFile = new ScoreFile();
-            Log.e("Error@NewActivity38", "Context is null");
+//            Log.e("Error@NewActivity38", "Context is null");
         }
 
         try {
@@ -66,7 +66,7 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
         AlertDialog.Builder builder;
         //ArrayList<String> mSelectedItems = new ArrayList();  // Where we track the selected items
         if (context != null) {
-            Log.d("Dialog Log", "Context is not null");
+//            Log.d("Dialog Log", "Context is not null");
             builder = new AlertDialog.Builder(context,R.style.MyDialog);
 
             // Set the dialog title
@@ -80,7 +80,7 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
                                 public void onClick(DialogInterface dialog, int which) {
                                     //Log.d("Check Log", "Item selected is " + which);
                                     name = names[which];
-                                    Log.e("Log@New73", "Item checked is  " + which);
+//                                    Log.e("Log@New73", "Item checked is  " + which);
                                     int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                                     name = names[selectedPosition];
                                 }
@@ -106,22 +106,22 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
     public void onClick(DialogInterface dialog, int which) {
         //name = names[which];
         if (which == -1) {
-            Log.d("Log@NewActivity92", "Opening " + name);
+//            Log.d("Log@NewActivity92", "Opening " + name);
             //dialog.
             ScoreFile scoreFile = new ScoreFile();
             try {
                 ScoreStatus scorestatus = scoreFile.open(name);
-                Log.i("Log@New104", "scorestatus is null? " + (scorestatus == null));
+//                Log.i("Log@New104", "scorestatus is null? " + (scorestatus == null));
                 Score score= scorestatus.getScore();
-                Log.i("Log@New106", "score is null? " + (score == null));
+//                Log.i("Log@New106", "score is null? " + (score == null));
                 int[] array = score.getScore();
-                Log.i("Log@New108", "array is null? " + (array == null));
+//                Log.i("Log@New108", "array is null? " + (array == null));
                 Intent intent = new Intent(this, MainActivity.class);
                 if (action == EXPORT)
                     intent = new Intent(this, DisplayActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("score", score);
-                Log.d("Log@NewActivity102", "Starting Activity for Result");
+//                Log.d("Log@NewActivity102", "Starting Activity for Result");
                 //startActivityForResult(intent, 1);
                 intent.putExtra("userName", getIntent().getStringExtra("userName"));
                 intent.putExtra("userEmail", getIntent().getStringExtra("userEmail"));
@@ -133,7 +133,7 @@ public class CreateScoreActivity extends ActionBarActivity implements DialogInte
                 finish();
             }
         } else if (which == -2) {
-            Log.d("", "New Clicked");
+//            Log.d("", "New Clicked");
             if (getIntent().getIntExtra("parentActivity", 0) == 1) {
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);

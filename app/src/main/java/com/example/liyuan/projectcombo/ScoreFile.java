@@ -50,7 +50,7 @@ public class ScoreFile implements Serializable {
             }
             fileSet = new HashSet<>();
         }
-        Log.d("File size Log", "" + fileSet.size());
+//        Log.d("File size Log", "" + fileSet.size());
     }
 
     private String getNewName() {
@@ -97,9 +97,9 @@ public class ScoreFile implements Serializable {
         if (context != null) {
             try {
 
-                Log.d("Log@ScoreFile85", "Context is not null");
+//                Log.d("Log@ScoreFile85", "Context is not null");
 
-                Log.d("", fileName);
+//                Log.d("", fileName);
                 FileOutputStream fos = context.openFileOutput(getFileFormat(fileName), Context.MODE_PRIVATE);
                 ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
                 oos.writeObject(score);
@@ -109,9 +109,9 @@ public class ScoreFile implements Serializable {
                 fileSet.add(fileName);
                 boolean saveStatus = saveAllFileNames(fileSet);
                 for (String s: fileSet) {
-                    Log.i("Files include", s);
+//                    Log.i("Files include", s);
                 }
-                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + saveStatus + fileSet.size());
+//                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + saveStatus + fileSet.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new IOException(e);
@@ -125,30 +125,32 @@ public class ScoreFile implements Serializable {
     protected boolean save(Score score)throws IOException {
         boolean status = false;
         String fileName = score.getTitle();
-        fileName += ".SCORE";
         Context context = App.getAppContext();
         if (context != null) {
             try {
 
-                Log.d("Log@ScoreFile85", "Context is not null");
+//                Log.d("Log@ScoreFile85", "Context is not null");
 
-                Log.d("", fileName);
+//                Log.d("", fileName);
                 FileOutputStream fos = context.openFileOutput(getFileFormat(fileName), Context.MODE_PRIVATE);
                 ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
                 oos.writeObject(score);
                 oos.close();
                 fos.close();
                 status = true;
-                for (String s: fileSet) {
-                    Log.i("Files include", s);
-                }
-                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + fileSet.size());
+                fileSet.add(fileName);
+                status = saveAllFileNames(fileSet);
+//                status = deleteAll();
+//                for (String s: fileSet) {
+//                    Log.i("Files include", s);
+//                }
+//                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + fileSet.size() + " " + saveStatus);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new IOException(e);
             }
         } else {
-            Log.e("Log@ScoreFile103", "context is null");
+//            Log.e("Log@ScoreFile103", "context is null");
         }
         return status;
     }
@@ -163,7 +165,7 @@ public class ScoreFile implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(fis));
             Object o = ois.readObject();
             scoreStatus = new ScoreStatus(o);
-            Log.i("Log@ScoreFile121", "scoreStatus is " + (scoreStatus != null));
+//            Log.i("Log@ScoreFile121", "scoreStatus is " + (scoreStatus != null));
             ois.close();
             fis.close();
         } catch (Exception e) {
@@ -180,20 +182,20 @@ public class ScoreFile implements Serializable {
         //context = App.getAppContext();
         Context context = App.getAppContext();
         if (context != null) {
-            Log.d("Log@ScoreFile123", "Context is not null");
+//            Log.d("Log@ScoreFile123", "Context is not null");
             try {
-                Log.d("Log@ScoreFile125", "The context is " + context.getString(R.string.login));
+//                Log.d("Log@ScoreFile125", "The context is " + context.getString(R.string.login));
                 FileInputStream fis = context.openFileInput(allFileNames);
                 ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(fis));
 
                 Object[] objects = (Object[]) ois.readObject();
 
-                Log.d("Log@ScoreFile131", "openAllFileNames size of objects is " + objects.length);
+//                Log.d("Log@ScoreFile131", "openAllFileNames size of objects is " + objects.length);
                 for (Object o : objects) {
                     if (o instanceof byte[]) {
                         byte[] b = (byte[]) o;
                         String string = new String(b, Charset.forName("UTF-8"));
-                        Log.d("Log@ScoreFile136", "openAllFileNames" + string);
+//                        Log.d("Log@ScoreFile136", "openAllFileNames" + string);
                         thisSet.add(string);
                     }
                 }
@@ -262,7 +264,7 @@ public class ScoreFile implements Serializable {
                 String str = s + ".SCORE";
                 f = new File(str);
                 f.delete();
-                Log.i("Log@Delete214", "File deleted: " + str);
+//                Log.i("Log@Delete214", "File deleted: " + str);
                 i --;
             }
         } catch (Exception e) {
@@ -270,7 +272,7 @@ public class ScoreFile implements Serializable {
         }
 
 
-        if (status) {
+        if (!status) {
             fileSet.clear();
             status = (fileSet.isEmpty());
             try {

@@ -44,7 +44,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         super.onPreExecute();
         //Showing progress dialog while sending email
 
-        Log.d("ProcessDialogShow", context.toString());
+//        Log.d("ProcessDialogShow", context.toString());
         progressDialog = ProgressDialog.show(context,"Sending message","Please wait...",false,false);
     }
 

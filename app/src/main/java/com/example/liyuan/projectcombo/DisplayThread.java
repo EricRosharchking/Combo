@@ -83,7 +83,7 @@ public class DisplayThread extends Thread {
                 addon = "";
             }
             if ((elapsedTime % quarterBeat) == 0 && elapsedTime > count * quarterBeat && (elapsedTime / quarterBeat) > 0) {
-                Log.d("Log@DisplayThread72", "Octave is " + octave);
+//                Log.d("Log@DisplayThread72", "Octave is " + octave);
                 if (lastKey == key) {
 //                    display = display + "⏜";//"\u23DC"和"⏜"textview都无法显示
 //                    display = display +"-";//短破折号
@@ -97,7 +97,7 @@ public class DisplayThread extends Thread {
                     lastKey = key;
                     addon = lastKey + addon;
                     display += addon;
-                    Log.d("Log@DisplayThread89", "Addon is " + addon);
+//                    Log.d("Log@DisplayThread89", "Addon is " + addon);
                     //display += addon;
                 }
                 count = elapsedTime / quarterBeat;
@@ -143,9 +143,9 @@ public class DisplayThread extends Thread {
 //                Log.d("Debug Log", "DisplayTime is " + displayTime);
             }
         }
-        Log.d("DisplayThread Log", "Length of Archived is " + archived.length());
-        Log.d("DisplayThread Log", "Length of Archived after adding Display is " + archived.length());
-        Log.d("DisplayThread Log", "Archived after adding Display is " + archived);
+//        Log.d("DisplayThread Log", "Length of Archived is " + archived.length());
+//        Log.d("DisplayThread Log", "Length of Archived after adding Display is " + archived.length());
+//        Log.d("DisplayThread Log", "Archived after adding Display is " + archived);
     }
 
     public String getDisplay() {
@@ -158,11 +158,11 @@ public class DisplayThread extends Thread {
 
     public void stopThread() {
         isRunning = false;
-        Log.d("DisplayThread Log", "The elapsed time is " + (System.currentTimeMillis() - startTime));
-        Log.d("DisplayThread Log", "The length of archived is " + archived.length());
-        Log.d("DisplayThread Log", "The length of display is " + display.length());
-        Log.d("DisplayThread Log", "Display is " + display);
-        Log.d("DisplayThread Log", "Archived is " + archived);
+//        Log.d("DisplayThread Log", "The elapsed time is " + (System.currentTimeMillis() - startTime));
+//        Log.d("DisplayThread Log", "The length of archived is " + archived.length());
+//        Log.d("DisplayThread Log", "The length of display is " + display.length());
+//        Log.d("DisplayThread Log", "Display is " + display);
+//        Log.d("DisplayThread Log", "Archived is " + archived);
 
         archived += display;
     }

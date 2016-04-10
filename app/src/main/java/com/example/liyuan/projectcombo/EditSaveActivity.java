@@ -80,10 +80,10 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        Log.i("ListenerLog@158", "Button is " + which);
+//        Log.i("ListenerLog@158", "Button is " + which);
         if(which == -1) {
             //saveAs
-            Log.d("SaveActivity118", "Save Clicked");
+//            Log.d("SaveActivity118", "Save Clicked");
 
             Dialog view = (Dialog) dialog;
             EditText nameField = (EditText)view.findViewById(R.id.name_Field);
@@ -100,19 +100,19 @@ public class EditSaveActivity extends ActionBarActivity implements Serializable,
 //            }
 
             Score score = (Score) getIntent().getSerializableExtra("Score2");
-            Log.i("Log@Save136", "score is null? " + (score == null));
+//            Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
             score.setAuthor(author);
             int[] array = score.getScore();
-            Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
+//            Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
             try{
                 scoreFile.saveAs(score);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d("Log@SaveActivity146", "Save Clicked " + " " + name);
-            Log.d("Log@SaveActivity147", "Save Clicked " + " " + author);
+//            Log.d("Log@SaveActivity146", "Save Clicked " + " " + name);
+//            Log.d("Log@SaveActivity147", "Save Clicked " + " " + author);
             finish();
         } else if (which == -2) {
             finish();

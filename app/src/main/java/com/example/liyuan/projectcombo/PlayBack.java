@@ -47,12 +47,12 @@ public class PlayBack extends Thread{
     public PlayBack(int[] notes, double[] lengths, int x, int tempo) {
         if (notes == null || notes.length == 0 || notes.length != lengths.length) {
             isRunning = false;
-            Log.d("PlayBack Log", "notes or length is null or empty");
+//            Log.d("PlayBack Log", "notes or length is null or empty");
             return;
         } else {
             this.tempo = tempo;
             lastNote = x;
-            Log.d("PlayBack Log", "notes and lengths are not null");
+//            Log.d("PlayBack Log", "notes and lengths are not null");
             notesScore = notes;
             notesLength = lengths;
             isRunning = true;
@@ -74,7 +74,7 @@ public class PlayBack extends Thread{
         if (audioTrack != null) {
             audioTrack.play();
             j = lastNote;
-            Log.d("PlayBack Log", "audioTrack is not Null");
+//            Log.d("PlayBack Log", "audioTrack is not Null");
             try {
                 while (isRunning) {
                         for (; j < size; j++) {

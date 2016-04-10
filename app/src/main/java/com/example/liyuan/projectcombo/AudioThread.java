@@ -31,7 +31,7 @@ public class AudioThread extends Thread {
 //                SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
 //                AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE,AudioTrack.MODE_STREAM);
 //        audioTrack.play();
-        Log.d("BufferSize Log", "The current buffer size in use is: " + BUFFER_SIZE);
+//        Log.d("BufferSize Log", "The current buffer size in use is: " + BUFFER_SIZE);
     }
 
 
@@ -53,7 +53,7 @@ public class AudioThread extends Thread {
         if (note != null) {
             frequency = note.getFrequency();
         }
-        Log.i("Frequency is ","" + frequency);
+//        Log.i("Frequency is ","" + frequency);
         //the frequency needs to be obtained from the constructor later
         int phase_Index = 0;
 
@@ -121,7 +121,7 @@ public class AudioThread extends Thread {
                 elapsed_Buffer += BUFFER_SIZE;
             }
 
-            Log.d("Elapsed Buffer Log", "The elapsed buffer is " + elapsed_Buffer);
+//            Log.d("Elapsed Buffer Log", "The elapsed buffer is " + elapsed_Buffer);
             //TODO
             /*
             Log.d("Elapsed Buffer Log", "The elapsed buffer is " + elapsed_Buffer);

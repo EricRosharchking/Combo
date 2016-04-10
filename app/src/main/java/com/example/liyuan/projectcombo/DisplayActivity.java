@@ -30,6 +30,7 @@ public class DisplayActivity extends ActionBarActivity {
         TextView scoreTempo = (TextView) findViewById(R.id.score_tempo);
         TextView scoreTitle = (TextView) findViewById(R.id.score_title);
         TextView scoreAuthor = (TextView) findViewById(R.id.score_author);
+        int tempoInt = 4;
 //        char[] t = {'1', '\u0332', '\u0020', '2', '\u0323', '|'};
         int[] notes = (int[]) getIntent().getSerializableExtra("notes");
         double[] lengths = (double[]) getIntent().getSerializableExtra("lengths");
@@ -45,14 +46,22 @@ public class DisplayActivity extends ActionBarActivity {
             scoreTempo.setText(tempo.trim());
             scoreTitle.setText(score.getTitle());
             scoreAuthor.setText(score.getAuthor());
+            switch (score.getTimeSignature()) {
+                case "3/4":
+                    tempoInt = 3;
+                    break;
+                case "4/4":
+                    tempoInt = 4;
+                    break;
+            }
         }
 
         if (notes != null && lengths != null) {
             if (notes.length != lengths.length) {
                 finish();
             }
-            String t = "||";
-            if (notes != null && lengths != null && notes.length == lengths.length) {
+            String t = "<p>||";
+            if (notes.length == lengths.length) {
             /*for (int i = 0; i < notes.length; i++) {
                 String thisNote = Integer.toString(notes[i]);
                 double thisLength = lengths[i];
@@ -81,23 +90,23 @@ public class DisplayActivity extends ActionBarActivity {
                 int barCount = 1;
                 int lineCount = 1;
 
-                Log.i("Log@1257", "notes are " + Arrays.toString(notes));
-                Log.i("Log@Main1258", "lengths are " + Arrays.toString(lengths));
+//                Log.i("Log@1257", "notes are " + Arrays.toString(notes));
+//                Log.i("Log@Main1258", "lengths are " + Arrays.toString(lengths));
 
                 for (int i = 0; i < notes.length; i++) {
                     int n = notes[i];
                     double l = lengths[i];
 //            if (l < 0.15)
 //                continue;
-                    String thisKey = " 1";
+                    String thisKey = "  1";
                     switch (n) {
                         case 0:
-                            thisKey = " 0";
+                            thisKey = "  0";
                             break;
                         case -3:
                         case 3:
                         case 42:
-                            thisKey = " 2";
+                            thisKey = "  2";
                             break;
                         case -4:
                         case 4:
@@ -105,7 +114,7 @@ public class DisplayActivity extends ActionBarActivity {
                         case -5:
                         case 5:
                         case 70:
-                            thisKey = " 3";
+                            thisKey = "  3";
                             break;
                         case -6:
                         case 6:
@@ -113,7 +122,7 @@ public class DisplayActivity extends ActionBarActivity {
                         case -7:
                         case 7:
                         case 98:
-                            thisKey = " 4";
+                            thisKey = "  4";
                             break;
                         case -8:
                         case 8:
@@ -121,12 +130,12 @@ public class DisplayActivity extends ActionBarActivity {
                         case -9:
                         case 9:
                         case 126:
-                            thisKey = " 5";
+                            thisKey = "  5";
                             break;
                         case -10:
                         case 10:
                         case 140:
-                            thisKey = " 6";
+                            thisKey = "  6";
                             break;
                         case -11:
                         case 11:
@@ -134,7 +143,7 @@ public class DisplayActivity extends ActionBarActivity {
                         case -12:
                         case 12:
                         case 168:
-                            thisKey = " 7";
+                            thisKey = "  7";
                             break;
                         default:
                             break;
@@ -167,9 +176,9 @@ public class DisplayActivity extends ActionBarActivity {
                         t = t.substring(0, t.length() - 1);
                     } else {
                         totalLengths += l;
-                        if (totalLengths > barCount * 4) {
-                            while (totalLengths > barCount * 4) {
-                                double firstHalf = barCount * 4 - (totalLengths - l);
+                        if (totalLengths > barCount * tempoInt) {
+                            while (totalLengths > barCount * tempoInt) {
+                                double firstHalf = barCount * tempoInt - (totalLengths - l);
                                 int count = (int) (firstHalf / 0.25);
                                 int x = count / 4;
                                 int y = count % 4;
@@ -189,15 +198,20 @@ public class DisplayActivity extends ActionBarActivity {
                                 }
 
                                 for (int j = 1; j < firstHalf; j++) {
-                                    t += " ‐ ";
+                                    t += " - ";
                                 }
 
                                 barCount++;
-                                t += " | ";
+                                t += " |";
+                                if ((barCount - 1) == lineCount * 4) {
+                                    t += " </p>";
+                                    t += "<p>|";
+                                    lineCount++;
+                                }
                                 t += thisKey;
                                 l -= firstHalf;
                             }
-                            double secondHalf = totalLengths - 4 * barCount;
+                            double secondHalf = totalLengths - tempoInt * barCount;
                             int count = (int) (secondHalf / 0.25);
                             int x = count / 4;
                             int y = count % 4;
@@ -217,7 +231,7 @@ public class DisplayActivity extends ActionBarActivity {
                             }
 
                             for (int j = 1; j < secondHalf; j++) {
-                                t += " ‐ ";
+                                t += " - ";
                             }
                     /*if (barCount > lineCount * 3) {
                         t += "\n ";
@@ -244,16 +258,20 @@ public class DisplayActivity extends ActionBarActivity {
                         }
 
                         for (int j = 1; j < l; j++) {
-                            t += " ‐ ";
+                            t += " - ";
                         }
 
-                        if (totalLengths == barCount * 4) {
+                        if (totalLengths == barCount * tempoInt) {
                             barCount++;
-                            t += " | ";
+                            t += " |";
+                            if ((barCount - 1) == lineCount * 4) {
+                                t += " </p>";
+                                t += "<p>|";
+                                lineCount++;
+                            }
                         }
                     }
                 }
-                t += " ||";
             }
             textView.setText(Html.fromHtml(t));
         }
@@ -278,21 +296,30 @@ public class DisplayActivity extends ActionBarActivity {
         int lineCount = 1;
         String paragraph = "||";
         double totalLength = 0.0;
+        int tempo = 4;
+        switch (thisScore.getTimeSignature()) {
+            case "3/4":
+                tempo = 3;
+                break;
+            case "4/4":
+                tempo = 4;
+                break;
+        }
 
         for (int i = 0; i < notes.length; i++) {
             int n = notes[i];
             double l = lengths[i];
 //            if (l < 0.15)
 //                continue;
-            String thisKey = " 1";
+            String thisKey = "  1";
             switch (n) {
                 case 0:
-                    thisKey = " 0";
+                    thisKey = "  0";
                     break;
                 case -3:
                 case 3:
                 case 42:
-                    thisKey = " 2";
+                    thisKey = "  2";
                     break;
                 case -4:
                 case 4:
@@ -300,7 +327,7 @@ public class DisplayActivity extends ActionBarActivity {
                 case -5:
                 case 5:
                 case 70:
-                    thisKey = " 3";
+                    thisKey = "  3";
                     break;
                 case -6:
                 case 6:
@@ -308,7 +335,7 @@ public class DisplayActivity extends ActionBarActivity {
                 case -7:
                 case 7:
                 case 98:
-                    thisKey = " 4";
+                    thisKey = "  4";
                     break;
                 case -8:
                 case 8:
@@ -316,12 +343,12 @@ public class DisplayActivity extends ActionBarActivity {
                 case -9:
                 case 9:
                 case 126:
-                    thisKey = " 5";
+                    thisKey = "  5";
                     break;
                 case -10:
                 case 10:
                 case 140:
-                    thisKey = " 6";
+                    thisKey = "  6";
                     break;
                 case -11:
                 case 11:
@@ -329,7 +356,7 @@ public class DisplayActivity extends ActionBarActivity {
                 case -12:
                 case 12:
                 case 168:
-                    thisKey = " 7";
+                    thisKey = "  7";
                     break;
                 default:
                     break;
@@ -347,9 +374,9 @@ public class DisplayActivity extends ActionBarActivity {
             if (l == 0) {
                 paragraph = paragraph.substring(0, paragraph.length() - 1);
             } else {
-                if (totalLength > barCount * 4) {
-                    while (totalLength > barCount * 4) {
-                        double firstHalf = barCount * 4 - (totalLength - l);
+                if (totalLength > barCount * tempo) {
+                    while (totalLength > barCount * tempo) {
+                        double firstHalf = barCount * tempo - (totalLength - l);
                         int count = (int) (firstHalf / 0.25);
                         int x = count / 4;
                         int y = count % 4;
@@ -392,14 +419,14 @@ public class DisplayActivity extends ActionBarActivity {
 
                         barCount++;
                         paragraph += " | ";
-                        if (lineCount * 4 == barCount) {
+                        if (lineCount * 4 == (barCount - 1)) {
                             pList.add(paragraph);
                             paragraph = "|";
                         }
                         paragraph += thisKey;
                         l -= firstHalf;
                     }
-                    double secondHalf = totalLength - 4 * barCount;
+                    double secondHalf = totalLength - tempo * barCount;
                     int count = (int) (secondHalf / 0.25);
                     int x = count / 4;
                     int y = count % 4;
@@ -481,16 +508,17 @@ public class DisplayActivity extends ActionBarActivity {
                         break;
                 }
 
-                if (totalLength == barCount * 4) {
+                if (totalLength == barCount * tempo) {
                     barCount++;
                     paragraph += " |";
-                    if (lineCount * 4 == barCount) {
+                    if (lineCount * 4 == (barCount - 1)) {
                         pList.add(paragraph);
                         paragraph = "|";
                     }
                 }
             }
         }
+        paragraph = paragraph.substring(0, paragraph.length() -1);
         paragraph += " ||";
         pList.add(paragraph);
 
@@ -515,7 +543,7 @@ public class DisplayActivity extends ActionBarActivity {
             fw.write("<h2 style='text-align: left;'><font size='6'>1=" + thisScore.getKey() + "     " + thisScore.getTimeSignature() + "     " + thisScore.getTempo() + "</font></h2>\n");
             fw.write("<h2 style='text-align: right;'><font size='6'>" + thisScore.getAuthor() + "</font></h2>\n");
             for (String str : pList) {
-                str = "<p style='text-aligh: justify;'><font size='5'>" + str + "</font></p>\n";
+                str = "<p style='text-aligh: justify;'><font size='6'>" + str + "</font></p>\n";
                 fw.write(str);
 //                Log.i("ExportLog", str);
             }
