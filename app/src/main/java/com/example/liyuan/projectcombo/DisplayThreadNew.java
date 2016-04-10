@@ -77,7 +77,7 @@ public class DisplayThreadNew {
         int y = count % 4;
 
         for (int i = 1; i * 4 * quarterBeat <= lastLength; i++) {
-            display += " ‐ ";
+            display += " - ";
         }
 
 
@@ -165,7 +165,7 @@ public class DisplayThreadNew {
                     int y = count % 4;
 
                     for (int i = 2; i * 4 * quarterBeat < firstHalf; i++) {
-                        display += " ‐ ";
+                        display += " - ";
                     }
                     if (x > 0 && y > 0) {
                         display += " ";
@@ -198,7 +198,7 @@ public class DisplayThreadNew {
                 int y = count % 4;
 
                 for (int i = 2; i * 4 * quarterBeat < secondHalf; i++) {
-                    display += " ‐ ";
+                    display += " - ";
                 }
                 if (x > 0 && y > 0) {
                     display += " ";
@@ -227,7 +227,7 @@ public class DisplayThreadNew {
             int y = count % 4;
 
             for (int i = 2; i * 4 * quarterBeat < lastLength; i++) {
-                display += " ‐ ";
+                display += " - ";
             }
             if (x > 0 && y > 0) {
                 display += " ";

@@ -160,12 +160,18 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             Score score = (Score) intent.getSerializableExtra("score");
             numericNotes = (int[]) intent.getSerializableExtra("notes");
             lengths = (double[]) intent.getSerializableExtra("lengths");
+            tempo = 60;
+            String timeSignature = "4/4";
             if (score != null) {
                 numericNotes = score.getScore();
                 lengths = score.getLengths();
+                timeSignature = score.getTimeSignature();
+                tempo = score.getTempo();
             }
-            String rawScores = extractScore(numericNotes, lengths);
-            Log.d("rawScores", "The raw scores: " + rawScores);
+            ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
+
+            String rawScores = extractScore(numericNotes, lengths, timeSignature);
+//            Log.d("rawScores", "The raw scores: " + rawScores);
 
             scores = (TextView) findViewById(R.id.score);
             scores.setMovementMethod(new ScrollingMovementMethod());
@@ -184,8 +190,8 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
 
             userEmail = intent.getStringExtra("userEmail");
             userName = intent.getStringExtra("userName");
-            Log.d("UserName", userName);
-            Log.d("userEmail", userEmail);
+//            Log.d("UserName", userName);
+//            Log.d("userEmail", userEmail);
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
             TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
             if (t_name != null)
@@ -471,7 +477,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                     logout();
                 }
             });
-            tempo = 60;
             spinner = (Spinner) findViewById(R.id.time_signature);
 //            Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -492,6 +497,14 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
 // Apply the adapter to the spinner
 //            spinner.setAdapter(adapter);
 //            spinner.setOnItemSelectedListener(this);
+            switch (timeSignature) {
+                case "4/4":
+                    spinner.setSelection(0);
+                    break;
+                case "3/4":
+                    spinner.setSelection(1);
+                    break;
+            }
             scoreFile = new ScoreFile();
             withMetronome = false;
             opened = false;
@@ -1329,10 +1342,10 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         if (getIntent().getSerializableExtra("Score2") != null) {
             //open(getIntent());
             Score thisScore = (Score) getIntent().getSerializableExtra("Score2");
-            Log.d("Log@617", "Score is null? " + (thisScore == null));
+//            Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
-                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-                scores.setText(Html.fromHtml(extractScore(thisScore.getScore(), thisScore.getLengths())).toString());
+//                Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
+                scores.setText(Html.fromHtml(extractScore(thisScore.getScore(), thisScore.getLengths(), thisScore.getTimeSignature())).toString());
                 score = thisScore;
                 opened = true;
                 isOpened = true;
@@ -1478,7 +1491,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+//            Log.i("Log@Main431", "pausePlay clicked" + lastNote);
         }
     }
 
@@ -1492,7 +1505,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 e.printStackTrace();
             }
         }
-        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
+//        Log.i("Log@Main431", "pausePlay clicked" + lastNote);
     }
 
     private int[] prepareScore() {
@@ -1537,7 +1550,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                             note = 10;
                             break;
                         case 7:
-                            note = 14;
+                            note = 12;
                             break;
                         default:
                             break;
@@ -1576,7 +1589,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         return array;
     }
 
-    private String extractScore(int[] notes, double[] lengths) {
+    private String extractScore(int[] notes, double[] lengths, String timeSignature) {
         String t = "||";
         if (notes != null && lengths != null && notes.length == lengths.length) {
             /*for (int i = 0; i < notes.length; i++) {
@@ -1603,9 +1616,20 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 scoreString += thisNote;
             }*/
 
+            switch (timeSignature) {
+                case "3/4":
+                    timeSig = 3;
+                    break;
+                case "4/4":
+                    timeSig = 4;
+                    break;
+            }
             double totalLengths = 0.0;
             int barCount = 1;
             int lineCount = 1;
+
+//            Log.i("Log@1257", "notes are " + Arrays.toString(notes));
+//            Log.i("Log@Main1258", "lengths are " + Arrays.toString(lengths));
 
             for (int i = 0; i < notes.length; i++) {
                 int n = notes[i];
@@ -1666,27 +1690,65 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 if (n < 0) {
                     thisKey += "\u0323";
                 } else if (n > 13) {
-                    thisKey += "<sup>\u0307</sup>";
+                    thisKey += "\u0307";
                 } else {
                     thisKey += "";
                 }
                 t += thisKey;
-                totalLengths += l;
-                if (totalLengths > barCount * 4) {
-                    while (totalLengths > barCount * 4) {
-                        double firstHalf = barCount * 4 - (totalLengths - l);
-                        int count = (int) (firstHalf / 0.25);
+/*
+
+                double r = l % 1;
+                if (l > 2.15 && r < 0.85)
+                    t += thisKey;
+
+                if (r >= 0.85)
+                    t += " - ";
+                else if (r >= 0.69)
+                    t += "<sub>\u0332</sub> \u2022 ";
+                else if (r >= 0.4)
+                    t += "<sub>\u0332</sub> ";
+                else if (r >= 0.15)
+                    t += "<sub>\u0333</sub> ";
+*/
+                if (l == 0) {
+                    t = t.substring(0, t.length() - 1);
+                } else {
+                    totalLengths += l;
+                    if (totalLengths > barCount * timeSig) {
+                        while (totalLengths > barCount * timeSig) {
+                            double firstHalf = barCount * timeSig - (totalLengths - l);
+                            int count = (int) (firstHalf / 0.25);
+                            int x = count / 4;
+                            int y = count % 4;
+
+                            switch (y) {
+                                case 1:
+                                    t += "<sub>\u0333</sub> ";
+                                    break;
+                                case 2:
+                                    t += "<sub>\u0332</sub> ";
+                                    break;
+                                case 3:
+                                    t += "<sub>\u0332</sub> \u2022 ";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            for (int j = 1; j < firstHalf; j++) {
+                                t += " - ";
+                            }
+
+                            barCount++;
+                            t += " | ";
+                            t += thisKey;
+                            l -= firstHalf;
+                        }
+                        double secondHalf = totalLengths - timeSig * barCount;
+                        int count = (int) (secondHalf / 0.25);
                         int x = count / 4;
                         int y = count % 4;
 
-                        for (int j = 2; j < firstHalf; j++) {
-                            t += " ‐ ";
-                        }
-
-                        if (x > 0 && y > 0) {
-                            t += " ";
-                            t += thisKey;
-                        }
                         switch (y) {
                             case 1:
                                 t += "<sub>\u0333</sub> ";
@@ -1701,24 +1763,18 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                                 break;
                         }
 
-                        barCount++;
-                        t += " | ";
-                        t += thisKey;
-                        l -= firstHalf;
+                        for (int j = 1; j < secondHalf; j++) {
+                            t += " - ";
+                        }
+                    /*if (barCount > lineCount * 3) {
+                        t += "\n ";
+                        t += "|";
+                        lineCount++;
+                    }*/
                     }
-                    double secondHalf = totalLengths - 4 * barCount;
-                    int count = (int) (secondHalf / 0.25);
+                    int count = (int) (l / 0.25);
                     int x = count / 4;
                     int y = count % 4;
-
-                    for (int j = 2; j < secondHalf; j++) {
-                        t += " ‐ ";
-                    }
-
-                    if (x > 0 && y > 0) {
-                        t += " ";
-                        t += thisKey;
-                    }
 
                     switch (y) {
                         case 1:
@@ -1733,53 +1789,18 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                         default:
                             break;
                     }
-                    /*if (barCount > lineCount * 3) {
-                        t += "\n ";
-                        t += "|";
-                        lineCount++;
-                    }*/
-                }
-                int count = (int) (l / 0.25);
-                int x = count / 4;
-                int y = count % 4;
 
-                for (int j = 2; j < l; j++) {
-                    t += " ‐ ";
-                }
-
-                if (x > 0 && y > 0) {
-                    t += " ";
-                    t += thisKey;
-                }
-                switch (y) {
-                    case 1:
-                        t += "<sub>\u0333</sub> ";
-                        break;
-                    case 2:
-                        t += "<sub>\u0332</sub> ";
-                        break;
-                    case 3:
-                        t += "<sub>\u0332</sub> \u2022 ";
-                        break;
-                    default:
-                        break;
-                }
-
-                if (totalLengths == barCount * 4) {
-                    barCount++;
-                    t += " | ";
-                }
-/*                if (totalLengths > barCount * 4) {
-                    t += "|";
-                    barCount += 1;
-                    if (barCount > lineCount * 3) {
-                        t += "\n ";
-                        t += "|";
-                        lineCount++;
+                    for (int j = 1; j < l; j++) {
+                        t += " - ";
                     }
-                }*/
+
+                    if (totalLengths == barCount * timeSig) {
+                        barCount++;
+                        t += " | ";
+                    }
+                }
             }
-            t += "||";
+            t += " ||";
         }
 
         ////TODO:
@@ -1793,6 +1814,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     }
 
     private void save() {
+
         Score thisScore = new Score();
         thisScore.setTempo(tempo);
         switch (timeSig) {
@@ -1808,12 +1830,14 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         getScoreFromText(scores.getEditableText().toString());
         numericNotes = prepareScore();
         lengths = prepareLengths();
-        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
-        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
+//        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
+//        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         thisScore.setScore(numericNotes, lengths);
+        thisScore.setTitle(userScoreName);
+        thisScore.setAuthor(userName);
         try {
-            scoreFile.save(thisScore);
-            Toast.makeText(EditScoreActivity.this, "Score " + thisScore.getTitle() + " Saved", Toast.LENGTH_LONG).show();
+            boolean test = scoreFile.save(thisScore);
+            Toast.makeText(EditScoreActivity.this, "Score " + test + " Saved", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1836,8 +1860,8 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         getScoreFromText(scores.getEditableText().toString());
         numericNotes = prepareScore();
         lengths = prepareLengths();
-        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
-        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
+//        Log.i("Log@Main805", "numericNotes is null? " + (numericNotes == null));
+//        Log.i("Log@Main806", "lengths is null?" + (lengths == null));
         thisScore.setScore(numericNotes, lengths);
         intent.putExtra("score", thisScore);
         intent.putExtra("ScoreFile", scoreFile);
@@ -2102,7 +2126,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
             tempo = progress + 60;
-            Log.d("SeekBar Log", "The seekBar value is " + tempo);
+//            Log.d("SeekBar Log", "The seekBar value is " + tempo);
             ((TextView) findViewById(R.id.seekbarvalue)).setText(String.valueOf(tempo));
 
         }

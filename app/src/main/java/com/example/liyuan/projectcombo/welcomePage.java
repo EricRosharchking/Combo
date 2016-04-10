@@ -108,7 +108,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Log.d("LOGIN_SUCCESS", "Success");
+//                        Log.d("LOGIN_SUCCESS", "Success");
                         AccessToken accessToken = loginResult.getAccessToken();
                         profile = Profile.getCurrentProfile();
 
@@ -120,7 +120,7 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                                     public void onCompleted(
                                             JSONObject object,
                                             GraphResponse response) {
-                                        Log.v("LoginActivity Response ", response.toString());
+//                                        Log.v("LoginActivity Response ", response.toString());
 
                                         try {
                                             userName = object.getString("name");
@@ -131,8 +131,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                                             userEmail = sharedPref.getString("userEmail", userEmail);
                                             userName = sharedPref.getString("userName", userName);
 
-                                            Log.v("FB NAME Shared login: ", " " + userName);
-                                            Log.v("FB EMAIL Shared login: ", " " + userEmail);
+//                                            Log.v("FB NAME Shared login: ", " " + userName);
+//                                            Log.v("FB EMAIL Shared login: ", " " + userEmail);
 
                                             if (userEmail != null)
                                                 intent.putExtra("userEmail", userEmail);
@@ -159,12 +159,12 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
                     @Override
                     public void onCancel() {
-                        Log.d("LOGIN_CANCEL", "Cancel");
+//                        Log.d("LOGIN_CANCEL", "Cancel");
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Log.d("LOGIN_ERROR", "Error");
+//                        Log.d("LOGIN_ERROR", "Error");
                     }
                 });
 
