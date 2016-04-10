@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.liyuan.projectcombo.helper.SessionManager;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -78,13 +79,14 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
     private ProfileTracker mProfileTracker;
 
     Profile profile = null;
-
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+        session = new SessionManager(getApplicationContext());
         userEmail = "";
         userName = "";
         setContentView(R.layout.activity_welcome_page);
@@ -252,8 +254,10 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
 
         //If we will get true
         if(loggedIn){
-            //We will start the Profile Activity
+            //We will start Main Activity
             Intent intent = new Intent(welcomePage.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
@@ -298,16 +302,17 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
                             //Creating editor to store values to shared preferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                            //Adding values to editor
-                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                            editor.putString(Config.EMAIL_SHARED_PREF, email);
-
-                            //Saving values to editor
-                            editor.commit();
-
                             //Starting profile activity
                             userEmail = email;
                             userName = response.trim().substring(7);
+
+                            //Adding values to editor
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                            editor.putString(Config.EMAIL_SHARED_PREF, userEmail);
+                            editor.putString(Config.UNAME_SHARED_PREF, userName);
+
+                            //Saving values to editor
+                            editor.commit();
 
                             openProfile();
 
@@ -358,6 +363,8 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
             login();
         }
     }
+
+
 
 }
 //working login

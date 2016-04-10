@@ -112,6 +112,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     boolean isRunning;
     boolean opened;
     boolean isOpened;
+    boolean loggedIn;
 
     double startRecordTime;
     double stopRecordTime;
@@ -135,6 +136,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int key;
     int progress;
 
+
     private Spinner spinner;
     private SeekBar tempoSeekBar;
     private ListView mDrawerList2;
@@ -155,6 +157,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+            //In onresume fetching value from sharedpreference
+            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+            //Fetching the boolean value form sharedpreferences
+            loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+            if(!loggedIn){
+                Intent intent = new Intent(MainActivity.this, welcomePage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
 
     /* Assinging the toolbar object ot the view
     and setting the the Action bar to our toolbar
@@ -1758,6 +1772,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                         //Putting blank value to email
                         editor.putString(Config.EMAIL_SHARED_PREF, "");
+                        editor.putString(Config.UNAME_SHARED_PREF, "");
 
                         //Clear the shared preference
                         SharedPreferences p = getPreferences(Context.MODE_PRIVATE);
