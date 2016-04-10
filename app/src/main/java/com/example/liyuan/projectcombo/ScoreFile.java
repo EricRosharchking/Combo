@@ -88,7 +88,7 @@ public class ScoreFile implements Serializable {
         return name + ".SCORE";
     }
 
-    protected boolean save(Score score) throws IOException {
+    protected boolean saveAs(Score score) throws IOException {
         boolean status = false;
         String fileName = score.getTitle();
         fileName = addSuffix(fileName);
@@ -107,11 +107,42 @@ public class ScoreFile implements Serializable {
                 fos.close();
                 status = true;
                 fileSet.add(fileName);
-                boolean zzz = saveAllFileNames(fileSet);
+                boolean saveStatus = saveAllFileNames(fileSet);
                 for (String s: fileSet) {
                     Log.i("Files include", s);
                 }
-                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + zzz + fileSet.size());
+                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + saveStatus + fileSet.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new IOException(e);
+            }
+        } else {
+            Log.e("Log@ScoreFile103", "context is null");
+        }
+        return status;
+    }
+
+    protected boolean save(Score score)throws IOException {
+        boolean status = false;
+        String fileName = score.getTitle();
+        fileName += ".SCORE";
+        Context context = App.getAppContext();
+        if (context != null) {
+            try {
+
+                Log.d("Log@ScoreFile85", "Context is not null");
+
+                Log.d("", fileName);
+                FileOutputStream fos = context.openFileOutput(getFileFormat(fileName), Context.MODE_PRIVATE);
+                ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
+                oos.writeObject(score);
+                oos.close();
+                fos.close();
+                status = true;
+                for (String s: fileSet) {
+                    Log.i("Files include", s);
+                }
+                Log.d("Log@ScoreFile91", "Save all file names Log Status is " + fileSet.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new IOException(e);

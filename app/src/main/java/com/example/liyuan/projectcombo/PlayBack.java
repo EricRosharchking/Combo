@@ -82,7 +82,7 @@ public class PlayBack extends Thread{
                             double amplitude = 16384.0;
                             //Log.d("PlayBack Log", "The integer j is " + j);
                             int sampleSize = (int) ((SAMPLE_RATE * notesLength[j]) * 2 * 60.0 / tempo);
-                            samples = new short[sampleSize];
+                            samples = new short[2 * sampleSize];
                             int sample_count = sampleSize / 2;
                             double phase_Index = 0.0;
                             double frequency = musicScore.get(notesScore[j]);
@@ -108,9 +108,11 @@ public class PlayBack extends Thread{
 
                                     ////TODO:把phase_Index算回去 然后可以根据触摸长短调整音节的长短
 
-                                    samples[i * 2] = (short) value;
+                                    samples[i * 4] = (short) value;
+                                    samples[i * 4 + 1] = (short) value;
                                     value = value / (Math.pow(2, 8));
-                                    samples[i * 2 + 1] = (short) value;
+                                    samples[i * 4 + 2] = (short) value;
+                                    samples[i * 4 + 3] = (short) value;
                                 }
                                 //audioTrack.write(samples, 0, sampleSize);
                                 //Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
@@ -141,6 +143,7 @@ public class PlayBack extends Thread{
                                 break;
                             }
                         }
+                    j = 0;
 
                     isRunning = false;
                 }
@@ -167,6 +170,8 @@ public class PlayBack extends Thread{
 
 	
     public int getJ() {
+        if (j == size -1)
+            j = 0;
         return j;
     }
 
@@ -202,11 +207,10 @@ public class PlayBack extends Thread{
 
         double di = (double) i;
         double ds = (double) sampleRate;
-        double xx = Math.sin(2 * Math.PI * (di / ds) * frequency + extra);
         //if (i < 10) {
         //Log.d("base Log", "base is [" + i +"]" + xx);
         //}
-        return xx;
+        return Math.sin(2 * Math.PI * (di / ds) * frequency + extra);
     }
 
 	

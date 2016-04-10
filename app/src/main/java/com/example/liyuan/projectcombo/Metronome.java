@@ -176,15 +176,11 @@ public class Metronome extends Activity {
                         }
                     }
                     samples = new short[size];
-                    int first = (size - array.length) / 2;
                     try {
-                        for (int i = 0; i < first; i ++) {
-                            samples[i] = 0;
+                        for (int i = 0; i < array.length; i++) {
+                            samples[i] = array[i];
                         }
-                        for (int i = first; i < array.length + first; i++) {
-                            samples[i] = array[i-first];
-                        }
-                        for (int i = array.length + first; i < size; i++) {
+                        for (int i = array.length; i < size; i++) {
                             samples[i] = 0;
                         }
                         audioTrack.write(samples, 0, samples.length);

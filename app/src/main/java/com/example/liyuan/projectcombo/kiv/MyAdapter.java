@@ -19,7 +19,7 @@ public class MyAdapter extends BaseAdapter {
         private Context context;
 		private int disabledID;
         String[] tool_list;
-        int[] images;// = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+        int[] images;// = {R.drawable.createnewsong, R.drawable.saveAs, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
 
         public MyAdapter(Context context, String email, String name, String[] toollist, int[] images, int disabledID) {
             this.context = context;

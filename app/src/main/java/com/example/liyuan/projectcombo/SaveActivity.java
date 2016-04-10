@@ -9,15 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.zip.Inflater;
 
 public class SaveActivity extends ActionBarActivity implements Serializable, DialogInterface.OnClickListener {
     String[] names;
@@ -139,7 +135,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     public void onClick(DialogInterface dialog, int which) {
         Log.i("ListenerLog@158", "Button is " + which);
         if(which == -1) {
-            //save
+            //saveAs
             Log.d("SaveActivity118", "Save Clicked");
 
 
@@ -189,7 +185,7 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
             Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
             try{
-                scoreFile.save(score);
+                scoreFile.saveAs(score);
             } catch (Exception e) {
                 e.printStackTrace();
             }

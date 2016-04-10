@@ -44,6 +44,7 @@ import com.facebook.login.LoginManager;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -166,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             userScoreName = (String) getIntent().getSerializableExtra("userScore");
 
-            if(userScoreName != null){
+            if (userScoreName != null) {
                 mActivityTitle = userScoreName;
             } else {
                 mActivityTitle = "Create new song";
@@ -185,9 +186,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
 
             if (getIntent().getSerializableExtra("userEmail") != null)
-            userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
+                userEmail = (String) getIntent().getSerializableExtra("userEmail");//userEmail = (String) getIntent().getSerializableExtra("userEmail");
             if (getIntent().getSerializableExtra("userName") != null)
-            userName = (String) getIntent().getSerializableExtra("userName");
+                userName = (String) getIntent().getSerializableExtra("userName");
 
             SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
             userEmail = sharedPref.getString("userEmail", userEmail);
@@ -393,7 +394,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
 //        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
 //        mDrawerList2.setAdapter(mAdapter);
-        int[] images = {R.drawable.createnewsong ,R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
+        int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
         myAdapter = new MyAdapter(this, "", "", tool_list, images, disabledID);
         mDrawerList2.setAdapter(myAdapter);
@@ -453,11 +454,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                String title="";
-                if(userScoreName!=null){
-                    title =userScoreName;
-                }else{
-                    title="Create new song";
+                String title = "";
+                if (userScoreName != null) {
+                    title = userScoreName;
+                } else {
+                    title = "Create new song";
                 }
                 getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -566,7 +567,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        if (id == R.id.action_settings) {
 //
 //        } else if (id == R.id.saveSong) {
-//            save();
+//            saveAs();
 //        } else if (id == R.id.openHistory) {
 //            openOrNew();
 //        } else if (id == R.id.addLyrics){
@@ -689,7 +690,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            }
 
 
-
             if (metronome != null && metronomeRunning) {
                 metronome.stop();
                 metronomeRunning = false;
@@ -714,7 +714,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //        if (id == R.id.action_settings) {
 //
 //        } else if (id == R.id.saveSong) {
-//            save();
+//            saveAs();
 //        } else if (id == R.id.openHistory) {
 //            openOrNew();
 //        } else if (id == R.id.addLyrics){
@@ -727,13 +727,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public double autoCorrectLength(double actualLength) {
         double result = (double) (int) (actualLength / 1);
         actualLength -= result;
-        if (actualLength >= 0.85)
+        if (actualLength >= 0.9)
             actualLength = 1.0;
         else if (actualLength >= 0.65)
             actualLength = 0.75;
-        else if (actualLength >= 0.35)
+        else if (actualLength >= 0.4)
             actualLength = 0.5;
-        else if (actualLength >= 0.1)
+        else if (actualLength >= 0.2)
             actualLength = 0.25;
         else
             actualLength = 0.0;
@@ -1053,7 +1053,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         String str = displayThreadNew.getDisplay();
         str += "</p></body></html>";
         str = CONTENT + str;
-        myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
+        if (onRecord) {
+            myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
+        }
         return super.onTouchEvent(event);
     }
 
@@ -1073,7 +1075,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
                 Log.d("Log@Main619", "Score is " + thisScore.getScore().length);
-                String htmlData = CONTENT+ extractScore(thisScore.getScore(), thisScore.getLengths()) + "</p></body></html>";
+                String htmlData = CONTENT + extractScore(thisScore.getScore(), thisScore.getLengths()) + "</p></body></html>";
 
                 myWebView.loadData(htmlData, "text/html; charset=utf-8", "UTF-8");
                 score = thisScore;
@@ -1122,7 +1124,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(resultCode == 1) {
+        if (resultCode == 1) {
             userEmail = intent.getStringExtra("userEmail");
             userName = intent.getStringExtra("userName");
         }
@@ -1254,8 +1256,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             int barCount = 1;
             int lineCount = 1;
 
-            Log.i("Log@1257","notes are " + notes.toString());
-            Log.i("Log@Main1258","lengths are " + lengths.toString());
+            Log.i("Log@1257", "notes are " + Arrays.toString(notes));
+            Log.i("Log@Main1258", "lengths are " + Arrays.toString(lengths));
 
             for (int i = 0; i < notes.length; i++) {
                 int n = notes[i];
@@ -1336,12 +1338,42 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 else if (r >= 0.15)
                     t += "<sub>\u0333</sub> ";
 */
+                if (l == 0) {
+                    t = t.substring(0, t.length() - 1);
+                } else {
+                    totalLengths += l;
+                    if (totalLengths > barCount * 4) {
+                        while (totalLengths > barCount * 4) {
+                            double firstHalf = barCount * 4 - (totalLengths - l);
+                            int count = (int) (firstHalf / 0.25);
+                            int x = count / 4;
+                            int y = count % 4;
 
-                totalLengths += l;
-                if (totalLengths > barCount * 4) {
-                    while (totalLengths > barCount * 4) {
-                        double firstHalf = barCount * 4 - (totalLengths - l);
-                        int count = (int) (firstHalf / 0.25);
+                            switch (y) {
+                                case 1:
+                                    t += "<sub>\u0333</sub> ";
+                                    break;
+                                case 2:
+                                    t += "<sub>\u0332</sub> ";
+                                    break;
+                                case 3:
+                                    t += "<sub>\u0332</sub> \u2022 ";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            for (int j = 1; j < firstHalf; j++) {
+                                t += " ‐ ";
+                            }
+
+                            barCount++;
+                            t += " | ";
+                            t += thisKey;
+                            l -= firstHalf;
+                        }
+                        double secondHalf = totalLengths - 4 * barCount;
+                        int count = (int) (secondHalf / 0.25);
                         int x = count / 4;
                         int y = count % 4;
 
@@ -1359,17 +1391,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                                 break;
                         }
 
-                        for (int j = 1; j < firstHalf; j++) {
+                        for (int j = 1; j < secondHalf; j++) {
                             t += " ‐ ";
                         }
-
-                        barCount++;
-                        t += " | ";
-                        t += thisKey;
-                        l -= firstHalf;
+                    /*if (barCount > lineCount * 3) {
+                        t += "\n ";
+                        t += "|";
+                        lineCount++;
+                    }*/
                     }
-                    double secondHalf = totalLengths - 4 * barCount;
-                    int count = (int) (secondHalf / 0.25);
+                    int count = (int) (l / 0.25);
                     int x = count / 4;
                     int y = count % 4;
 
@@ -1387,40 +1418,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                             break;
                     }
 
-                    for (int j = 1; j < secondHalf; j++) {
+                    for (int j = 1; j < l; j++) {
                         t += " ‐ ";
                     }
-                    /*if (barCount > lineCount * 3) {
-                        t += "\n ";
-                        t += "|";
-                        lineCount++;
-                    }*/
-                }
-                int count = (int) (l / 0.25);
-                int x = count / 4;
-                int y = count % 4;
 
-                switch (y) {
-                    case 1:
-                        t += "<sub>\u0333</sub> ";
-                        break;
-                    case 2:
-                        t += "<sub>\u0332</sub> ";
-                        break;
-                    case 3:
-                        t += "<sub>\u0332</sub> \u2022 ";
-                        break;
-                    default:
-                        break;
-                }
-
-                for (int j = 1; j < l; j++) {
-                    t += " ‐ ";
-                }
-
-                if (totalLengths == barCount * 4) {
-                    barCount++;
-                    t += " | ";
+                    if (totalLengths == barCount * 4) {
+                        barCount++;
+                        t += " | ";
+                    }
                 }
             }
             t += " ||";
@@ -1502,9 +1507,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (playBackTrack != null) {
             playBackTrack.pausePlaying();
             lastNote = playBackTrack.getJ();
-            if (lastNote == playBackTrack.getSize() - 1) {
-                lastNote = playBackTrack.getLast();
-            }
             try {
                 playBackTrack.join();
                 changePlayBackIcon();
@@ -1520,7 +1522,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void stopPlay(View view) {
         if (playBackTrack != null) {
             playBackTrack.stopPlaying();
-            lastNote = playBackTrack.getLast();
+            lastNote = 0;
             try {
                 playBackTrack.join();
                 changePlayBackIcon();

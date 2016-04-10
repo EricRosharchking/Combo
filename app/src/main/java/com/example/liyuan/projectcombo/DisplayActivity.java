@@ -1,12 +1,20 @@
 package com.example.liyuan.projectcombo;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DisplayActivity extends ActionBarActivity {
     Score score;
@@ -43,114 +51,485 @@ public class DisplayActivity extends ActionBarActivity {
             if (notes.length != lengths.length) {
                 finish();
             }
-            String t = "|";
-            double totalLengths = 0.0;
-            int barCount = 1;
-            int lineCount = 1;
-
-            for (int i = 0; i < notes.length; i++) {
-                int n = notes[i];
-                double l = lengths[i];
-//            if (l < 0.15)
-//                continue;
-                String thisKey = " 1";
-                switch (n) {
-                    case 0:
-                        thisKey = " 0";
+            String t = "||";
+            if (notes != null && lengths != null && notes.length == lengths.length) {
+            /*for (int i = 0; i < notes.length; i++) {
+                String thisNote = Integer.toString(notes[i]);
+                double thisLength = lengths[i];
+                int q = (int) Math.round(thisLength / 0.25);
+                if (q == 0) {
+                    q = 1;
+                }
+                switch (q) {
+                    case 1:
+                        thisNote += DOUBLE_UNDERLINE;
                         break;
-                    case -3:
+                    case 2:
+                        thisNote += UNDERLINE;
+                        break;
                     case 3:
-                    case 42:
-                        thisKey = " 2";
-                        break;
-                    case -4:
-                    case 4:
-                    case 56:
-                    case -5:
-                    case 5:
-                    case 70:
-                        thisKey = " 3";
-                        break;
-                    case -6:
-                    case 6:
-                    case 84:
-                    case -7:
-                    case 7:
-                    case 98:
-                        thisKey = " 4";
-                        break;
-                    case -8:
-                    case 8:
-                    case 112:
-                    case -9:
-                    case 9:
-                    case 126:
-                        thisKey = " 5";
-                        break;
-                    case -10:
-                    case 10:
-                    case 140:
-                        thisKey = " 6";
-                        break;
-                    case -11:
-                    case 11:
-                    case 154:
-                    case -12:
-                    case 12:
-                    case 168:
-                        thisKey = " 7";
+                        thisNote += UNDERLINE;
+                        thisNote += BULLET;
                         break;
                     default:
                         break;
                 }
+                scoreString += thisNote;
+            }*/
+
+                double totalLengths = 0.0;
+                int barCount = 1;
+                int lineCount = 1;
+
+                Log.i("Log@1257", "notes are " + Arrays.toString(notes));
+                Log.i("Log@Main1258", "lengths are " + Arrays.toString(lengths));
+
+                for (int i = 0; i < notes.length; i++) {
+                    int n = notes[i];
+                    double l = lengths[i];
+//            if (l < 0.15)
+//                continue;
+                    String thisKey = " 1";
+                    switch (n) {
+                        case 0:
+                            thisKey = " 0";
+                            break;
+                        case -3:
+                        case 3:
+                        case 42:
+                            thisKey = " 2";
+                            break;
+                        case -4:
+                        case 4:
+                        case 56:
+                        case -5:
+                        case 5:
+                        case 70:
+                            thisKey = " 3";
+                            break;
+                        case -6:
+                        case 6:
+                        case 84:
+                        case -7:
+                        case 7:
+                        case 98:
+                            thisKey = " 4";
+                            break;
+                        case -8:
+                        case 8:
+                        case 112:
+                        case -9:
+                        case 9:
+                        case 126:
+                            thisKey = " 5";
+                            break;
+                        case -10:
+                        case 10:
+                        case 140:
+                            thisKey = " 6";
+                            break;
+                        case -11:
+                        case 11:
+                        case 154:
+                        case -12:
+                        case 12:
+                        case 168:
+                            thisKey = " 7";
+                            break;
+                        default:
+                            break;
+                    }
 //            Log.d("Log@DisplayActivity133", thisKey);
-                if (n < 0) {
-                    thisKey += "<sub>\u0323</sub>";
-                } else if (n > 13) {
-                    thisKey += "<sup>\u0307</sup>";
-                } else {
-                    thisKey += "";
-                }
-                t += thisKey;
-                for (int j = 2; j < l; j++) {
-                    t += "\u2010 ";
-                }
+                    if (n < 0) {
+                        thisKey += "\u0323";
+                    } else if (n > 13) {
+                        thisKey += "\u0307";
+                    } else {
+                        thisKey += "";
+                    }
+                    t += thisKey;
+/*
 
                 double r = l % 1;
                 if (l > 2.15 && r < 0.85)
                     t += thisKey;
 
                 if (r >= 0.85)
-                    t += "\u2010 ";
+                    t += " - ";
                 else if (r >= 0.69)
-                    t += "<sub>\u0332</sub>\u2022 ";
+                    t += "<sub>\u0332</sub> \u2022 ";
                 else if (r >= 0.4)
                     t += "<sub>\u0332</sub> ";
                 else if (r >= 0.15)
                     t += "<sub>\u0333</sub> ";
+*/
+                    if (l == 0) {
+                        t = t.substring(0, t.length() - 1);
+                    } else {
+                        totalLengths += l;
+                        if (totalLengths > barCount * 4) {
+                            while (totalLengths > barCount * 4) {
+                                double firstHalf = barCount * 4 - (totalLengths - l);
+                                int count = (int) (firstHalf / 0.25);
+                                int x = count / 4;
+                                int y = count % 4;
 
-                totalLengths += l;
-                if (totalLengths > barCount * 4) {
-                    t += "|";
-                    barCount += 1;
-                    if (barCount > lineCount * 3) {
+                                switch (y) {
+                                    case 1:
+                                        t += "<sub>\u0333</sub> ";
+                                        break;
+                                    case 2:
+                                        t += "<sub>\u0332</sub> ";
+                                        break;
+                                    case 3:
+                                        t += "<sub>\u0332</sub> \u2022 ";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                for (int j = 1; j < firstHalf; j++) {
+                                    t += " ‐ ";
+                                }
+
+                                barCount++;
+                                t += " | ";
+                                t += thisKey;
+                                l -= firstHalf;
+                            }
+                            double secondHalf = totalLengths - 4 * barCount;
+                            int count = (int) (secondHalf / 0.25);
+                            int x = count / 4;
+                            int y = count % 4;
+
+                            switch (y) {
+                                case 1:
+                                    t += "<sub>\u0333</sub> ";
+                                    break;
+                                case 2:
+                                    t += "<sub>\u0332</sub> ";
+                                    break;
+                                case 3:
+                                    t += "<sub>\u0332</sub> \u2022 ";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            for (int j = 1; j < secondHalf; j++) {
+                                t += " ‐ ";
+                            }
+                    /*if (barCount > lineCount * 3) {
                         t += "\n ";
                         t += "|";
                         lineCount++;
+                    }*/
+                        }
+                        int count = (int) (l / 0.25);
+                        int x = count / 4;
+                        int y = count % 4;
+
+                        switch (y) {
+                            case 1:
+                                t += "<sub>\u0333</sub> ";
+                                break;
+                            case 2:
+                                t += "<sub>\u0332</sub> ";
+                                break;
+                            case 3:
+                                t += "<sub>\u0332</sub> \u2022 ";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        for (int j = 1; j < l; j++) {
+                            t += " ‐ ";
+                        }
+
+                        if (totalLengths == barCount * 4) {
+                            barCount++;
+                            t += " | ";
+                        }
                     }
                 }
+                t += " ||";
             }
-            t += "\u2225";
             textView.setText(Html.fromHtml(t));
         }
         //textView.setText(Html.fromHtml(getString(R.string.example)));
 //        Log.d("Log@DisplayActivity133", t);
         ////TODO: 把score变成两个TextView，一个只有数字，一个只有横线。use \n to separate the two
         ////TODO: behaviour of back button on screen will start a new MainActivity instead of resuming the old one
+        if (score != null)
+            export(score);
     }
 
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    public void export(Score thisScore) {
+        int[] notes = thisScore.getScore();
+        double[] lengths = thisScore.getLengths();
+        ArrayList<String> pList = new ArrayList<>();
+        int barCount = 1;
+        int lineCount = 1;
+        String paragraph = "||";
+        double totalLength = 0.0;
+
+        for (int i = 0; i < notes.length; i++) {
+            int n = notes[i];
+            double l = lengths[i];
+//            if (l < 0.15)
+//                continue;
+            String thisKey = " 1";
+            switch (n) {
+                case 0:
+                    thisKey = " 0";
+                    break;
+                case -3:
+                case 3:
+                case 42:
+                    thisKey = " 2";
+                    break;
+                case -4:
+                case 4:
+                case 56:
+                case -5:
+                case 5:
+                case 70:
+                    thisKey = " 3";
+                    break;
+                case -6:
+                case 6:
+                case 84:
+                case -7:
+                case 7:
+                case 98:
+                    thisKey = " 4";
+                    break;
+                case -8:
+                case 8:
+                case 112:
+                case -9:
+                case 9:
+                case 126:
+                    thisKey = " 5";
+                    break;
+                case -10:
+                case 10:
+                case 140:
+                    thisKey = " 6";
+                    break;
+                case -11:
+                case 11:
+                case 154:
+                case -12:
+                case 12:
+                case 168:
+                    thisKey = " 7";
+                    break;
+                default:
+                    break;
+            }
+//            Log.d("Log@DisplayActivity133", thisKey);
+            if (n < 0) {
+                thisKey += "&#x323;";
+            } else if (n > 13) {
+                thisKey += "<sup>&#x307;</sup>";
+            } else {
+                thisKey += "";
+            }
+            paragraph += thisKey;
+            totalLength += l;
+            if (l == 0) {
+                paragraph = paragraph.substring(0, paragraph.length() - 1);
+            } else {
+                if (totalLength > barCount * 4) {
+                    while (totalLength > barCount * 4) {
+                        double firstHalf = barCount * 4 - (totalLength - l);
+                        int count = (int) (firstHalf / 0.25);
+                        int x = count / 4;
+                        int y = count % 4;
+
+                        for (int j = 1; j < firstHalf; j++) {
+                            paragraph += " - ";
+                        }
+
+                        if (x > 0 && y > 0) {
+                            paragraph += " ";
+                            paragraph += thisKey;
+                        }
+                        if (y > 0) {
+                            String key = paragraph.substring(paragraph.lastIndexOf(" ") + 1, paragraph.length());
+                            paragraph = paragraph.substring(0, paragraph.lastIndexOf(" ") + 1);
+                            switch (y) {
+                                case 1:
+                                    paragraph += "&#x333;";
+                                    break;
+                                case 2:
+                                case 3:
+                                    paragraph += "&#x332;";
+                                    break;
+                            }
+                            paragraph += key;
+                        }
+                        switch (y) {
+                            case 1:
+                                paragraph += "&#x333;";
+                                break;
+                            case 2:
+                                paragraph += "&#x332;";
+                                break;
+                            case 3:
+                                paragraph += "&#x332;&#x2022;";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        barCount++;
+                        paragraph += " | ";
+                        if (lineCount * 4 == barCount) {
+                            pList.add(paragraph);
+                            paragraph = "|";
+                        }
+                        paragraph += thisKey;
+                        l -= firstHalf;
+                    }
+                    double secondHalf = totalLength - 4 * barCount;
+                    int count = (int) (secondHalf / 0.25);
+                    int x = count / 4;
+                    int y = count % 4;
+
+                    for (int j = 1; j < secondHalf; j++) {
+                        paragraph += " - ";
+                    }
+
+                    if (x > 0 && y > 0) {
+                        paragraph += " ";
+                        paragraph += thisKey;
+                    }
+
+                    if (y > 0) {
+                        String key = paragraph.substring(paragraph.lastIndexOf(" ") + 1, paragraph.length());
+                        paragraph = paragraph.substring(0, paragraph.lastIndexOf(" ") + 1);
+                        switch (y) {
+                            case 1:
+                                paragraph += "&#x333;";
+                                break;
+                            case 2:
+                            case 3:
+                                paragraph += "&#x332;";
+                                break;
+                        }
+                        paragraph += key;
+                    }
+                    switch (y) {
+                        case 1:
+                            paragraph += "&#x333;";
+                            break;
+                        case 2:
+                            paragraph += "&#x332;";
+                            break;
+                        case 3:
+                            paragraph += "&#x332;&#x2022;";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                int count = (int) (l / 0.25);
+                int x = count / 4;
+                int y = count % 4;
+
+                for (int j = 1; j < l; j++) {
+                    paragraph += " - ";
+                }
+
+                if (x > 0 && y > 0) {
+                    paragraph += " ";
+                    paragraph += thisKey;
+                }
+                if (y > 0) {
+                    String key = paragraph.substring(paragraph.lastIndexOf(" ") + 1, paragraph.length());
+                    paragraph = paragraph.substring(0, paragraph.lastIndexOf(" ") + 1);
+                    switch (y) {
+                        case 1:
+                            paragraph += "&#x333;";
+                            break;
+                        case 2:
+                        case 3:
+                            paragraph += "&#x332;";
+                            break;
+                    }
+                    paragraph += key;
+                }
+                switch (y) {
+                    case 1:
+                        paragraph += "&#x333; ";
+                        break;
+                    case 2:
+                        paragraph += "&#x332; ";
+                        break;
+                    case 3:
+                        paragraph += "&#x332;&#x2022;";
+                        break;
+                    default:
+                        break;
+                }
+
+                if (totalLength == barCount * 4) {
+                    barCount++;
+                    paragraph += " |";
+                    if (lineCount * 4 == barCount) {
+                        pList.add(paragraph);
+                        paragraph = "|";
+                    }
+                }
+            }
+        }
+        paragraph += " ||";
+        pList.add(paragraph);
+
+        //Context context = App.getAppContext();
+        //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(), thisScore.getTitle()+".html");
+        String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/Cambo/";
+        File file = new File(dir);
+        Toast.makeText(this, file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        FileWriter fw = null;
+        try {
+
+            boolean result = file.mkdirs();
+//            Toast.makeText(this, "mkdirs is " + result, Toast.LENGTH_LONG).show();
+            file = new File(dir, thisScore.getTitle() + ".html");
+            file.createNewFile();
+            fw = new FileWriter(file, false);
+            fw.write("<html><head>\n" + "<style>\n" + "body {width:21cm; height:29.7cm; align:center;}\n" +
+//                    "h1 {font-size: 2em; margin-top: 0.67em;margin-bottom: 0.67em;font-weight: bold;}" + "h2 {font-size: 2em;margin-top: 0.67em;margin-bottom: 0.67em;\nfont-weight: bold;\n}"+
+//                    "p {font-size: }" +
+                    "</style>\n" + "</head><body>");
+            fw.write("<h1 style='text-align: center;'><font size='8'>" + thisScore.getTitle() + "</font></h1>\n");
+            fw.write("<h2 style='text-align: left;'><font size='6'>1=" + thisScore.getKey() + "     " + thisScore.getTimeSignature() + "     " + thisScore.getTempo() + "</font></h2>\n");
+            fw.write("<h2 style='text-align: right;'><font size='6'>" + thisScore.getAuthor() + "</font></h2>\n");
+            for (String str : pList) {
+                str = "<p style='text-aligh: justify;'><font size='5'>" + str + "</font></p>\n";
+                fw.write(str);
+//                Log.i("ExportLog", str);
+            }
+            fw.write("</body></html>");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fw.flush();
+                fw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
