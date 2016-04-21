@@ -67,58 +67,35 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     private final String underlinenosub = "\u0332";
     private final String double_underline = "<sub>\u0333</sub>";
     private final String double_underlinenosub = "\u0333";
-    private final String curve = "<sup>\u0361</sup>";
     private final String bullet = "&#8226\n";
     private final String dot_above = "<sup>\u0307</sup>";
     private final String dot_below = "<sub>\u0323</sub>";
-    private final String sharp = "#";
     private String userName;
     private String userEmail;
 
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private Toolbar toolbar;
-    private NumberPicker metronumberpicker;
 
     List<Integer> noteList;
     List<Double> lengthList;
     String notesAndRest;
     String lengthOfNotesAndRest;
-    DateFormat df;
-    Date now;
     String userScoreName;
 
     boolean withMetronome;
     boolean metronomeRunning;
-    boolean isPlayBack;
-    boolean onRecord;
-    boolean resetScore;
-    boolean onHold;
-    boolean onRest;
-    boolean isRunning;
     boolean opened;
     boolean isOpened;
 
-    double startRecordTime;
-    double stopRecordTime;
-    double recordTime;
     double secondsPerBeat;
-    double noteBeats;
-    double noteStartTime;
-    double noteEndTime;
-    double rest;
-    double restStartTime;
-    double restEndTime;
-    double elapse;
     double beatLength;
 
     int tempo;
     int timeSig;
     int lastNote;
-    int disabledID = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +192,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
 
             noteList = new ArrayList<Integer>();
             lengthList = new ArrayList<Double>();
-//			lengthList.add(1.0);
 
             for (int i = 1; i < audioThreads.length; i++) {
                 audioThreads[i] = new AudioThread(Notes[i - 1]);
@@ -382,8 +358,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 public void onClick(View v) {
 
                     scores.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-//                    int index = getEditSelection();// The location of the cursor
-//                    deleteEditValue(index);
 
                 }
             });
@@ -459,14 +433,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             b79.setOnClickListener(this);
             buttonspace.setOnClickListener(this);
 
-
-//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
-//            metronumberpicker.setFocusable(false);
-//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-//            metronumberpicker.setMaxValue(120);
-//            metronumberpicker.setMinValue(60);
-//            metronumberpicker.setWrapSelectorWheel(false);
-//
             tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
             btnLogout = (Button) findViewById(R.id.btnLogout);
@@ -485,18 +451,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
-//            spinner.setOnItemSelectedListener(adapter);
             spinner.setOnItemSelectedListener(this);
-//            tempo = metronumberpicker.getValue();
-//            Spinner spinner = (Spinner) findViewById(R.id.withmetro);
-// Create an ArrayAdapter using the string array and a default spinner layout
-//            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                    R.array.withmetro_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-//            spinner.setAdapter(adapter);
-//            spinner.setOnItemSelectedListener(this);
             switch (timeSignature) {
                 case "4/4":
                     spinner.setSelection(0);
@@ -521,9 +476,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     }
 
     private void addDrawerItems2() {
-//        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
-//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
-//        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.saveas, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox_EditScoreActivity);
         myAdapter = new MyAdapter(this, userEmail, userName, tool_list, images, -1);
@@ -637,12 +589,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         }
 
         return true;
-
-//        key = noteID;
-//        key = noteID * noteAddOn;
-//        if (displayThread != null && displayThread.getState() != Thread.State.TERMINATED) {
-//            displayThread.update(key);
-//        }
     }
 
     //hide the default keyboard
@@ -1340,7 +1286,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     protected void onResume() {
         super.onResume();
         if (getIntent().getSerializableExtra("Score2") != null) {
-            //open(getIntent());
             Score thisScore = (Score) getIntent().getSerializableExtra("Score2");
 //            Log.d("Log@617", "Score is null? " + (thisScore == null));
             if (thisScore != null && thisScore.getScore() != null) {
@@ -1397,63 +1342,20 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 metronome.start();
             }
             metronomeRunning = true;
-//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-//            imageButton.setImageResource(R.drawable.stopmetro);
         } else {
             metronome.stop();
             metronomeRunning = false;
-//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-//            imageButton.setImageResource(R.drawable.metronome);
         }
 
     }
 
     public void playBack(View view) {
-//// TODO: 10/18/2015 HashMap Key must be unique. . .
-        //Log.d("PlayBack Log", "PlayBack Entered");
-        //Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
-
-        //notesAndRest = notesAndRest.trim();
-        //lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
-
+//        Log.d("PlayBack Log", "PlayBack Entered");
+//        Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
 //        Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
-
         if (playBackTrack == null || playBackTrack.getState() == Thread.State.NEW || playBackTrack.getState() == Thread.State.TERMINATED) {
-//            for (int i = 0; i < notesAndRest.split(" ").length; i++) {
-//                Log.d("PlayBack Log", "The Notes or Rest is " + notesAndRest.split(" ")[i]);
-//            }
-//            //// TODO: 10/18/2015 Trim the two Strings before split
-//            for (int i = 0; i < lengthOfNotesAndRest.split(" ").length; i++) {
-//                Log.d("PlayBack Log", "The Notes or Rest is " + lengthOfNotesAndRest.split(" ")[i]);
-//            }
 
-
-//            Log.i("Log@Main735", "score is null? " + (score == null));
-//            if (opened) {
-//                numericNotes = score.getScore();
-//                lengths = score.getLengths();
-//                opened = false;
-//            }
-
-//            if (numericNotes != null && lengths != null) {
-//                Log.d("Log@Main705", " " + numericNotes.length + " " + lengths.length);
-//            }
             if (numericNotes.length == lengths.length) {
-
-
-                //写一下吧write到audioTrack里面 stream
-
-            /*            numericNotes = new int[4];
-                        numericNotes[0] = 1;
-                        numericNotes[1] = 3;
-                        numericNotes[2] = 0;
-                        numericNotes[3] = 5;
-
-                        scoreLength = new String[4];
-                        scoreLength[0] = "1.000";
-                        scoreLength[1] = "1.000";
-                        scoreLength[2] = "1.000";
-                        scoreLength[3] = "1.000";*/
 
                 if (playBackTrack != null) {
                     lastNote = playBackTrack.getLast();
@@ -1468,13 +1370,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                 if (withMetronome) startMetronome(null);
                 playBackTrack.start();
 
-                    /*try {
-                        Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
-                        playBack.join();
-                        //imageButton.setImageResource(R.drawable.playbackbutton);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
             }
         }
     }
@@ -1592,29 +1487,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
     private String extractScore(int[] notes, double[] lengths, String timeSignature) {
         String t = "||";
         if (notes != null && lengths != null && notes.length == lengths.length) {
-            /*for (int i = 0; i < notes.length; i++) {
-                String thisNote = Integer.toString(notes[i]);
-                double thisLength = lengths[i];
-                int q = (int) Math.round(thisLength / 0.25);
-                if (q == 0) {
-                    q = 1;
-                }
-                switch (q) {
-                    case 1:
-                        thisNote += DOUBLE_UNDERLINE;
-                        break;
-                    case 2:
-                        thisNote += UNDERLINE;
-                        break;
-                    case 3:
-                        thisNote += UNDERLINE;
-                        thisNote += BULLET;
-                        break;
-                    default:
-                        break;
-                }
-                scoreString += thisNote;
-            }*/
 
             switch (timeSignature) {
                 case "3/4":
@@ -1626,7 +1498,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             }
             double totalLengths = 0.0;
             int barCount = 1;
-            int lineCount = 1;
 
 //            Log.i("Log@1257", "notes are " + Arrays.toString(notes));
 //            Log.i("Log@Main1258", "lengths are " + Arrays.toString(lengths));
@@ -1634,8 +1505,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             for (int i = 0; i < notes.length; i++) {
                 int n = notes[i];
                 double l = lengths[i];
-//            if (l < 0.15)
-//                continue;
                 String thisKey = " 1";
                 switch (n) {
                     case 0:
@@ -1695,21 +1564,7 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                     thisKey += "";
                 }
                 t += thisKey;
-/*
 
-                double r = l % 1;
-                if (l > 2.15 && r < 0.85)
-                    t += thisKey;
-
-                if (r >= 0.85)
-                    t += " - ";
-                else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
-                else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
-                else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
-*/
                 if (l == 0) {
                     t = t.substring(0, t.length() - 1);
                 } else {
@@ -1766,11 +1621,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                         for (int j = 1; j < secondHalf; j++) {
                             t += " - ";
                         }
-                    /*if (barCount > lineCount * 3) {
-                        t += "\n ";
-                        t += "|";
-                        lineCount++;
-                    }*/
                     }
                     int count = (int) (l / 0.25);
                     int x = count / 4;
@@ -1803,7 +1653,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
             t += " ||";
         }
 
-        ////TODO:
         return t.trim();
     }
 
@@ -1879,17 +1728,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         finish();
     }
 
-    public void editScore() {
-        Intent intent = new Intent(this, EditScoreActivity.class);
-        if (!isOpened) {
-            intent.putExtra("notes", prepareScore());
-            intent.putExtra("lengths", prepareLengths());
-        } else {
-            intent.putExtra("score", score);
-        }
-        startActivity(intent);
-    }
-
     private void deleteAll() {
         Log.i("Log@Main835", "Delete Status is " + scoreFile.deleteAll());
     }
@@ -1957,130 +1795,13 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         return timeSig;
     }
 
-    /*public void record() {
-        if (!onRecord) {
-            //recordButton.setImageResource(R.drawable.stopbutton);
-            onRecord = true;
-//                recordStatus.setText("Recording");
-            resetScore = true;
-            scores.setText(R.string.main_score);
-            startRecordTime = System.currentTimeMillis() + 1000 * timeSig * secondsPerBeat;
-            restStartTime = startRecordTime;
-            now = new Date();
-            notesAndRest = "";
-            lengthOfNotesAndRest = notesAndRest;
 
-
-            if (displayThread.getState() != Thread.State.NEW) {
-                displayThread = new DisplayThread();
-            }
-            displayThread.setTimeSignature(getTimeSignature());
-            displayThread.setTempo(tempo);
-            startMetronome(null);
-            long delay = (long)(timeSig * 1000 * secondsPerBeat);
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            displayThread.start();
-        } else {
-            //recordButton.setImageResource(R.drawable.startbutton);
-            onRecord = false;
-//                recordStatus.setText("Click to start");
-            //textView.setText((String)getText(R.string.main_score));
-            resetScore = false;
-            stopRecordTime = System.currentTimeMillis();
-            recordTime = stopRecordTime - startRecordTime;
-            restEndTime = stopRecordTime;
-            rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
-            notesAndRest = notesAndRest + " " + "0";
-            lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
-            Log.d("RecordingLog", "The Record Time is " + recordTime);
-//                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
-
-
-            if (displayThread != null) {
-                displayThread.stopThread();
-//                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
-//                    textView.setText(displayThread.getArchived());
-                scores.setText(Html.fromHtml(displayThread.getDisplay()));//ending pause in html
-//                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
-            }
-            if (metronome != null && metronomeRunning) {
-                metronome.stop();
-            }
-        }
-    }*/
-
-
-    //split the String to String[] for use to split into multiple arrays
-    //split the String to String[] to ensure alignment with the lyrics text box
-    //(i.e. one lyrics tb under one score)
     @Override
     public void onBackPressed() {
         finish();
     }
 
-//    class MyAdapter extends BaseAdapter {
-//        private String att_email;
-//        private String att_name;
-//        private Context context;
-//        String[] tool_list;
-//        int[] images = {R.drawable.createnewsong, R.drawable.saveAs, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
-//
-//        public MyAdapter(Context context, String email, String name) {
-//            this.context = context;
-//            this.att_name = name;
-//            this.att_email = email;
-//            tool_list = context.getResources().getStringArray(R.array.navigation_toolbox);
-//        }
-//
-//        @Override
-//        public int getCount() {
-//
-//            return tool_list.length;
-//        }
-//
-//        @Override
-//        public Object getItem(int i) {
-//            return tool_list[i];
-//        }
-//
-//        @Override
-//        public long getItemId(int i) {
-//            return i;
-//        }
-//
-//        @Override
-//        public View getView(int i, View view, ViewGroup viewGroup) {
-//            View row = null;
-//            if (view == null) {
-//                LayoutInflater inflater = (LayoutInflater) context.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
-//                row = inflater.inflate(R.layout.custom_row, viewGroup, false);
-//            } else {
-//                row = view;
-//            }
-//            TextView titleTextView2 = (TextView) row.findViewById(R.id.textView);
-//            ImageView titleImageView2 = (ImageView) row.findViewById(R.id.imageView);
-//            TextView t_name = (TextView) row.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-//            if (t_name != null) {
-//                t_name.setText("Cambo");
-////
-//            }
-////        t_name.setText(att_name);
-//            TextView t_email = (TextView) row.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-////        t_email.setText(att_email);
-//            titleTextView2.setText(tool_list[i]);
-//            titleImageView2.setImageResource(images[i]);
-//            return row;
-//        }
-//    }
 
-
-    //split the String to String[] for use to split into multiple arrays
-    //split the String to String[] to ensure alignment with the lyrics text box
-    //(i.e. one lyrics tb under one score)
     private static String[] split(String string) {
         char[] chars = string.toCharArray();
         String[] strings = new String[chars.length];
@@ -2090,37 +1811,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         return strings;
     }
 
-    //split the String[] into multiple arrays to ensure that one array fits into one score text view
-    //(i.e. one score line of size X is in textviewscores1)
-    public static <T extends Object> List<T[]> splitArray(T[] array, int max) {
-
-        int x = array.length / max;
-        int r = (array.length % max); // remainder
-
-        int lower = 0;
-        int upper = 0;
-
-        List<T[]> list = new ArrayList<T[]>();
-
-        int i = 0;
-
-        for (i = 0; i < x; i++) {
-
-            upper += max;
-
-            list.add(Arrays.copyOfRange(array, lower, upper));
-
-            lower = upper;
-        }
-
-        if (r > 0) {
-
-            list.add(Arrays.copyOfRange(array, lower, (lower + r)));
-
-        }
-
-        return list;
-    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -2144,7 +1834,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
 
     private void logout() {
 
-
         //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -2154,9 +1843,6 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
                     public void onClick(DialogInterface arg0, int arg1) {
                         //logout from fb
                         LoginManager.getInstance().logOut();
-//                        Intent in = new Intent(MainActivity.this, welcomePage.class);
-//                        startActivity(in);
-//                        finish();
 
 
                         //Getting out sharedpreferences
@@ -2194,19 +1880,4 @@ public class EditScoreActivity extends ActionBarActivity implements OnClickListe
         alertDialog.show();
 
     }
-
-    /*//add table dynamically
-    public void init(){
-        TableLayout tbLayout = (TableLayout) findViewById(R.id.tableLayout);
-        TableRow tbRow = new TableRow(this);
-        TextView tvScores = new TextView(this);
-        tbRow.addView(tvScores);
-        TableRow tbRow1 = new TableRow(this);
-        EditText etLyrics = new EditText(this);
-        tbRow1.addView(etLyrics);
-        Button btSave = new Button(this);
-        TableRow tbRow2 = new TableRow(this);
-        tbRow2.addView(btSave);
-    }*/
-
 }

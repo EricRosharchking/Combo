@@ -44,83 +44,6 @@ public class Metronome extends Activity {
         count = 1;
         withMetronome = false;
         changeTempo(tempo);
-
-        /*t = new Thread() {
-            public void run() {
-                // set process priority
-                setPriority(Thread.MAX_PRIORITY);
-                // set the buffer size
-                int buffsize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
-                        AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-                // create an audiotrack object
-                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                        SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT, SAMPLE_RATE,
-                        AudioTrack.MODE_STREAM);
-
-                short samples[];
-                double amp = 20000.0;
-                double twopi = 2 * Math.PI;
-                double ph = 0.0;
-
-                double frequency = frequency1;
-                // start audio
-                audioTrack.play();
-                count = 1;
-
-                // synthesis loop
-                while(isRunning){
-                    if (count == 1) {
-                        array = peep;
-                        count = 2;
-                        Log.d("Metronome Count Log" , "Count is " + count);
-                    } else {
-                        array = pop;
-                        if (count < timeSignature) {
-                            count ++;
-                            Log.d("Metronome Count Log", "Count is " + count);
-                        } else {
-                            count = 1;
-                            Log.d("Metronome Count Log", "Count is " + timeSignature);
-                        }
-                    }
-
-
-                    samples = new short[size];
-                    try {
-                        for (int i = 0; i < array.length; i ++) {
-                            samples[i] = array[i];
-                        }
-                        for (int i = array.length; i < samples.length; i ++) {
-                            samples[i] = 0;
-                        }
-                        audioTrack.write(samples, 0, samples.length);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        break;
-                    }
-//                    try {
-//                        for (int i = 0; i < sound; i++) {
-//                            samples[i] = (short) (amp * Math.sin(ph));
-//                            ph += twopi * frequency / SAMPLE_RATE;
-//                        }
-//                        for (int i = sound; i < samples.length; i++) {
-//                            samples[i] = 0;
-//                        }
-//                        audioTrack.write(samples, 0, samples.length);
-//                        Log.d("Metronome Log", "The volume is " + count);
-//                        Log.d("Metronome Log", "The frequency is " + frequency);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        Log.d("Size Log", "The current size is " + size);
-//                        Log.d("Size Log", "The sample size is " + samples.length);
-//                        break;
-//                    }
-                }
-                audioTrack.stop();
-                audioTrack.release();
-            }
-        };*/
     }
 
 
@@ -190,23 +113,6 @@ public class Metronome extends Activity {
                     }
                     beats ++;
 
-//                        try {
-//                            for (int i = 0; i < sound; i++) {
-//                                samples[i] = (short) (amp * Math.sin(ph));
-//                                ph += twopi * frequency / SAMPLE_RATE;
-//                            }
-//                            for (int i = sound; i < samples.length; i++) {
-//                                samples[i] = 0;
-//                            }
-//                            audioTrack.write(samples, 0, samples.length);
-//                            Log.d("Metronome Log", "The volume is " + count);
-//                            Log.d("Metronome Log", "The frequency is " + frequency);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                            Log.d("Size Log", "The current size is " + size);
-//                            Log.d("Size Log", "The sample size is " + samples.length);
-//                            break;
-//                        }
                 }
                 audioTrack.stop();
                 audioTrack.release();

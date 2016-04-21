@@ -102,10 +102,6 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
         permissions.add("user_birthday");
         loginButton.setReadPermissions(permissions);
 
-//        loginButton.setReadPermissions("user_friends");
-//        loginButton.setReadPermissions("email");
-//        loginButton.setReadPermissions("public_profile");
-
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -363,8 +359,4 @@ public class welcomePage extends ActionBarActivity implements View.OnClickListen
             login();
         }
     }
-
-
-
 }
-//working login

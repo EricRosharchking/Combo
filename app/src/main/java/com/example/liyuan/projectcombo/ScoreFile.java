@@ -21,7 +21,6 @@ import java.util.HashSet;
  */
 public class ScoreFile implements Serializable {
     private String title;
-    private String artist;
     private Context context;
     private HashSet<String> fileSet;////TODO all names in the set do not include the file format(".SCORE")
 
@@ -31,12 +30,6 @@ public class ScoreFile implements Serializable {
         title = getNewName();
         // TODO get the HashSet from a file, that's stored as byte[];
         title = getFileFormat(title);
-        //if(object instanceof Context) {
-        //Log.d("Log@ScoreFile33", "the Object is a Context");
-        //context = (Context) object;
-        //} else {
-        //Log.e("Error@ScoreFile36", "the Object is not a Context");
-        //}
         context = App.getAppContext();
         String filePath = context.getFilesDir().getPath() + "/" + allFileNames;
         File file = new File(filePath);
@@ -179,7 +172,6 @@ public class ScoreFile implements Serializable {
 
     public FileStatus openAllFileNames() {
         HashSet<String> thisSet = new HashSet<String>();
-        //context = App.getAppContext();
         Context context = App.getAppContext();
         if (context != null) {
 //            Log.d("Log@ScoreFile123", "Context is not null");
@@ -202,7 +194,6 @@ public class ScoreFile implements Serializable {
                 ois.close();
                 fis.close();
             } catch (EOFException e){
-//                thisSet = new HashSet<>();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.e("File not Found", "");
@@ -250,11 +241,6 @@ public class ScoreFile implements Serializable {
     }
 
 
-    public HashSet<String> getFileSet() {
-        return fileSet;
-    }
-
-
     public boolean deleteAll() {
         boolean status = false;
         File f = null;
@@ -283,13 +269,4 @@ public class ScoreFile implements Serializable {
         }
         return status;
     }
-
-
-    /*public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }*/
 }

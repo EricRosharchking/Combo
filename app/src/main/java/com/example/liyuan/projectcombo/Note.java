@@ -74,20 +74,12 @@ public class Note {
         }
     }
 
-    public int getOctave() {
-        return octave;
-    }
-
     public double getFrequency() {
         return frequency;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     public String toString() {

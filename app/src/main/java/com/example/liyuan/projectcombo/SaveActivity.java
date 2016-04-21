@@ -82,49 +82,6 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
         return builder.create();
     }
 
-//    public void changeTimeSig(View view) {
-//        if (score != null) {
-//            switch (view.getId()) {
-//                case R.id.timeSig43:
-//                    timeSig = 3;
-//                case R.id.timeSig44:
-//                    timeSig = 4;
-//                    break;
-//                default:
-//                    timeSig = 4;
-//            }
-//        }
-//    }
-
-/*
-    public class SaveDialogFragment extends DialogFragment {
-
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Context context = getActivity();
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            // Get the layout inflater
-            LayoutInflater inflater = LayoutInflater.from(context);
-
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.layout_save, null))
-                    // Add action buttons
-                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            // sign in the user ...
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            SaveDialogFragment.this.getDialog().cancel();
-                        }
-                    });
-            return builder.create();
-        }
-    }
-*/
 
     @Override
     protected void onDestroy() {
@@ -135,54 +92,20 @@ public class SaveActivity extends ActionBarActivity implements Serializable, Dia
     public void onClick(DialogInterface dialog, int which) {
 //        Log.i("ListenerLog@158", "Button is " + which);
         if(which == -1) {
-            //saveAs
 //            Log.d("SaveActivity118", "Save Clicked");
-
-
 
             Dialog view = (Dialog) dialog;
             EditText nameField = (EditText)view.findViewById(R.id.name_Field);
             nameField.setFocusable(false);
-//            EditText authorField = (EditText)view.findViewById(R.id.author_Field);
             CharSequence sequence1 = nameField.getText();
-//            CharSequence sequence2 = authorField.getText();
-
-//            EditText tempoField = (EditText) view.findViewById(R.id.tempo_Field);
-//            CharSequence sequence3 = tempoField.getText();
 
             name = sequence1.toString();
 
 //            Log.d("Log@SaveActivity131", "FileName" + sequence1.length() + sequence2.length() + name);
-//            if (sequence2.length() > 0) {
-//                author = sequence2.toString();
-//            }
 
             score = (Score) getIntent().getSerializableExtra("score");
 //            Log.i("Log@Save136", "score is null? " + (score == null));
             score.setTitle(name);
-//            score.setAuthor(author);
-
-//            if (sequence3.length() > 0) {
-//                try {
-//                    tempo = Integer.getInteger(sequence3.toString().trim());
-//                } catch (Exception e) {
-//                    tempo = 60;
-//                }
-//            }
-//            score.setTempo(tempo);
-
-//            switch (timeSig) {
-//                case 3:
-//                    score.setTimeSignatureFT();
-//                    break;
-//                case 4:
-//                    score.setTimeSignatureFF();
-//                    break;
-//                default:
-//                    break;
-//            }
-            int[] array = score.getScore();
-//            Log.d("Log@Save139", "array is null? " + (array == null) + array.length);
             ScoreFile scoreFile = (ScoreFile) getIntent().getSerializableExtra("ScoreFile");
             try{
                 scoreFile.saveAs(score);

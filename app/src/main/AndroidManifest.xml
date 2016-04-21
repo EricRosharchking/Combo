@@ -76,15 +76,6 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".EditSaveActivity"
-            android:label="string/title_activity_editsave"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/MyDialog" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
             android:name=".DisplayActivity"
             android:label="@string/title_activity_display"
             android:screenOrientation="sensorLandscape"

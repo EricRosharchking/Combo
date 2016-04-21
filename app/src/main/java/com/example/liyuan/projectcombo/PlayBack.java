@@ -17,7 +17,6 @@ public class PlayBack extends Thread{
 	int j;
     static int lastNote;
     private final double strike = 0.002;
-    Thread t;
     AudioTrack audioTrack;
     private final double TWO_PI = 2 * Math.PI;
     private final int SAMPLE_RATE = 44100;
@@ -66,9 +65,6 @@ public class PlayBack extends Thread{
 
 
     public void run() {
-//        View view = get
-//        ImageButton imageButton = (ImageButton) findViewById(R.id.playBack_Button);
-//        imageButton.setImageResource(R.drawable.playing);
         if (tempo <= 0)
             tempo = 60;
         if (audioTrack != null) {
@@ -114,26 +110,14 @@ public class PlayBack extends Thread{
                                     samples[i * 4 + 2] = (short) value;
                                     samples[i * 4 + 3] = (short) value;
                                 }
-                                //audioTrack.write(samples, 0, sampleSize);
-                                //Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
 
-
-                                //samples = new short[SAMPLE_RATE / 2];
-                                //for (int i = 0; i < SAMPLE_RATE / 2 && amplitude > 0; i ++) { // 这个Decay的长度要改成跟tempo有关的，八分之一的beat长度
-                                //    samples[i] = (short) (amplitude * Math.sin(phase_Index));
-                                //    phase_Index += TWO_PI * frequency / SAMPLE_RATE;
-                                //    amplitude -= 2;
-                                //}
-                                //audioTrack.write(samples, 0, SAMPLE_RATE / 2);
                             } else {
-                                //sampleSize -= 22050;
                                 if (sampleSize > 0) {
                                     samples = new short[sampleSize];
                                     for (int i = 0; i < sampleSize; i++) {
                                         samples[i] = (short) (amplitude * Math.sin(phase_Index));
                                         phase_Index += TWO_PI * frequency / SAMPLE_RATE;
                                     }
-                                    //audioTrack.write(samples, 0, sampleSize);
                                 }
                             }
                             //Log.d("PlayBack While Log", "The current sample size is " + sampleSize);
@@ -207,9 +191,6 @@ public class PlayBack extends Thread{
 
         double di = (double) i;
         double ds = (double) sampleRate;
-        //if (i < 10) {
-        //Log.d("base Log", "base is [" + i +"]" + xx);
-        //}
         return Math.sin(2 * Math.PI * (di / ds) * frequency + extra);
     }
 

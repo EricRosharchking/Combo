@@ -113,10 +113,6 @@ public class ForgotPasswordActivity extends Activity implements View.OnClickList
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
 
-//            Intent i = new Intent(getApplicationContext(),
-//                    welcomePage.class);
-//            startActivity(i);
-//            finish();
         }
     }
 

@@ -1,9 +1,6 @@
 package com.example.liyuan.projectcombo;
 
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.graphics.Color;
-import android.os.Handler;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +13,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,58 +26,38 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.liyuan.projectcombo.helper.SQLiteHandler;
-import com.example.liyuan.projectcombo.helper.SessionManager;
 import com.example.liyuan.projectcombo.kiv.MyAdapter;
 import com.facebook.login.LoginManager;
 
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener, AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
-    private SQLiteHandler db;
-    private SessionManager session;
     PlayBack playBackTrack;
-    DisplayThreadNew displayThreadNew;
+    DisplayThread displayThread;
     Metronome metronome;
     ScoreFile scoreFile;
     Score score;
-    Countdown countdown;
-    ValueAnimator animator;
 
     private AudioThread[] audioThreads = new AudioThread[14];
     final int[] keys = {R.id.cnatural, R.id.csharp, R.id.dnatural, R.id.eflat, R.id.enatural,
             R.id.fnatural, R.id.fsharp, R.id.gnatural, R.id.gsharp, R.id.anatural, R.id.bflat,
             R.id.bnatural, R.id.highcnatural};
-    final String[] notes = {"C", "Cs", "D", "Eb", "E", "F", "Fs", "G", "Gs", "A", "Bb", "B", "HighC"};
     final int[] numNotes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     final Note[] Notes = new Note[13];
     int[] numericNotes;
     double[] lengths;
-    private final String BULLET = "&#8226\n";
-    private final String UNDERLINE = "<sub>\u0332</sub>";
-    private final String DOUBLE_UNDERLINE = "<sub>\u0333</sub>";
     private final String CONTENT = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><head><style>p{color:white;font-size:30px}</style><body style=\"background-color:#222222;\"><p style=\"font-size:30px\">";
 
-    //  Button pausePlay;
-//  Button stopPlay;
-//    Button buttonAddLyrics;
-//    Button buttonBack;
     Button btnLogout;
-    //    Button tempoButton;
-//    Button timeSignatureButton;
-//    RadioButton radioButton;
     ImageButton UpperOctave;
     ImageButton LowerOctave;
     ImageButton keyboard;
@@ -134,19 +110,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     int octavefordisplay = 4;
     int lastNote;
     int key;
-    int progress;
+    int noteAddOn;
 
 
     private Spinner spinner;
     private SeekBar tempoSeekBar;
     private ListView mDrawerList2;
     private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private MyAdapter myAdapter;
     private Toolbar toolbar;
-    private NumberPicker metronumberpicker;
     private static Menu topMenu;
 
 //    TextView textView_countdown;
@@ -175,7 +149,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             setSupportActionBar(toolbar);
-//            toolbar.findViewById(R.id.tempoSeekBar);
             mDrawerList2 = (ListView) findViewById(R.id.navigationList_left);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -193,7 +166,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-//            super.onCreate(savedInstanceState);
 
             LayoutInflater inflater = getLayoutInflater();
 
@@ -227,13 +199,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             decorView.setSystemUiVisibility(uiOptions);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
-//            ActionBar actionBar = getSupportActionBar();
-//            if (actionBar != null) {
-//                Log.d("ActionBar Log", "ActionBar is not Null");
-//                actionBar.hide();
-//            } else {
-//                Log.d("ActionBar Log", "ActionBar is Null");
-//            }
 
 
 //            setContentView(R.layout.activity_main);
@@ -256,18 +221,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
 //            Log.d("HashMap Log", "The size of KeyNoteMap is " + keyNoteMap.size());
-//            TextView keyBoardOctave = (TextView) findViewById(R.id.keyboardOctave);
-//            String keyboardNameDisplay = "";
             for (int i = 0; i < Notes.length; i++) {
                 Notes[i] = new Note(i + 1);
 //                Log.d("Notes Log", "The note is " + Notes[i].toString());
-//                if (i == 0) {
-//                    keyboardNameDisplay = Notes[i].toString();
-//                } else {
-//                    keyboardNameDisplay = keyboardNameDisplay + " " + Notes[i].toString();
-//                    Log.d("Notes Log", "The note is " + Notes[i].toString());
-//                    keyBoardOctave.setText(keyboardNameDisplay);
-//                }
             }
 
             AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
@@ -294,31 +250,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
 
             //webview score
-
-//            String htmlString = "<body style=\"background-color:#222222;\"><p style=\"font-size:30px\">0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•</p></body></html>";
-            //String htmlString = "| 3 3<sub>̲</sub> 3<sub>̲</sub> 4 5 | 3• 2<sub>̲</sub> 2 \u2013 | 1 1<sub>̲</sub> 1<sub>̲</sub> 2 3 |";
-            //"0<sub>\u0333</sub> ‐ <sub>̲</sub> ‐ <sub>\u0332</sub>• ‐ 1<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ 0<sub>\u0333</sub>2<sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐ |0<sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•3 ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>•4| ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub>0<sub>\u0332</sub>• ‐  ‐ <sub>\u0333</sub> ‐ <sub>\u0332</sub> ‐ <sub>\u0332</sub>•0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 1<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐ 0<sub>̳</sub>2<sub>̲</sub> ‐ <sub>̲</sub>• ‐ |0<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>• ‐  ‐ <sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•3 ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•4| ‐ <sub>̳</sub> ‐ <sub>̲</sub>0<sub>̲</sub>•<sub>̳</sub> ‐ <sub>̲</sub> ‐ <sub>̲</sub>•</p></body></html>";
             myWebView = (WebView) findViewById(R.id.web_score);
 
-//            myWebView.setBackgroundColor(Color.TRANSPARENT);
             String htmlString = CONTENT + "Here will be the notes you played.</p></body></html>";
             myWebView.setBackgroundColor(Color.TRANSPARENT);
             myWebView.loadData(htmlString, "text/html; charset=utf-8", "UTF-8");
             //textview score
             textView = (TextView) findViewById(R.id.main_score);
             textView.setMovementMethod(new ScrollingMovementMethod());
-//            textView.setLetterSpacing(0.05f);
-//            recordStatus = (TextView) findViewById(R.id.record_status);
             onRecord = false;
-//            recordButton = (ImageButton) findViewById(R.id.record_button);
-//            if (recordButton != null)
-//                recordButton.setOnClickListener(this);
             resetScore = false;
             onHold = false;
             onRest = true;
-//            tempoButton = (Button) findViewById(R.id.tempo);
-//            timeSignatureButton = (Button) findViewById(R.id.time_signature);
-//            tempo = Integer.parseInt((String) getText(R.string.time_signature));
 //            Log.d("tempoLog", "" + tempo);
             df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             now = new Date();
@@ -330,12 +273,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             noteID = 1;
             key = 0;
 
-            displayThreadNew = new DisplayThreadNew();
+            displayThread = new DisplayThread();
 
             tempoSeekBar = (SeekBar) findViewById(R.id.tempoSeekBar);
             tempoSeekBar.setOnSeekBarChangeListener(this);
-//            buttonBack = (Button) findViewById(R.id.buttonBack);
-//            buttonAddLyrics = (Button) findViewById(R.id.buttonAddLyrics);
             btnLogout = (Button) findViewById(R.id.btnLogout);
             btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -345,16 +286,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             });
 
-
-//Number Picker
-//            metronumberpicker = (NumberPicker) findViewById(R.id.metroPicker);
-//            metronumberpicker.setFocusable(false);
-//            metronumberpicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-//            metronumberpicker.setMaxValue(120);
-//            metronumberpicker.setMinValue(60);
-//            metronumberpicker.setWrapSelectorWheel(false);
-//            metronumberpicker.setOnValueChangedListener(this);
-//
             tempo = 60;
             spinner = (Spinner) findViewById(R.id.time_signature);
 // Create an ArrayAdapter using the string array and a default spinner layout
@@ -405,9 +336,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     private void addDrawerItems2() {
-//        String[] menuArray = getResources().getStringArray(R.array.navigation_toolbox);
-//        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuArray);
-//        mDrawerList2.setAdapter(mAdapter);
         int[] images = {R.drawable.createnewsong, R.drawable.save, R.drawable.edit, R.drawable.addlyrics, R.drawable.recordlists, R.drawable.share};
         String[] tool_list = this.getResources().getStringArray(R.array.navigation_toolbox);
         myAdapter = new MyAdapter(this, "", "", tool_list, images, disabledID);
@@ -500,45 +428,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        Log.i("Log@Main398", "position is " + position + " and id is " + id);
-//        switch (position) {
-//            case 1:
-//                metronome.setWithMetronome(true);
-//                break;
-//            case 2:
-//                metronome.setWithMetronome(false);
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        // Activate the navigation drawer toggle
-//        if (mDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     /**
      * Directing the user to add lyrics page.
      * EditScoreActivity will share the scores user entered from MainActivity
@@ -551,7 +440,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         i.putExtra("userEmail", userEmail);
         i.putExtra("userName", userName);
         if (!isOpened) {
-            i.putExtra("scores", displayThreadNew.getDisplay());
+            i.putExtra("scores", displayThread.getDisplay());
             i.putExtra("notes", prepareScore());
             i.putExtra("lengths", prepareLengths());
         } else {
@@ -577,27 +466,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//
-//        } else if (id == R.id.saveSong) {
-//            saveAs();
-//        } else if (id == R.id.openHistory) {
-//            openOrNew();
-//        } else if (id == R.id.addLyrics){
-//            addLyrics();
-//        } else if (id == R.id.deleteAll) {
-//			deleteAll();
-//		}
-
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         switch (id) {
             case R.id.record_button_item:
                 // User chose the "Settings" item, show the app settings UI...
-//                Intent intent = new Intent(MainActivity.this, register.class);
-//                startActivity(intent);
                 if (!onRecord) {
                     item.setIcon(R.drawable.stopbutton);
                 } else {
@@ -631,7 +505,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     withMetronome = false;
                     item.setIcon(R.drawable.metro_off);
                 }
-//                startMetronome(null);
                 break;
             default:
                 // If we got here, the user's action was not recognized.
@@ -645,9 +518,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (spinner != null) spinner.setEnabled(true);
         if (tempoSeekBar != null) tempoSeekBar.setEnabled(true);
         if (!onRecord) {
-            //recordButton.setImageResource(R.drawable.stopbutton);
             onRecord = true;
-//                recordStatus.setText("Recording");
             resetScore = true;
             textView.setText(R.string.main_score);
             startRecordTime = System.currentTimeMillis() + 1000 * timeSig * secondsPerBeat;
@@ -656,19 +527,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             notesAndRest = "";
             lengthOfNotesAndRest = notesAndRest;
 
-            //if (displayThreadNew.getState() != Thread.State.NEW) {
-            displayThreadNew = new DisplayThreadNew();
-            //}
-            displayThreadNew.setTimeSignature(timeSig);
-            displayThreadNew.setTempo(tempo);
-            displayThreadNew.update(key, 0.0);
+            displayThread = new DisplayThread();
+            displayThread.setTimeSignature(timeSig);
+            displayThread.setTempo(tempo);
+            displayThread.update(key, 0.0);
             startMetronome(null);
-
-            //countdown.setTimeSig(timeSig);
-//            animator.setObjectValues(timeSig, 0);
-//            animator.setDuration(5000);
-//            animator.start();
-//            new Handler().post(countdown);
 
             long delay = (long) (timeSig * 1000 * secondsPerBeat);
             try {
@@ -676,12 +539,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            displayThreadNew.start();
         } else {
-            //recordButton.setImageResource(R.drawable.startbutton);
             onRecord = false;
-//                recordStatus.setText("Click to start");
-            //textView.setText((String)getText(R.string.main_score));
             resetScore = false;
             stopRecordTime = System.currentTimeMillis();
             recordTime = stopRecordTime - startRecordTime;
@@ -694,12 +553,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
 
 
-//            if (displayThreadNew != null) {
-//                displayThreadNew.stopThread();
+//            if (displayThread != null) {
+//                displayThread.stopThread();
 //                Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
 //                    textView.setText(displayThread.getArchived());
-            displayThreadNew.update(rest);
-//            textView.setText(Html.fromHtml(displayThreadNew.getDisplay() + "\u2225"));//ending pause in html
+            displayThread.update(rest);
+//            textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause in html
 //                Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
 //            }
 
@@ -710,33 +569,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
         opened = false;
-        String str = displayThreadNew.getDisplay();
+        String str = displayThread.getDisplay();
         str += "</p></body></html>";
         str = CONTENT + str;
         myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
     }
-    //old version
-//    @Override
 
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//
-//        } else if (id == R.id.saveSong) {
-//            saveAs();
-//        } else if (id == R.id.openHistory) {
-//            openOrNew();
-//        } else if (id == R.id.addLyrics){
-//            addLyrics();
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     public double autoCorrectLength(double actualLength) {
         double result = (double) (int) (actualLength / 1);
@@ -758,7 +596,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
 //        Log.d("ButtonLog", "the button you clicked is " + v.getId());
 //        TextView keyBoardOctave1 = (TextView) findViewById(R.id.keyboardOctave);
-        String keyboardNameDisplay = "";
 
 
         if (audioThreads != null) {
@@ -769,67 +606,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         }
 
-        /*if (v.getId() == recordButton.getId()) {
-//            Log.d("ButtonLog","This is the record button");
-//            Log.d("Log","OnRecord is " + onRecord);
-            if (!onRecord) {
-                recordButton.setImageResource(R.drawable.stopbutton);
-                onRecord = true;
-//                recordStatus.setText("Recording");
-                resetScore = true;
-                textView.setText(R.string.main_score);
-                startRecordTime = System.currentTimeMillis();
-                restStartTime = startRecordTime;
-                now = new Date();
-                notesAndRest = "";
-                lengthOfNotesAndRest = notesAndRest;
-
-
-                if (displayThread.getState() != Thread.State.NEW) {
-                    displayThread = new DisplayThread();
-                }
-                displayThread.setTimeSignature(getTimeSignature());
-                displayThread.start();
-            } else {
-                recordButton.setImageResource(R.drawable.startbutton);
-                onRecord = false;
-//                recordStatus.setText("Click to start");
-                //textView.setText((String)getText(R.string.main_score));
-                resetScore = false;
-                stopRecordTime = System.currentTimeMillis();
-                recordTime = stopRecordTime - startRecordTime;
-                restEndTime = stopRecordTime;
-                rest = (restEndTime - restStartTime) / 1000 / secondsPerBeat;
-                notesAndRest = notesAndRest + " " + "0";
-                lengthOfNotesAndRest = lengthOfNotesAndRest + " " + rest;
-                Log.d("RecordingLog", "The Record Time is " + recordTime);
-//                textView.setText(df.format(now) + " " + notesAndRest + "\n" + df.format(now) + " " + lengthOfNotesAndRest);
-
-
-                if (displayThread != null) {
-                    displayThread.stopThread();
-                    Log.d("MainActivityDisplayLog", "The state of displayThread is " + displayThread.getState().toString());
-//                    textView.setText(displayThread.getArchived());
-                    textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause in html
-                    Log.d("MainActivityDisplayLog", "The archived is " + displayThread.getArchived());
-                }
-            }
-            isOpened = false;
-        }*/
-
         if (v instanceof ImageButton) {
 //            Log.d("what", String.valueOf(textView.getText()) + "* compared to *"+ getText(R.string.main_score));
-
-            //Play Part
-//            if (audioThreads[noteID].getState() == Thread.State.NEW) {
-//                audioThreads[noteID].start();
-//                Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//            } else {
-//                audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-//                Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                audioThreads[noteID].start();
-//            }
-            //Play Part End
 
             if (onRecord) {
                 if (resetScore) {
@@ -847,44 +625,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Log.d("Log", "This is not a button you clicked");
         }
 
-
-/*
-        if(v.getId() == R.id.time_signature) {
-
-        }*/
     }
 
-
-/*    public void onRadioButtonClick(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch (view.getId()) {
-            case R.id.timeSig3:
-                if (checked)
-                    timeSig = 3;
-                break;
-            case R.id.timeSig4:
-                if (checked)
-                    timeSig = 4;
-                break;
-        }
-        if (metronome != null) {
-            metronome.changeTimeSignature(timeSig);
-        } else {
-            metronome = new Metronome(metronumberpicker.getValue());
-            metronome.changeTimeSignature(timeSig);
-        }
-        *//*
-        if (displayThread != null) {
-            displayThread.setTimeSignature(tempo);
-        } else {
-            displayThread = new DisplayThread();
-            displayThread.setTimeSignature(tempo);
-        }*//*
-    }*/
-
-    int noteAddOn;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -951,33 +693,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     break;
             }
 
-//            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//                Log.d("Log@Main485", "Action_Outside");
-//                swipable = true;
-//                audioThreads[noteID].stopPlaying();
-//            }
-
-//            if (event.getAction() == MotionEvent.ACTION_MOVE && swipable == true) {
-//
-//                //Play and Move
-//                swipable = false;
-//                audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-//                Log.d("Log@MainActivity490", "AudioThread State is not NEW: " + audioThreads[noteID].getState().toString());
-//                audioThreads[noteID].start();
-//            }
-
             if (event.getAction() == MotionEvent.ACTION_DOWN) {                                     //just press the key
 
 //                Log.d("Log@Main484", noteID + "AudioThread State is " + audioThreads[noteID].getState().toString());
                 //Play Part Start
-//                if (audioThreads[noteID].getState() != Thread.State.NEW) {
                 audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
 //                Log.d("Log@MainActivity490", "AudioThread State is not NEW: " + audioThreads[noteID].getState().toString());
                 audioThreads[noteID].start();
-//                } else {
-//                    Log.d("Log@MainActivity487", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                    audioThreads[noteID].start();
-//                }
 
                 //Play Part End
 
@@ -995,12 +717,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                         key = noteID;
                         key = noteID * noteAddOn;
-                        if (displayThreadNew != null) { //&& displayThreadNew.getState() != Thread.State.TERMINATED) {
-                            displayThreadNew.update(key, rest);
+                        if (displayThread != null) { //&& displayThread.getState() != Thread.State.TERMINATED) {
+                            displayThread.update(key, rest);
                         }
                         restEndTime = noteStartTime;
                     }
-                    String str = displayThreadNew.getDisplay();
+                    String str = displayThread.getDisplay();
                     str += "</p></body></html>";
                     str = CONTENT + str;
                     myWebView.loadData(str, "text/html; charset=utf-8", "UTF-8");
@@ -1008,33 +730,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                    if (Notes[noteID - 1] != null) {
 //                        Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
 //                    }
-                } else {
-                    //                                                                              //play the sound only
-
-//                    if (Notes[noteID - 1] != null) {
-//                        Log.d("Note Log", "The frequency of the note is " + Notes[noteID - 1].toString());
-//                    }
-                    //Play Part Start
-//                    if (audioThreads[noteID].getState() == Thread.State.NEW) {
-//                        audioThreads[noteID].start();
-//                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                    } else {
-//                        audioThreads[noteID] = new AudioThread(Notes[noteID - 1]);
-//                        Log.d("AudioThreads Log", "AudioThread State is: " + audioThreads[noteID].getState().toString());
-//                        audioThreads[noteID].start();
-//                    }
                 }
             }
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
                 audioThreads[noteID].stopPlaying();
-//                if (audioThreads[noteID] != null) {
-//                    audioThreads[noteID] = null;
-//                }
                 if (onRecord == true) {
-
-
-//                    audioThreads[noteID].stopPlaying();
 
                     onHold = false;
                     noteEndTime = System.currentTimeMillis();
@@ -1044,14 +745,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     noteBeats = elapse / secondsPerBeat;
                     noteBeats = autoCorrectLength(noteBeats);
 //                    Log.d("BeatsLog", "There are " + noteBeats + " beats in the note");
-                    //notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId());
                     if (noteBeats > 0) {
                         notesAndRest = notesAndRest + " " + keyNoteMap.get((v).getId()) * noteAddOn;
                         lengthOfNotesAndRest = lengthOfNotesAndRest + " " + noteBeats;
                         restStartTime = noteEndTime;
                         key = 0;
-                        if (displayThreadNew != null) { //&& displayThreadNew.getState() != Thread.State.TERMINATED) {
-                            displayThreadNew.update(key, noteBeats);
+                        if (displayThread != null) { //&& displayThread.getState() != Thread.State.TERMINATED) {
+                            displayThread.update(key, noteBeats);
                         }
                     }
                 }
@@ -1060,11 +760,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 //        Log.d("The score should be", notesAndRest);
 //        Log.d("The length of it is", lengthOfNotesAndRest);
-//        textView.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG );//中间加横线
-//        textView.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );//底部加横线
-//        textView.setText(Html.fromHtml(displayThread.getDisplay() + "\u2225"));//ending pause
-//        textView.setText(displayThread.getDisplay());
-        String str = displayThreadNew.getDisplay();
+        String str = displayThread.getDisplay();
         str += "</p></body></html>";
         str = CONTENT + str;
         if (onRecord) {
@@ -1116,22 +812,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 myAdapter.setDisabledID(-1);
             }
 
-/*            LayoutInflater inflater = getLayoutInflater();
-            myAdapter.setDisabledID(-1);
-            View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
-
-            TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-            if (t_name != null)
-                t_name.setText(userName);
-            else
-                Log.i("Log@myAdapter", "TextView t_name is null");
-            TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-            if (t_email != null)
-                t_email.setText(userEmail);
-            else
-                Log.i("Log@myAdapter", "TextView t_email is null");
-
-            mDrawerList2.addHeaderView(listHeaderView);*/
         } else {
             Log.e("onResumeLog@Main555", "Score is null");
         }
@@ -1144,22 +824,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             userEmail = intent.getStringExtra("userEmail");
             userName = intent.getStringExtra("userName");
         }
-/*        LayoutInflater inflater = getLayoutInflater();
-        myAdapter.setDisabledID(-1);
-        View listHeaderView = inflater.inflate(R.layout.navigation_drawer_header, null, false);
-
-        TextView t_name = (TextView) listHeaderView.findViewById(R.id.nav_name);// Creating Text View object from header.xml for name
-        if (t_name != null)
-            t_name.setText(userName);
-        else
-            Log.i("Log@myAdapter", "TextView t_name is null");
-        TextView t_email = (TextView) listHeaderView.findViewById(R.id.nav_email);       // Creating Text View object from header.xml for email
-        if (t_email != null)
-            t_email.setText(userEmail);
-        else
-            Log.i("Log@myAdapter", "TextView t_email is null");
-
-        mDrawerList2.setHeaderHeaderView(listHeaderView);*/
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
@@ -1198,14 +862,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 metronome.start();
             }
             metronomeRunning = true;
-//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-//            imageButton.setImageResource(R.drawable.stopmetro);
 
         } else {
             metronome.stop();
             metronomeRunning = false;
-//            ImageButton imageButton = (ImageButton) findViewById(R.id.metronomeButton);
-//            imageButton.setImageResource(R.drawable.metronome);
         }
 
     }
@@ -1244,29 +904,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private String extractScore(int[] notes, double[] lengths, String timeSignature) {
         String t = "||";
         if (notes != null && lengths != null && notes.length == lengths.length) {
-            /*for (int i = 0; i < notes.length; i++) {
-                String thisNote = Integer.toString(notes[i]);
-                double thisLength = lengths[i];
-                int q = (int) Math.round(thisLength / 0.25);
-                if (q == 0) {
-                    q = 1;
-                }
-                switch (q) {
-                    case 1:
-                        thisNote += DOUBLE_UNDERLINE;
-                        break;
-                    case 2:
-                        thisNote += UNDERLINE;
-                        break;
-                    case 3:
-                        thisNote += UNDERLINE;
-                        thisNote += BULLET;
-                        break;
-                    default:
-                        break;
-                }
-                scoreString += thisNote;
-            }*/
             switch (timeSignature) {
                 case "3/4":
                     timeSig = 3;
@@ -1285,8 +922,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             for (int i = 0; i < notes.length; i++) {
                 int n = notes[i];
                 double l = lengths[i];
-//            if (l < 0.15)
-//                continue;
                 String thisKey = " 1";
                 switch (n) {
                     case 0:
@@ -1346,21 +981,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     thisKey += "";
                 }
                 t += thisKey;
-/*
 
-                double r = l % 1;
-                if (l > 2.15 && r < 0.85)
-                    t += thisKey;
-
-                if (r >= 0.85)
-                    t += " - ";
-                else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
-                else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
-                else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
-*/
                 if (l == 0) {
                     t = t.substring(0, t.length() - 1);
                 } else {
@@ -1417,11 +1038,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         for (int j = 1; j < secondHalf; j++) {
                             t += " - ";
                         }
-                    /*if (barCount > lineCount * 3) {
-                        t += "\n ";
-                        t += "|";
-                        lineCount++;
-                    }*/
                     }
                     int count = (int) (l / 0.25);
                     int x = count / 4;
@@ -1454,7 +1070,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             t += " ||";
         }
 
-        ////TODO:
         return t.trim();
     }
 
@@ -1463,9 +1078,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //// TODO: 10/18/2015 HashMap Key must be unique. . .
         //Log.d("PlayBack Log", "PlayBack Entered");
         //Log.d("PlayBack Log", "Length of notesAndRest is " + notesAndRest.length() + "\t" + "Length of lengths is " + lengthOfNotesAndRest.length());
-
-        //notesAndRest = notesAndRest.trim();
-        //lengthOfNotesAndRest = lengthOfNotesAndRest.trim();
 
         //Log.d("PlayBack Log@601", "Length of split is" + notesAndRest.split(" ").length + " And Length is " + lengthOfNotesAndRest.split(" ").length);
 
@@ -1483,7 +1095,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             if (opened) {
                 numericNotes = score.getScore();
                 lengths = score.getLengths();
-//                opened = false;
             } else {
                 numericNotes = prepareScore();
                 lengths = prepareLengths();
@@ -1494,33 +1105,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //            }
             if (numericNotes.length == lengths.length) {
 
-
-                //写一下吧write到audioTrack里面 stream
-
-            /*            numericNotes = new int[4];
-                        numericNotes[0] = 1;
-                        numericNotes[1] = 3;
-                        numericNotes[2] = 0;
-                        numericNotes[3] = 5;
-
-                        scoreLength = new String[4];
-                        scoreLength[0] = "1.000";
-                        scoreLength[1] = "1.000";
-                        scoreLength[2] = "1.000";
-                        scoreLength[3] = "1.000";*/
-
-
                 playBackTrack = new PlayBack(numericNotes, lengths, lastNote, tempo);
 //                Log.d("PlayBack Log", "PlayBack initialised");
                 playBackTrack.start();
 
-                    /*try {
-                        Log.i("Log@Main803", "imageButton id: " + R.id.playBack_Button + " " + R.drawable.playing);
-                        playBack.join();
-                        //imageButton.setImageResource(R.drawable.playbackbutton);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
             }
         }
     }
@@ -1576,15 +1164,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
 
-//    @Override
-//    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-//        tempo = newVal;
-//        if (metronome != null)
-//            metronome.changeTempo(tempo);
-//        secondsPerBeat = 60.0 / tempo;
-//    }
-
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser && !opened) {
@@ -1607,26 +1186,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 metronome.changeTempo(tempo);
             secondsPerBeat = 60.0 / tempo;
         }
-    }
-
-
-//    @Override
-//    public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//    }
-
-
-//    @Override
-//    public void onStopTrackingTouch(SeekBar seekBar) {
-//        metronome.changeTempo(this.progress);
-//    }
-
-
-    private int getTimeSignature() {
-        if (new Integer(timeSig) == null) {
-            timeSig = 4;
-        }
-        return timeSig;
     }
 
 
@@ -1694,10 +1253,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (note != null) {
                     note.upOctave();
                 }
-//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
-//                        keyBoardOctave1.setText(keyboardNameDisplay);
             }
-            displayThreadNew.setOctave(octavefordisplay);
+            displayThread.setOctave(octavefordisplay);
         }
     }
 
@@ -1711,37 +1268,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (note != null) {
                     note.lowerOctave();
                 }
-//                        keyboardNameDisplay = keyboardNameDisplay + " " + note.toString();
-//                        keyBoardOctave1.setText(keyboardNameDisplay);
             }
-            displayThreadNew.setOctave(octavefordisplay);
+            displayThread.setOctave(octavefordisplay);
 
         }
     }
 
 
-    //    protected void open (Intent data) {
-//        Log.d("OnResultLog", "On Activity Result Entered");
-//        try {
-//            Score score = (Score) data.getSerializableExtra("score");
-//            displayThread.setArchived(score.getScore());
-//            for (String s: score.getScore().trim().split("_")) {
-//                if (!s.isEmpty()) {
-//                    s += " ";
-//                    notesAndRest += s;
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            notesAndRest = "1 0 2 0 3";
-//        }
-//        lengthOfNotesAndRest = "1 1 1 1 1";
-//
-//        Log.d("OnResult", "Notes and rest are " + notesAndRest);
-//    }
-
     public void onBackPressed() {
-//        finish();
         logout();
     }
 

@@ -31,7 +31,6 @@ public class DisplayActivity extends ActionBarActivity {
         TextView scoreTitle = (TextView) findViewById(R.id.score_title);
         TextView scoreAuthor = (TextView) findViewById(R.id.score_author);
         int tempoInt = 4;
-//        char[] t = {'1', '\u0332', '\u0020', '2', '\u0323', '|'};
         int[] notes = (int[]) getIntent().getSerializableExtra("notes");
         double[] lengths = (double[]) getIntent().getSerializableExtra("lengths");
 
@@ -62,29 +61,6 @@ public class DisplayActivity extends ActionBarActivity {
             }
             String t = "<p>||";
             if (notes.length == lengths.length) {
-            /*for (int i = 0; i < notes.length; i++) {
-                String thisNote = Integer.toString(notes[i]);
-                double thisLength = lengths[i];
-                int q = (int) Math.round(thisLength / 0.25);
-                if (q == 0) {
-                    q = 1;
-                }
-                switch (q) {
-                    case 1:
-                        thisNote += DOUBLE_UNDERLINE;
-                        break;
-                    case 2:
-                        thisNote += UNDERLINE;
-                        break;
-                    case 3:
-                        thisNote += UNDERLINE;
-                        thisNote += BULLET;
-                        break;
-                    default:
-                        break;
-                }
-                scoreString += thisNote;
-            }*/
 
                 double totalLengths = 0.0;
                 int barCount = 1;
@@ -96,8 +72,6 @@ public class DisplayActivity extends ActionBarActivity {
                 for (int i = 0; i < notes.length; i++) {
                     int n = notes[i];
                     double l = lengths[i];
-//            if (l < 0.15)
-//                continue;
                     String thisKey = "  1";
                     switch (n) {
                         case 0:
@@ -157,21 +131,7 @@ public class DisplayActivity extends ActionBarActivity {
                         thisKey += "";
                     }
                     t += thisKey;
-/*
 
-                double r = l % 1;
-                if (l > 2.15 && r < 0.85)
-                    t += thisKey;
-
-                if (r >= 0.85)
-                    t += " - ";
-                else if (r >= 0.69)
-                    t += "<sub>\u0332</sub> \u2022 ";
-                else if (r >= 0.4)
-                    t += "<sub>\u0332</sub> ";
-                else if (r >= 0.15)
-                    t += "<sub>\u0333</sub> ";
-*/
                     if (l == 0) {
                         t = t.substring(0, t.length() - 1);
                     } else {
@@ -233,11 +193,6 @@ public class DisplayActivity extends ActionBarActivity {
                             for (int j = 1; j < secondHalf; j++) {
                                 t += " - ";
                             }
-                    /*if (barCount > lineCount * 3) {
-                        t += "\n ";
-                        t += "|";
-                        lineCount++;
-                    }*/
                         }
                         int count = (int) (l / 0.25);
                         int x = count / 4;
@@ -522,8 +477,6 @@ public class DisplayActivity extends ActionBarActivity {
         paragraph += " ||";
         pList.add(paragraph);
 
-        //Context context = App.getAppContext();
-        //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(), thisScore.getTitle()+".html");
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/Cambo/";
         File file = new File(dir);
         Toast.makeText(this, file.getAbsolutePath(), Toast.LENGTH_LONG).show();
@@ -536,8 +489,6 @@ public class DisplayActivity extends ActionBarActivity {
             file.createNewFile();
             fw = new FileWriter(file, false);
             fw.write("<html><head>\n" + "<style>\n" + "body {width:21cm; height:29.7cm; align:center;}\n" +
-//                    "h1 {font-size: 2em; margin-top: 0.67em;margin-bottom: 0.67em;font-weight: bold;}" + "h2 {font-size: 2em;margin-top: 0.67em;margin-bottom: 0.67em;\nfont-weight: bold;\n}"+
-//                    "p {font-size: }" +
                     "</style>\n" + "</head><body>");
             fw.write("<h1 style='text-align: center;'><font size='8'>" + thisScore.getTitle() + "</font></h1>\n");
             fw.write("<h2 style='text-align: left;'><font size='6'>1=" + thisScore.getKey() + "     " + thisScore.getTimeSignature() + "     " + thisScore.getTempo() + "</font></h2>\n");
